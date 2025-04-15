@@ -1,11 +1,12 @@
 package com.sshyu.zibnote.adapter.out.persistence.search.entity;
 
-import com.sshyu.zibnote.adapter.out.persistence.note.entity.EvalTypeEntity;
 import com.sshyu.zibnote.adapter.out.persistence.note.entity.NoteFieldEntity;
+import com.sshyu.zibnote.domain.search.EvalType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -34,9 +35,9 @@ public class SearchStructureNoteEntity {
     @JoinColumn(name = "note_field_id")
     private NoteFieldEntity noteFieldEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "eval_type_id")
-    private EvalTypeEntity evalTypeEntity;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 100)
+    private EvalType evalType;
 
     @Column(length = 100)
     private String evalValue;

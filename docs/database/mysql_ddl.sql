@@ -57,14 +57,6 @@ CREATE TABLE NOTE_FIELD (
     FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
 )
 
-DROP TABLE IF EXISTS EVAL_TYPE;
-CREATE TABLE EVAL_TYPE (
-    eval_type_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30) NOT NULL COMMENT '평가명',     -- 예: 별점, 점수, 순위, 해당여부
-    code VARCHAR(30) NOT NULL OMMENT '평가타입',     -- 예: STAR, SCORE, RANK, BOOLEAN
-    description VARCHAR(255) COMMENT '설명'  -- 예: 1~5 별점, 1~100점, 1~N 순위
-)
-
 DROP TABLE IF EXISTS SEARCH_STRUCTURE;
 CREATE TABLE SEARCH_STRUCTURE (
     search_structure_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -80,13 +72,12 @@ DROP TABLE IF EXISTS SEARCH_STRUCTURE_NOTE;
 CREATE TABLE SEARCH_STRUCTURE_NOTE (
     search_structure_id BIGINT,
     note_field_id BIGINT,
-    eval_type_id BIGINT,
-    eval_value VARCHAR(100) COMMENT '사용자 입력 평가값',
+    eval_type VARCHAR(100) COMMENT '평가타입',  -- enum
+    eval_value VARCHAR(100) COMMENT '평가값',
     note TEXT COMMENT '상세 메모',
     PRIMARY KEY (search_structure_id, note_field_id),
     FOREIGN KEY (search_structure_id) REFERENCES SEARCH_STRUCTURE(search_structure_id),
     FOREIGN KEY (note_field_id) REFERENCES NOTE_FIELD(note_field_id),
-    FOREIGN KEY (eval_type_id) REFERENCES EVAL_TYPE(eval_type_id)
 );
 
 
