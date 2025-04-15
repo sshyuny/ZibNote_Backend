@@ -9,8 +9,8 @@ USE zibnote_db;
 DROP USER IF EXISTS 'zibnote_app'@'localhost', 'zibnote_admin'@'localhost';
 CREATE USER 'zibnote_app'@'localhost' IDENTIFIED BY 'pw11';
 CREATE USER 'zibnote_admin'@'localhost' IDENTIFIED BY 'pw11';
-GRANT ALL PRIVILEGES ON zibnote_db.* TO 'zibnote_app'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON zibnote_db.* TO 'zibnote_admin'@'localhost';
+GRANT ALL PRIVILEGES ON zibnote_db.* TO 'zibnote_admin'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON zibnote_db.* TO 'zibnote_app'@'localhost';
 
 exit
 mysql -u zibnote_admin -p
@@ -20,14 +20,14 @@ mysql -u zibnote_admin -p
 DROP TABLE IF EXISTS MEMBER;
 CREATE TABLE MEMBER (
     member_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member_name VARCHAR(50) COMMENT '사용자 이름'
+    name VARCHAR(50) NOT NULL COMMENT '사용자 이름'
 );
 
 -- 건물(미리 넣어둔 공식데이터로 사용)
 DROP TABLE IF EXISTS STRUCTURE;
 CREATE TABLE STRUCTURE (
     structure_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    structure_name VARCHAR(255) COMMENT '건물 이름',  -- 예: 목화아파트, 무궁화아파트
+    name VARCHAR(255) NOT NULL COMMENT '건물 이름',  -- 예: 목화아파트, 무궁화아파트
     address VARCHAR(255) COMMENT '건물 주소',
     latitude DECIMAL(10,7),
     longitude DECIMAL(10,7),
@@ -40,8 +40,9 @@ DROP TABLE IF EXISTS SEARCH;
 CREATE TABLE SEARCH (
     search_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id BIGINT,
-    description VARCHAR(255) COMMENT '설명', -- 예: 산본역 아파트 2025 임장
+    title VARCHAR(100) NOT NULL COMMENT '조사 제목',   -- 예: 산본역 아파트 2025 임장
     region VARCHAR(255) COMMENT '조사(임장) 지역',  -- 예: 산본역
+    description VARCHAR(255) COMMENT '설명',  -- 예: 스터디원 4명과 함께 임장. / 개인 임장.
     start_date DATE COMMENT '조사(임장)기간 시작일',
     end_date DATE COMMENT '조사(임장)기간 종료일',
     FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
@@ -51,15 +52,16 @@ DROP TABLE IF EXISTS NOTE_FIELD;
 CREATE TABLE NOTE_FIELD (
     note_field_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id BIGINT,
-    note_field_name VARCHAR(100) COMMENT '항목명',  -- 예: 세대수, 놀이터, 인도 퀄리티, 차도 퀄리티, 조경, 행인 연령대
+    name VARCHAR(100) NOT NULL COMMENT '항목명',  -- 예: 세대수, 놀이터, 인도 퀄리티, 차도 퀄리티, 조경, 행인 연령대
+    description VARCHAR(255) COMMENT '설명',
     FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
 )
 
 DROP TABLE IF EXISTS EVAL_TYPE;
 CREATE TABLE EVAL_TYPE (
     eval_type_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30) COMMENT '평가명',     -- 예: 별점, 점수, 순위, 해당여부
-    code VARCHAR(30) COMMENT '평가타입',     -- 예: STAR, SCORE, RANK, BOOLEAN
+    name VARCHAR(30) NOT NULL COMMENT '평가명',     -- 예: 별점, 점수, 순위, 해당여부
+    code VARCHAR(30) NOT NULL OMMENT '평가타입',     -- 예: STAR, SCORE, RANK, BOOLEAN
     description VARCHAR(255) COMMENT '설명'  -- 예: 1~5 별점, 1~100점, 1~N 순위
 )
 
@@ -68,6 +70,7 @@ CREATE TABLE SEARCH_STRUCTURE (
     search_structure_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     search_id BIGINT,
     structure_id BIGINT,
+    description TEXT,
     UNIQUE (search_id, structure_id),
     FOREIGN KEY (search_id) REFERENCES SEARCH(search_id),
     FOREIGN KEY (structure_id) REFERENCES STRUCTURE(structure_id)
@@ -80,7 +83,7 @@ CREATE TABLE SEARCH_STRUCTURE_NOTE (
     eval_type_id BIGINT,
     eval_value VARCHAR(100) COMMENT '사용자 입력 평가값',
     note TEXT COMMENT '상세 메모',
-    PRIMARY KEY (search_structure_id, note_field_id, eval_type_id),
+    PRIMARY KEY (search_structure_id, note_field_id),
     FOREIGN KEY (search_structure_id) REFERENCES SEARCH_STRUCTURE(search_structure_id),
     FOREIGN KEY (note_field_id) REFERENCES NOTE_FIELD(note_field_id),
     FOREIGN KEY (eval_type_id) REFERENCES EVAL_TYPE(eval_type_id)
