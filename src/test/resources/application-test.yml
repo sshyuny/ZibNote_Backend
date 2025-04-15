@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: zibnote
+  jpa:
+    show-sql: false
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+        hbm2ddl:
+          auto: none
+  datasource:
+    url: jdbc:mysql://localhost:3306/zibnote_db
+    username: zibnote_admin
+    password: pw11
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
