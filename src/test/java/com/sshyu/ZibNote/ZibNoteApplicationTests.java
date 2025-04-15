@@ -1,10 +1,10 @@
-package com.sshyu.ZibNote;
+package com.sshyu.zibnote;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ZibNoteApplicationTests {
+class ZibnoteApplicationTests {
 
 	@Test
 	void contextLoads() {
