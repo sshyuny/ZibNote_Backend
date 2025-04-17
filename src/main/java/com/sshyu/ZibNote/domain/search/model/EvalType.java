@@ -1,4 +1,4 @@
-package com.sshyu.zibnote.domain.search;
+package com.sshyu.zibnote.domain.search.model;
 
 public enum EvalType {
 

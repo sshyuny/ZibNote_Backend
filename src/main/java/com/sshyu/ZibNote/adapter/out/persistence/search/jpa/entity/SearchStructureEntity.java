@@ -1,6 +1,7 @@
-package com.sshyu.zibnote.adapter.out.persistence.search.entity;
+package com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity;
 
-import com.sshyu.zibnote.adapter.out.persistence.structure.entity.StructureEntity;
+import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
+import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,30 +13,26 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "SEARCH_STRUCTURE", uniqueConstraints = {@UniqueConstraint(
-    name = "search_structure_unique",
-    columnNames = {"search_id", "structure_id"}
-)})
-@Getter @Builder
+@Table(name = "SEARCH_STRUCTURE")
+@Getter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
-public class SearchStructureEntity {
+public class SearchStructureEntity extends BaseEntity {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long searchStructureId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "search_id")
+    @JoinColumn(name = "search_id", nullable = false)
     private SearchEntity searchEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "structure_id")
+    @JoinColumn(name = "structure_id", nullable = false)
     private StructureEntity structureEntity;
 
     @Lob

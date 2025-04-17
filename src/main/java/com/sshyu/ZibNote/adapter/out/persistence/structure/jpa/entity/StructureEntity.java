@@ -1,6 +1,8 @@
-package com.sshyu.zibnote.adapter.out.persistence.structure.entity;
+package com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity;
 
 import java.math.BigDecimal;
+
+import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,16 +10,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "STRUCTURE")
-@Getter @Builder
+@Table(name = "STRUCTURE", uniqueConstraints = {
+    @UniqueConstraint(name = "structure_address_unique",
+        columnNames = {"address"})
+})
+@Getter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
-public class StructureEntity {
+public class StructureEntity extends BaseEntity {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long structureId;
