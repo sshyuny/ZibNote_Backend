@@ -32,11 +32,9 @@ public class NoteFieldController {
     @PostMapping
     public ResponseEntity<String> post(@RequestBody NoteFieldReqDto reqDto) {
 
-        final Member member = authUseCase.getMember();
-
         noteFieldUseCase.registerNoteField(
             NoteField.builder()
-                .member(member)
+                .member(Member.onlyId(authUseCase.getMemberId()))
                 .name(reqDto.getName())
                 .description(reqDto.getDescription())
                 .build()
@@ -48,9 +46,7 @@ public class NoteFieldController {
     @GetMapping("/list")
     public ResponseEntity<ResBodyForm> getList() {
 
-        final Member member = authUseCase.getMember();
-
-        List<NoteFieldResDto> noteFieldResDtos = noteFieldUseCase.listNoteFieldsByMember(member.getMemberId())
+        List<NoteFieldResDto> noteFieldResDtos = noteFieldUseCase.listNoteFieldsByMember(authUseCase.getMemberId())
             .stream()
             .map(domain -> NoteFieldResDto.builder()
                 .noteFieldId(domain.getNoteFieldId())

@@ -53,7 +53,7 @@ public class MemberController {
     @GetMapping
     public ResBodyForm get() {
 
-        String memberName = authUseCase.getMemberName();
+        String memberName = authUseCase.getSessionMember().getName();
         return ResBodyForm.builder().data(memberName).build();
     }
 

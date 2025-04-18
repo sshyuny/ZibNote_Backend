@@ -11,5 +11,9 @@ public class Member extends BaseFields {
     private Long memberId;
 
     private String name;
+
+    public static Member onlyId(Long memberId) {
+        return Member.builder().memberId(memberId).build();
+    }
     
 }

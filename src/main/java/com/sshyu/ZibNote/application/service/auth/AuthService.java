@@ -20,10 +20,15 @@ public class AuthService implements AuthUseCase {
     @Override
     public void login(String name) {
 
-        memberUseCase.findByName(name);
+        Member member = memberUseCase.findByName(name);
         
         HttpSession httpSession = httpSessionProvider.getObject();
-        httpSession.setAttribute(SessionConst.LOGIN_MEMBER, name);
+        
+        httpSession.setAttribute(SessionConst.LOGIN_MEMBER, SessionMember.builder()
+            .memberId(member.getMemberId())
+            .name(member.getName())
+            .build()
+        );
     }
 
     @Override
@@ -34,19 +39,21 @@ public class AuthService implements AuthUseCase {
     }
 
     @Override
-    public String getMemberName() {
+    public SessionMember getSessionMember() {
 
         HttpSession httpSession = httpSessionProvider.getObject();
-        return (String) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+        return (SessionMember) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
     }
 
     @Override
-    public Member getMember() {
+    public Long getMemberId() {
 
         HttpSession httpSession = httpSessionProvider.getObject();
-        String memberName = (String) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
-        
-        return memberUseCase.findByName(memberName);
+        SessionMember sessionMember = (SessionMember) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        return sessionMember.getMemberId();
     }
+
+    
 
 }

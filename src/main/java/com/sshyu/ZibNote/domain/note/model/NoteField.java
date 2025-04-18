@@ -25,8 +25,8 @@ public class NoteField extends BaseFields {
         super.fillBaseFields();
     }
 
-    public void assureOwner(Member member) {
-        if (this.member.getMemberId().equals(member.getMemberId())) {
+    public void assureOwner(Long memberId) {
+        if (this.member.getMemberId().equals(memberId)) {
             throw new UnauthorizedAccessException();
         }
     }

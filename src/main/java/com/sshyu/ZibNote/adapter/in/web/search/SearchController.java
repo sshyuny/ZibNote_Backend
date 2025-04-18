@@ -32,10 +32,8 @@ public class SearchController {
     @PostMapping
     public ResponseEntity<String> post(@RequestBody SearchReqDto reqDto) {
 
-        final Member member = authUseCase.getMember();
-
         searchUseCase.registerSearch(Search.builder()
-            .member(member)
+            .member(Member.onlyId(authUseCase.getMemberId()))
             .title(reqDto.getTitle())
             .region(reqDto.getRegion())
             .description(reqDto.getDescription())
@@ -48,8 +46,7 @@ public class SearchController {
     @DeleteMapping
     public ResponseEntity<String> delete(@RequestBody SearchReqDto reqDto) {
 
-        final Member member = authUseCase.getMember();
-        searchUseCase.softDeleteSearch(reqDto.getSearchId(), member.getMemberId());
+        searchUseCase.softDeleteSearch(reqDto.getSearchId(), authUseCase.getMemberId());
 
         return ResponseEntity.ok("success");
     }
@@ -57,9 +54,7 @@ public class SearchController {
     @GetMapping("/list")
     public ResponseEntity<ResBodyForm> getList() {
 
-        final Member member = authUseCase.getMember();
-
-        List<SearchResDto> resDtos = searchUseCase.listSearchesByMember(member.getMemberId())
+        List<SearchResDto> resDtos = searchUseCase.listSearchesByMember(authUseCase.getMemberId())
             .stream()
             .map(domain -> SearchResDto.builder()
                 .searchId(domain.getSearchId())

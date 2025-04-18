@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
-import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.note.port.in.NoteFieldUseCase;
 import com.sshyu.zibnote.domain.note.port.out.NoteFieldRepository;
@@ -36,8 +35,7 @@ public class NoteFieldService implements NoteFieldUseCase {
 
         NoteField selectedNoteField = noteFieldRepository.findByNoteFieldId(requestedNoteField.getNoteFieldId());
         
-        final Member member = authUseCase.getMember();
-        selectedNoteField.assureOwner(member);
+        selectedNoteField.assureOwner(authUseCase.getMemberId());
 
         noteFieldRepository.softDeleteByNoteFieldId(selectedNoteField.getNoteFieldId(), LocalDateTime.now());
     }
