@@ -16,7 +16,7 @@ public interface SearchJpaRepository extends JpaRepository<SearchEntity, Long> {
     
     Optional<SearchEntity> findBySearchId(Long searchId);
 
-    List<SearchEntity> findAllByMemberEntity(MemberEntity memberEntity);
+    List<SearchEntity> findAllByMemberEntityAndIsDeleted(MemberEntity memberEntity, int isDeleted);
 
     @Modifying
     @Query("UPDATE SearchEntity s SET s.isDeleted = 1, s.updatedAt = :updatedAt WHERE s.searchId = :searchId")

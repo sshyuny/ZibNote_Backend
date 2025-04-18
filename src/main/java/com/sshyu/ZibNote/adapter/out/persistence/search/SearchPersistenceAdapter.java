@@ -69,7 +69,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
             .memberId(memberId)
             .build();
 
-        return searchJpaRepository.findAllByMemberEntity(memberRef).stream()
+        return searchJpaRepository.findAllByMemberEntityAndIsDeleted(memberRef, 0).stream()
                     .map(result -> Search.builder()
                             .searchId(result.getSearchId())
                             .member(Member.builder().memberId(memberId).build())
