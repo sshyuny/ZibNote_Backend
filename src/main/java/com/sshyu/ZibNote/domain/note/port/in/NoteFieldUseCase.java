@@ -6,8 +6,10 @@ import com.sshyu.zibnote.domain.note.model.NoteField;
 
 public interface NoteFieldUseCase {
     
-    void save(NoteField noteField);
+    void registerNoteField(NoteField noteField);
 
-    List<NoteField> findByMember(Long memberId);
+    List<NoteField> listNoteFieldsByMember(Long memberId);
+
+    void softDeleteNoteField(NoteField noteField);
 
 }

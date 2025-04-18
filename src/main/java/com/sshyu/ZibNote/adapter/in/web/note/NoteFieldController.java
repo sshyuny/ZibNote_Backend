@@ -1,8 +1,10 @@
 package com.sshyu.zibnote.adapter.in.web.note;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sshyu.zibnote.adapter.in.web.common.ResBodyForm;
 import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldReqDto;
+import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldResDto;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.member.model.Member;
-import com.sshyu.zibnote.domain.member.port.in.MemberUseCase;
 import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.note.port.in.NoteFieldUseCase;
 
@@ -25,39 +27,51 @@ import lombok.RequiredArgsConstructor;
 public class NoteFieldController {
 
     private final NoteFieldUseCase noteFieldUseCase;
-    private final MemberUseCase memberUseCase;
     private final AuthUseCase authUseCase;
     
     @PostMapping
-    public ResBodyForm post(@RequestBody NoteFieldReqDto reqDto) {
+    public ResponseEntity<String> post(@RequestBody NoteFieldReqDto reqDto) {
 
-        final String memberName = authUseCase.getMemberName();
-        final Member member = memberUseCase.findByName(memberName);
-        final LocalDateTime now = LocalDateTime.now();
+        final Member member = authUseCase.getMember();
 
-        noteFieldUseCase.save(
+        noteFieldUseCase.registerNoteField(
             NoteField.builder()
                 .member(member)
                 .name(reqDto.getName())
                 .description(reqDto.getDescription())
-                .createdAt(now)
-                .updatedAt(now)
-                .isDeleted(0)
                 .build()
         );
 
-        return ResBodyForm.builder().data("success").build();
+        return ResponseEntity.ok("success");
     }
 
     @GetMapping
-    public ResBodyForm get() {
+    public ResponseEntity<ResBodyForm> get() {
 
-        final String memberName = authUseCase.getMemberName();
-        final Member member = memberUseCase.findByName(memberName);
+        final Member member = authUseCase.getMember();
 
-        List<NoteField> noteFields = noteFieldUseCase.findByMember(member.getMemberId());
+        List<NoteFieldResDto> noteFieldResDtos = noteFieldUseCase.listNoteFieldsByMember(member.getMemberId())
+            .stream()
+            .map(domain -> NoteFieldResDto.builder()
+                .noteFieldId(domain.getNoteFieldId())
+                .name(domain.getName())
+                .description(domain.getDescription())
+                .build())
+            .collect(Collectors.toList());
 
-        return ResBodyForm.builder().data(noteFields).build();
+        return ResponseEntity.ok(ResBodyForm.builder().data(noteFieldResDtos).build());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> delete(@RequestBody NoteFieldReqDto reqDto) {
+
+        noteFieldUseCase.softDeleteNoteField(
+            NoteField.builder()
+                .noteFieldId(reqDto.getNoteFieldId())
+                .build()
+        );
+
+        return ResponseEntity.ok("success");
     }
 
 }

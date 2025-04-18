@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.domain.note.model;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
+import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.member.model.Member;
 
 import lombok.Getter;
@@ -9,12 +10,25 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder @Getter
 public class NoteField extends BaseFields {
     
-    private Long noteFieldId;
+    private final Long noteFieldId;
 
-    private Member member;
+    private final Member member;
 
-    private String name;
+    private final String name;
 
-    private String description;
+    private final String description;
+
+    /*
+     * 최초 생성 이전에 호출
+     */
+    public void prepareForCreation() {
+        super.fillBaseFields();
+    }
+
+    public void assureOwner(Member member) {
+        if (this.member.getMemberId().equals(member.getMemberId())) {
+            throw new UnauthorizedAccessException();
+        }
+    }
     
 }

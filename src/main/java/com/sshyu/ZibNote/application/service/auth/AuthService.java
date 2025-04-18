@@ -4,6 +4,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
+import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.member.port.in.MemberUseCase;
 
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +38,15 @@ public class AuthService implements AuthUseCase {
 
         HttpSession httpSession = httpSessionProvider.getObject();
         return (String) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+    }
+
+    @Override
+    public Member getMember() {
+
+        HttpSession httpSession = httpSessionProvider.getObject();
+        String memberName = (String) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+        
+        return memberUseCase.findByName(memberName);
     }
 
 }

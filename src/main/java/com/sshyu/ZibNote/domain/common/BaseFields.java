@@ -12,4 +12,11 @@ public abstract class BaseFields {
     protected LocalDateTime updatedAt;
     protected int isDeleted;
 
+    protected void fillBaseFields() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+        this.isDeleted = 0;
+    }
+
 }

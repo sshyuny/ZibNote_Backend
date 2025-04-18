@@ -79,7 +79,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
 
     @Override
     public List<NoteField> findAllByMember(Long memberId) {
-        return noteFieldJpaRepository.findAllByMemberEntity(MemberEntity.builder().memberId(memberId).build())
+        return noteFieldJpaRepository.findAllByMemberEntityAndIsDeleted(MemberEntity.builder().memberId(memberId).build(), 0)
             .stream()
             .map(entity -> NoteFieldMapper.toDomain(entity))
             .collect(Collectors.toList());

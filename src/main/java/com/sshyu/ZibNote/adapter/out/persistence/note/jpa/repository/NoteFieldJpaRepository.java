@@ -16,7 +16,7 @@ public interface NoteFieldJpaRepository extends JpaRepository<NoteFieldEntity, L
     
     Optional<NoteFieldEntity> findByMemberEntityAndName(MemberEntity memberEntity, String name);
 
-    List<NoteFieldEntity> findAllByMemberEntity(MemberEntity memberEntity);
+    List<NoteFieldEntity> findAllByMemberEntityAndIsDeleted(MemberEntity memberEntity, int isDeleted);
 
     @Modifying
     @Query("UPDATE NoteFieldEntity n SET n.isDeleted = 1, n.updatedAt = :now WHERE n.noteFieldId = :noteFieldId")
