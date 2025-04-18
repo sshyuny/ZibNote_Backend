@@ -1,12 +1,15 @@
 package com.sshyu.zibnote.adapter.out.persistence.note;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.note.jpa.entity.NoteFieldEntity;
 import com.sshyu.zibnote.adapter.out.persistence.note.jpa.repository.NoteFieldJpaRepository;
+import com.sshyu.zibnote.adapter.out.persistence.note.mapper.NoteFieldMapper;
 import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.note.exception.NoteFieldNotFoundException;
 import com.sshyu.zibnote.domain.note.model.NoteField;
@@ -72,6 +75,14 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
             .updatedAt(noteFieldEntity.getUpdatedAt())
             .isDeleted(noteFieldEntity.getIsDeleted())
             .build();
+    }
+
+    @Override
+    public List<NoteField> findAllByMember(Long memberId) {
+        return noteFieldJpaRepository.findAllByMemberEntity(MemberEntity.builder().memberId(memberId).build())
+            .stream()
+            .map(entity -> NoteFieldMapper.toDomain(entity))
+            .collect(Collectors.toList());
     }
 
     @Override
