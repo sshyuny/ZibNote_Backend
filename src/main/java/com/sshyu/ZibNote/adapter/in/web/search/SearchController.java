@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sshyu.zibnote.adapter.in.web.common.ResBodyForm;
+import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchResDto;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
@@ -30,7 +30,7 @@ public class SearchController {
     private final AuthUseCase authUseCase;
     
     @PostMapping
-    public ResponseEntity<String> post(@RequestBody SearchReqDto reqDto) {
+    public ResponseEntity<ApiResponse<Void>> post(@RequestBody SearchReqDto reqDto) {
 
         searchUseCase.registerSearch(Search.builder()
             .member(Member.onlyId(authUseCase.getMemberId()))
@@ -40,19 +40,19 @@ public class SearchController {
             .build()
         );
 
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(ApiResponse.successWithMessage("임장 등록 성공!"));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> delete(@RequestBody SearchReqDto reqDto) {
+    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody SearchReqDto reqDto) {
 
         searchUseCase.softDeleteSearch(reqDto.getSearchId(), authUseCase.getMemberId());
 
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(ApiResponse.successWithMessage("임장 삭제 성공"));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ResBodyForm> getList() {
+    public ResponseEntity<ApiResponse<List<SearchResDto>>> getList() {
 
         List<SearchResDto> resDtos = searchUseCase.listSearchesByMember(authUseCase.getMemberId())
             .stream()
@@ -64,7 +64,7 @@ public class SearchController {
                 .build())
             .collect(Collectors.toList());
 
-        return ResponseEntity.ok(ResBodyForm.builder().data(resDtos).build());
+        return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
     }
 
 }

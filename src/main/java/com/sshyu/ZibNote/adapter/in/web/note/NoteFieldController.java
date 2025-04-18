@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sshyu.zibnote.adapter.in.web.common.ResBodyForm;
+import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldReqDto;
 import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldResDto;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
@@ -30,7 +30,7 @@ public class NoteFieldController {
     private final AuthUseCase authUseCase;
     
     @PostMapping
-    public ResponseEntity<String> post(@RequestBody NoteFieldReqDto reqDto) {
+    public ResponseEntity<ApiResponse<Void>> post(@RequestBody NoteFieldReqDto reqDto) {
 
         noteFieldUseCase.registerNoteField(
             NoteField.builder()
@@ -40,11 +40,11 @@ public class NoteFieldController {
                 .build()
         );
 
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(ApiResponse.successWithMessage("조사항목 추가 성공"));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ResBodyForm> getList() {
+    public ResponseEntity<ApiResponse<List<NoteFieldResDto>>> getList() {
 
         List<NoteFieldResDto> noteFieldResDtos = noteFieldUseCase.listNoteFieldsByMember(authUseCase.getMemberId())
             .stream()
@@ -55,11 +55,11 @@ public class NoteFieldController {
                 .build())
             .collect(Collectors.toList());
 
-        return ResponseEntity.ok(ResBodyForm.builder().data(noteFieldResDtos).build());
+        return ResponseEntity.ok(ApiResponse.successWithData(noteFieldResDtos));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> delete(@RequestBody NoteFieldReqDto reqDto) {
+    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody NoteFieldReqDto reqDto) {
 
         noteFieldUseCase.softDeleteNoteField(
             NoteField.builder()
@@ -67,7 +67,7 @@ public class NoteFieldController {
                 .build()
         );
 
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok(ApiResponse.successWithMessage("조사항목 삭제 성공"));
     }
 
 }
