@@ -3,7 +3,7 @@ package com.sshyu.zibnote.configure.interceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.sshyu.zibnote.configure.SessionConst;
+import com.sshyu.zibnote.application.service.auth.SessionConst;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
