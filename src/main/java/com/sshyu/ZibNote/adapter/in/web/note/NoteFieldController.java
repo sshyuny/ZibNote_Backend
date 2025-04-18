@@ -45,8 +45,8 @@ public class NoteFieldController {
         return ResponseEntity.ok("success");
     }
 
-    @GetMapping
-    public ResponseEntity<ResBodyForm> get() {
+    @GetMapping("/list")
+    public ResponseEntity<ResBodyForm> getList() {
 
         final Member member = authUseCase.getMember();
 

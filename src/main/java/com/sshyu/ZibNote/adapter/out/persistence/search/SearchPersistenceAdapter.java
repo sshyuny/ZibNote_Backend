@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity.SearchEntity;
@@ -17,6 +18,7 @@ import com.sshyu.zibnote.domain.search.port.out.SearchRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Transactional
 @Repository
 public class SearchPersistenceAdapter implements SearchRepository {
     

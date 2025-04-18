@@ -3,6 +3,7 @@ package com.sshyu.zibnote.adapter.out.persistence.member;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.repository.MemberJpaRepository;
@@ -12,6 +13,7 @@ import com.sshyu.zibnote.domain.member.port.out.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
+@Transactional
 @Repository
 @RequiredArgsConstructor
 public class MemberPersistenceAdapter implements MemberRepository {

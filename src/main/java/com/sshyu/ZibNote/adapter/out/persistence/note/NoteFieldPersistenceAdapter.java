@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.note.jpa.entity.NoteFieldEntity;
@@ -17,6 +18,7 @@ import com.sshyu.zibnote.domain.note.port.out.NoteFieldRepository;
 
 import lombok.RequiredArgsConstructor;
 
+@Transactional
 @RequiredArgsConstructor
 @Repository
 public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
