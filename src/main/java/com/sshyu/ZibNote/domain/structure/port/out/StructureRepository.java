@@ -8,6 +8,14 @@ public interface StructureRepository {
 
     void save(Structure structure);
     
-    List<Structure> findByAddressContaining(String address);
+    /*
+     * 지번주소, 도로명주소 통합 주소 검색
+     */
+    List<Structure> findByAddressContaining(String keyword);
+
+    /*
+     * 건물 이름(아파트 이름)을 이용한 주소 검색
+     */
+    List<Structure> findByNameContaining(String keyword);
 
 }

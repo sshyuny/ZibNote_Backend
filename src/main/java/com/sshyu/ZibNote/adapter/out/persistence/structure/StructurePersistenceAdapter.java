@@ -1,6 +1,9 @@
 package com.sshyu.zibnote.adapter.out.persistence.structure;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,7 +42,18 @@ public class StructurePersistenceAdapter implements StructureRepository {
             .map(entity -> StructureMapper.toDomain(entity))
             .collect(Collectors.toList());
 
-        return Stream.concat(domainsByNumberAddress.stream(), domainsByRoadAddress.stream())
+        Map<Long, Structure> domains = new HashMap<>();
+        Stream.concat(domainsByNumberAddress.stream(), domainsByRoadAddress.stream())
+                .forEach(domain -> domains.putIfAbsent(domain.getStructureId(), domain));
+
+        return new ArrayList<>(domains.values());
+    }
+
+    @Override
+    public List<Structure> findByNameContaining(final String keyword) {
+
+        return structureJpaRepository.findByNameContaining(keyword).stream()
+            .map(entity -> StructureMapper.toDomain(entity))
             .collect(Collectors.toList());
     }
 

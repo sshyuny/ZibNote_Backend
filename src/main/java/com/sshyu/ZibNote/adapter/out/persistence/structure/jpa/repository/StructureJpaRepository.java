@@ -11,5 +11,7 @@ public interface StructureJpaRepository extends JpaRepository<StructureEntity, L
     List<StructureEntity> findByRoadAddressContaining(String keyword);
 
     List<StructureEntity> findByNumberAddressContaining(String keyword);
+
+    List<StructureEntity> findByNameContaining(String keyword);
     
 }
