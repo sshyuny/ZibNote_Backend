@@ -18,8 +18,10 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "STRUCTURE", uniqueConstraints = {
-    @UniqueConstraint(name = "structure_address_unique",
-        columnNames = {"address"})
+    @UniqueConstraint(name = "structure_number_address_unique",
+        columnNames = {"numberAddress"}),
+    @UniqueConstraint(name = "structure_road_address_unique",
+        columnNames = {"roadAddress"})
 })
 @Getter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
@@ -32,7 +34,10 @@ public class StructureEntity extends BaseEntity {
     private String name;
 
     @Column(length = 255)
-    private String address;
+    private String numberAddress;
+
+    @Column(length = 255)
+    private String roadAddress;
 
     @Column(precision = 10, scale = 7)
     private BigDecimal latitude;

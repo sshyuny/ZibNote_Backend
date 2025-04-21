@@ -3,6 +3,7 @@ package com.sshyu.zibnote.adapter.out.persistence.search;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +77,7 @@ public class SearchStructureNotePersistenceAdapterTest {
         structurePersistenceAdapter.save(
             Structure.builder()
                 .name(structureName)
-                .address(structureAddress)
+                .numberAddress(structureAddress)
                 .latitude(null)
                 .longitude(null)
                 .builtYear(1992)
@@ -87,12 +88,12 @@ public class SearchStructureNotePersistenceAdapterTest {
         );
 
         Search search = searchPersistenceAdapter.findAllByMemberId(memberId).get(0);
-        Structure structure = structurePersistenceAdapter.findByAddress(structureAddress);
+        List<Structure> structures = structurePersistenceAdapter.findByAddressContaining(structureAddress);
 
         searchStructurePersistenceAdapter.save(
             SearchStructure.builder()
                 .search(search)
-                .structure(structure)
+                .structure(structures.get(0))
                 .description(searchStructureDescription)
                 .createdAt(now)
                 .updatedAt(now)

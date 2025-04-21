@@ -32,14 +32,16 @@ DROP TABLE IF EXISTS STRUCTURE;
 CREATE TABLE STRUCTURE (
     structure_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL COMMENT '건물 이름',  -- 예: 목화아파트, 무궁화아파트
-    address VARCHAR(255) COMMENT '건물 주소',
+    number_address VARCHAR(255) COMMENT '지번 주소',
+    road_address VARCHAR(255) COMMENT '도로명 주소',
     latitude DECIMAL(10,7),
     longitude DECIMAL(10,7),
     built_year INT COMMENT '설립연도',
     created_at DATETIME NOT NULL COMMENT '데이터 생성 시각',
     updated_at DATETIME NOT NULL COMMENT '데이터 수정 시각',
     is_deleted TINYINT(1) NOT NULL DEFAULT 0 COMMENT '삭제됨(0: 존재, 1: 삭제)',
-    UNIQUE (address)
+    UNIQUE (number_address),
+    UNIQUE (road_address)
 )
 
 -- 조사(임장 또는 인터넷 조사도 포함)

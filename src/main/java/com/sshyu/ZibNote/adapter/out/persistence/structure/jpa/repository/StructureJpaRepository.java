@@ -1,6 +1,6 @@
 package com.sshyu.zibnote.adapter.out.persistence.structure.jpa.repository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -8,6 +8,8 @@ import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureE
 
 public interface StructureJpaRepository extends JpaRepository<StructureEntity, Long> {
     
-    Optional<StructureEntity> findByAddress(String address);
+    List<StructureEntity> findByRoadAddressContaining(String keyword);
+
+    List<StructureEntity> findByNumberAddressContaining(String keyword);
     
 }

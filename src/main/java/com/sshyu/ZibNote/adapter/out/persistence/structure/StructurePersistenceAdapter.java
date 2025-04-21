@@ -1,5 +1,9 @@
 package com.sshyu.zibnote.adapter.out.persistence.structure;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,12 +27,20 @@ public class StructurePersistenceAdapter implements StructureRepository {
     }
     
     @Override
-    public Structure findByAddress(final String address) {
-        
-        return StructureMapper.toDomain(
-            structureJpaRepository.findByAddress(address)
-                .orElseThrow(() -> new RuntimeException())
-        );
+    public List<Structure> findByAddressContaining(final String keyword) {
+
+        List<Structure> domainsByNumberAddress = structureJpaRepository.findByNumberAddressContaining(keyword).stream()
+            .map(entity -> StructureMapper.toDomain(entity))
+            .collect(Collectors.toList());
+
+        if (domainsByNumberAddress.size() > 10) { return domainsByNumberAddress; }
+
+        List<Structure> domainsByRoadAddress = structureJpaRepository.findByRoadAddressContaining(keyword).stream()
+            .map(entity -> StructureMapper.toDomain(entity))
+            .collect(Collectors.toList());
+
+        return Stream.concat(domainsByNumberAddress.stream(), domainsByRoadAddress.stream())
+            .collect(Collectors.toList());
     }
 
 }

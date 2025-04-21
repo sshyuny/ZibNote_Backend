@@ -12,7 +12,8 @@ public class Structure extends BaseFields {
     
     private Long structureId;
     private String name;
-    private String address;
+    private String numberAddress;
+    private String roadAddress;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private Integer builtYear;
