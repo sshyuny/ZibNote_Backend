@@ -10,6 +10,6 @@ public interface NoteFieldUseCase {
 
     List<NoteField> listNoteFieldsByMember(Long memberId);
 
-    void softDeleteNoteField(NoteField noteField);
+    void softDeleteNoteField(Long noteFieldId, Long memberId);
 
 }

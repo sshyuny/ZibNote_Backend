@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.note.port.in.NoteFieldUseCase;
 import com.sshyu.zibnote.domain.note.port.out.NoteFieldRepository;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 public class NoteFieldService implements NoteFieldUseCase {
 
     private final NoteFieldRepository noteFieldRepository;
-    private final AuthUseCase authUseCase;
 
     @Override
     public void registerNoteField(NoteField noteField) {
@@ -31,11 +29,11 @@ public class NoteFieldService implements NoteFieldUseCase {
     }
 
     @Override
-    public void softDeleteNoteField(NoteField requestedNoteField) {
+    public void softDeleteNoteField(Long noteFieldId, Long memberId) {
 
-        NoteField selectedNoteField = noteFieldRepository.findByNoteFieldId(requestedNoteField.getNoteFieldId());
+        NoteField selectedNoteField = noteFieldRepository.findByNoteFieldId(noteFieldId);
         
-        selectedNoteField.assureOwner(authUseCase.getMemberId());
+        selectedNoteField.assureOwner(memberId);
 
         noteFieldRepository.softDeleteByNoteFieldId(selectedNoteField.getNoteFieldId(), LocalDateTime.now());
     }

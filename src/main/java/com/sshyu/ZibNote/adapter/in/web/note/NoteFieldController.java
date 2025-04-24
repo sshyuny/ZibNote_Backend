@@ -61,11 +61,7 @@ public class NoteFieldController {
     @DeleteMapping
     public ResponseEntity<ApiResponse<Void>> delete(@RequestBody NoteFieldReqDto reqDto) {
 
-        noteFieldUseCase.softDeleteNoteField(
-            NoteField.builder()
-                .noteFieldId(reqDto.getNoteFieldId())
-                .build()
-        );
+        noteFieldUseCase.softDeleteNoteField(reqDto.getNoteFieldId(), authUseCase.getMemberId());
 
         return ResponseEntity.ok(ApiResponse.successWithMessage("조사항목 삭제 성공"));
     }
