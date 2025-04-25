@@ -1,6 +1,5 @@
 package com.sshyu.zibnote.adapter.out.persistence.search;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity.SearchEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.repository.SearchJpaRepository;
-import com.sshyu.zibnote.domain.member.model.Member;
+import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchMapper;
 import com.sshyu.zibnote.domain.search.exception.SearchNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.port.out.SearchRepository;
@@ -25,41 +24,30 @@ public class SearchPersistenceAdapter implements SearchRepository {
     private final SearchJpaRepository searchJpaRepository;
 
     @Override
-    public void save(final Search search) {
+    public Long save(final Search search) {
 
         final MemberEntity memberRef = MemberEntity.builder()
             .memberId(search.getMember().getMemberId())
             .build();
 
-        searchJpaRepository.save(
-            SearchEntity.builder()
-                .memberEntity(memberRef)
-                .title(search.getTitle() )
-                .region(search.getRegion())
-                .description(search.getDescription())
-                .createdAt(search.getCreatedAt())
-                .updatedAt(search.getUpdatedAt())
-                .isDeleted(search.getIsDeleted())
-                .build()
-        );        
+        SearchEntity searchEntity = SearchEntity.builder()
+            .memberEntity(memberRef)
+            .title(search.getTitle() )
+            .region(search.getRegion())
+            .description(search.getDescription())
+            .build();
+            
+        searchJpaRepository.save(searchEntity);
+        return searchEntity.getSearchId();        
     }
 
     @Override
     public Search findBySearchId(final Long searchId) {
 
-        final SearchEntity searchEntity = searchJpaRepository.findBySearchId(searchId)
+        SearchEntity searchEntity = searchJpaRepository.findById(searchId)
             .orElseThrow(() -> new SearchNotFoundException());
 
-        return Search.builder()
-                .searchId(searchEntity.getSearchId())
-                .member(Member.builder().memberId(searchEntity.getMemberEntity().getMemberId()).build())
-                .title(searchEntity.getTitle())
-                .region(searchEntity.getRegion())
-                .description(searchEntity.getDescription())
-                .createdAt(searchEntity.getCreatedAt())
-                .updatedAt(searchEntity.getUpdatedAt())
-                .isDeleted(searchEntity.getIsDeleted())
-                .build();
+        return SearchMapper.toDomain(searchEntity);
     }
 
     @Override
@@ -70,22 +58,16 @@ public class SearchPersistenceAdapter implements SearchRepository {
             .build();
 
         return searchJpaRepository.findAllByMemberEntityAndIsDeleted(memberRef, 0).stream()
-                    .map(result -> Search.builder()
-                            .searchId(result.getSearchId())
-                            .member(Member.builder().memberId(memberId).build())
-                            .title(result.getTitle())
-                            .region(result.getRegion())
-                            .description(result.getDescription())
-                            .createdAt(result.getCreatedAt())
-                            .updatedAt(result.getUpdatedAt())
-                            .isDeleted(result.getIsDeleted())
-                            .build())
+                    .map(entity -> SearchMapper.toDomain(entity))
                     .collect(Collectors.toList());
     }
 
     @Override
-    public void softDeleteBySearchId(final Long searchId, final LocalDateTime updatedAt) {
-        searchJpaRepository.softDeleteBySearchId(searchId, updatedAt);
+    public void softDeleteBySearchId(final Long searchId) {
+        SearchEntity searchEntity = searchJpaRepository.findById(searchId)
+            .orElseThrow(() -> new SearchNotFoundException());
+        searchEntity.softDelete();
+        searchJpaRepository.save(searchEntity);
     }
 
 }

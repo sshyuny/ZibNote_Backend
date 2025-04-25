@@ -1,13 +1,12 @@
 package com.sshyu.zibnote.domain.note.port.out;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.sshyu.zibnote.domain.note.model.NoteField;
 
 public interface NoteFieldRepository {
     
-    void save(NoteField noteField);
+    Long save(NoteField noteField);
 
     NoteField findByNoteFieldId(Long noteFieldId);
     
@@ -15,6 +14,6 @@ public interface NoteFieldRepository {
 
     List<NoteField> findAllByMember(Long memberId);
 
-    void softDeleteByNoteFieldId(Long noteFieldId, LocalDateTime updatedAt);
+    void softDeleteByNoteFieldId(Long noteFieldId);
     
 }

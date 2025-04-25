@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureEntity;
 
@@ -20,6 +22,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "SEARCH_STRUCTURE")
+@SQLRestriction("is_deleted = 0")
 @Getter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
 public class SearchStructureEntity extends BaseEntity {

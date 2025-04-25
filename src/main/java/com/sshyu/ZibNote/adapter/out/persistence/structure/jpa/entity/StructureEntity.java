@@ -2,6 +2,8 @@ package com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity;
 
 import java.math.BigDecimal;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -23,6 +25,7 @@ import lombok.experimental.SuperBuilder;
     @UniqueConstraint(name = "structure_road_address_unique",
         columnNames = {"roadAddress"})
 })
+@SQLRestriction("is_deleted = 0")
 @Getter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
 public class StructureEntity extends BaseEntity {

@@ -21,6 +21,9 @@ public class StructureMapper {
     }
 
     public static StructureEntity toEntity(Structure domain) {
+
+        if (domain == null) {return StructureEntity.builder().build();}
+
         return StructureEntity.builder()
                     .structureId(domain.getStructureId())
                     .name(domain.getName())

@@ -1,6 +1,5 @@
 package com.sshyu.zibnote.adapter.out.persistence.search;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,9 +27,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     private final SearchStructureJpaRepository searchStructureJpaRepository;
 
     @Override
-    public void save(final SearchStructure searchStructure) {
-
-        searchStructure.validate();
+    public Long save(final SearchStructure searchStructure) {
 
         final SearchEntity searchRef = SearchEntity.builder()
             .searchId(searchStructure.getSearch().getSearchId())
@@ -39,16 +36,14 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
             .structureId(searchStructure.getStructure().getStructureId())
             .build();
 
-        searchStructureJpaRepository.save(
-            SearchStructureEntity.builder()
-                .searchEntity(searchRef)
-                .structureEntity(structureRef)
-                .description(searchStructure.getDescription())
-                .createdAt(searchStructure.getCreatedAt())
-                .updatedAt(searchStructure.getUpdatedAt())
-                .isDeleted(searchStructure.getIsDeleted())
-                .build()
-        );
+        SearchStructureEntity searchStructureEntity = SearchStructureEntity.builder()
+            .searchEntity(searchRef)
+            .structureEntity(structureRef)
+            .description(searchStructure.getDescription())
+            .build();
+            
+        searchStructureJpaRepository.save(searchStructureEntity);
+        return searchStructureEntity.getSearchStructureId();
     }
 
     @Override
@@ -79,8 +74,11 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     }
 
     @Override
-    public void softDeleteBySearchStructureId(final Long searchStructureId, final LocalDateTime updatedAt) {
-        searchStructureJpaRepository.softDeleteBySearchStructureId(searchStructureId, updatedAt);
+    public void softDeleteBySearchStructureId(final Long searchStructureId) {
+        SearchStructureEntity searchStructureEntity = searchStructureJpaRepository.findById(searchStructureId)
+            .orElseThrow(() -> new SearchStructureNotFoundException());
+        searchStructureEntity.softDelete();
+        searchStructureJpaRepository.save(searchStructureEntity);
     }
 
     

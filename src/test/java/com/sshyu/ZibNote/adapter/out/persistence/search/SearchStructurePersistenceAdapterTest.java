@@ -1,10 +1,9 @@
 package com.sshyu.zibnote.adapter.out.persistence.search;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.Import;
 import com.sshyu.zibnote.adapter.out.persistence.member.MemberPersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.structure.StructurePersistenceAdapter;
 import com.sshyu.zibnote.domain.member.model.Member;
-import com.sshyu.zibnote.domain.search.exception.NotValidSearchStructureException;
+import com.sshyu.zibnote.domain.search.exception.SearchStructureNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.model.SearchStructure;
 import com.sshyu.zibnote.domain.structure.model.Structure;
@@ -39,98 +38,88 @@ public class SearchStructurePersistenceAdapterTest {
     @Autowired
     MemberPersistenceAdapter memberPersistenceAdapter;
 
-    final String memberName = "sshyu";
-    final LocalDateTime now = LocalDateTime.now();
-    final String searchTitle = "산본역 2025 임장";
-    final String structureName = "목화아파트";
-    final String structureAddress = "경기 군포시 금정동 850";
-    final String searchStructureDescription = "역세권 + 상권! 관심 있음!";
+    
+    // data value
+    final static String MEMBER_NAME = "sshyu";
+    final static String SEARCH_TITLE = "산본역 2025 임장";
+    final static String SEARCH_REGION = "경기도 군포시";
+    final static String SEARCH_DESCRIPTION = "깔끔한 상권 + 여러 초등학교 존재";
+    final static String STTURTURE_NAME = "대림솔거아파트";
+    final static String STRUCTURE_ADDRESS = "경기 군포시 산본동 1146";
+    final static String SEARCH_STRUCTURE_DESCRIPTION = "역세권, 대단지, 초등학교 근처!";
+    // assert valus
+    final static LocalDateTime TIME = LocalDateTime.now();
+    final static LocalDateTime PLUS_TIME = TIME.plusMinutes(1);
+    final static LocalDateTime MINUS_TIME = TIME.minusMinutes(1);
+
+    Long memberId;
+    Long searchId;
+    Long structureId;
+    Long searchStructureId;
     
     @BeforeEach
     void 기초데이터생성() {
 
-        Member member = Member.builder().name(memberName).build();
-        memberPersistenceAdapter.save(member);
-
-        Long memberId = memberPersistenceAdapter.findByName(memberName).getMemberId();
+        memberId = memberPersistenceAdapter.save(
+            Member.builder().name(MEMBER_NAME).build()
+        );
         
-        searchPersistenceAdapter.save(
+        searchId = searchPersistenceAdapter.save(
             Search.builder()
                 .member(Member.builder().memberId(memberId).build())
-                .title(searchTitle)
-                .createdAt(now)
-                .updatedAt(now)
-                .isDeleted(0)
+                .title(SEARCH_TITLE)
+                .region(SEARCH_REGION)
+                .description(SEARCH_DESCRIPTION)
                 .build()
         );
 
-        structurePersistenceAdapter.save(
+        structureId = structurePersistenceAdapter.save(
             Structure.builder()
-                .name(structureName)
-                .numberAddress(structureAddress)
+                .name(STTURTURE_NAME)
+                .numberAddress(STRUCTURE_ADDRESS)
                 .latitude(null)
                 .longitude(null)
                 .builtYear(1992)
-                .createdAt(now)
-                .updatedAt(now)
+                .createdAt(TIME)
+                .updatedAt(TIME)
                 .isDeleted(0)
                 .build()
         );
-    }
 
-    @Test
-    void 비정상데이터_structure없이_저장() {
-
-        // given
-        Long memberId = memberPersistenceAdapter.findByName(memberName).getMemberId();
-        Search search = searchPersistenceAdapter.findAllByMemberId(memberId).get(0);
-
-        // then
-        assertThrows(NotValidSearchStructureException.class, () -> 
-            searchStructurePersistenceAdapter.save(
-                SearchStructure.builder()
-                    .search(search)
-                    .structure(null)
-                    .description(searchStructureDescription)
-                    .createdAt(now)
-                    .updatedAt(now)
-                    .isDeleted(0)
-                    .build()
-            )
-        );
-    }
-
-    @Test
-    void softDelete_테스트() {
-
-        // given
-        Long memberId = memberPersistenceAdapter.findByName(memberName).getMemberId();
-        Search search = searchPersistenceAdapter.findAllByMemberId(memberId).get(0);
-        List<Structure> structures = structurePersistenceAdapter.findByAddressContaining(structureAddress);
-
-        searchStructurePersistenceAdapter.save(
+        searchStructureId = searchStructurePersistenceAdapter.save(
             SearchStructure.builder()
-                .search(search)
-                .structure(structures.get(0))
-                .description(searchStructureDescription)
-                .createdAt(now)
-                .updatedAt(now)
-                .isDeleted(0)
+                .search(Search.builder().searchId(searchId).build())
+                .structure(Structure.builder().structureId(structureId).build())
+                .description(SEARCH_STRUCTURE_DESCRIPTION)
                 .build()
         );
+    }
 
-        SearchStructure searchStructureBeforeDeleting = searchStructurePersistenceAdapter.findAllBySearchId(search.getSearchId()).get(0);
-        assertEquals(0, searchStructureBeforeDeleting.getIsDeleted());
-        
+    @Test
+    void save_새로운데이터_저장() {
+        em.flush();
+        em.clear();
+
+        SearchStructure searchStructure = searchStructurePersistenceAdapter.findBySearchStructureId(searchStructureId);
+
+        assertThat(searchStructure.getDescription()).isEqualTo(SEARCH_STRUCTURE_DESCRIPTION);
+        assertThat(searchStructure.getCreatedAt()).isBefore(PLUS_TIME).isAfter(MINUS_TIME);
+        assertThat(searchStructure.getUpdatedAt()).isBefore(PLUS_TIME).isAfter(MINUS_TIME);
+        assertThat(searchStructure.getIsDeleted()).isEqualTo(0);
+    }
+
+    @Test
+    void softDelete_정상요청() {
         // when
-        searchStructurePersistenceAdapter.softDeleteBySearchStructureId(searchStructureBeforeDeleting.getSearchStructureId(), now);
+        searchStructurePersistenceAdapter.softDeleteBySearchStructureId(searchStructureId);
 
         em.flush();
         em.clear();
 
         // then
-        SearchStructure searchStructureAfterDeleting = searchStructurePersistenceAdapter.findBySearchStructureId(searchStructureBeforeDeleting.getSearchStructureId());
-        assertEquals(1, searchStructureAfterDeleting.getIsDeleted());
+        assertThrows(SearchStructureNotFoundException.class, () -> 
+            searchStructurePersistenceAdapter.findBySearchStructureId(searchStructureId)
+        );
     }
     
 }

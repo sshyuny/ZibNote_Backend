@@ -1,6 +1,5 @@
 package com.sshyu.zibnote.application.service.search;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ public class SearchService implements SearchUseCase {
     @Override
     public void registerSearch(Search search) {
 
-        search.prepareForCreation();
         searchRepository.save(search);
     }
 
@@ -42,7 +40,7 @@ public class SearchService implements SearchUseCase {
 
         selectedSearch.assureOwner(memberId);
 
-        searchRepository.softDeleteBySearchId(selectedSearch.getSearchId(), LocalDateTime.now());
+        searchRepository.softDeleteBySearchId(selectedSearch.getSearchId());
     }
     
     

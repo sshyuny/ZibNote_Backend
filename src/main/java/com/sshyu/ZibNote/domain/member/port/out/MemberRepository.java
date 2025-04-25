@@ -4,7 +4,7 @@ import com.sshyu.zibnote.domain.member.model.Member;
 
 public interface MemberRepository {
     
-    void save(Member member);
+    Long save(Member member);
 
     Member findByMemberId(Long memberId);
 

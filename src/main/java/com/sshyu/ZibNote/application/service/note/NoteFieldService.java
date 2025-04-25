@@ -1,6 +1,5 @@
 package com.sshyu.zibnote.application.service.note;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ public class NoteFieldService implements NoteFieldUseCase {
 
     @Override
     public void registerNoteField(NoteField noteField) {
-        noteField.prepareForCreation();
         noteFieldRepository.save(noteField);
     }
 
@@ -35,7 +33,7 @@ public class NoteFieldService implements NoteFieldUseCase {
         
         selectedNoteField.assureOwner(memberId);
 
-        noteFieldRepository.softDeleteByNoteFieldId(selectedNoteField.getNoteFieldId(), LocalDateTime.now());
+        noteFieldRepository.softDeleteByNoteFieldId(selectedNoteField.getNoteFieldId());
     }
     
 }

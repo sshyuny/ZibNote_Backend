@@ -6,7 +6,9 @@ import com.sshyu.zibnote.domain.structure.model.Structure;
 
 public interface StructureRepository {
 
-    void save(Structure structure);
+    Long save(Structure structure);
+
+    Structure findByStructureId(final Long structureId);
     
     /*
      * 지번주소, 도로명주소 통합 주소 검색
@@ -14,7 +16,7 @@ public interface StructureRepository {
     List<Structure> findByAddressContaining(String keyword);
 
     /*
-     * 건물 이름(아파트 이름)을 이용한 주소 검색
+     * 건물 이름(아파트 이름)을 이용한 검색
      */
     List<Structure> findByNameContaining(String keyword);
 

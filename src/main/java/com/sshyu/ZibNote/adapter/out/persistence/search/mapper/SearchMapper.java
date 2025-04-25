@@ -25,6 +25,8 @@ public class SearchMapper {
 
     public static SearchEntity toEntity(Search domain) {
 
+        if (domain == null) {return SearchEntity.builder().build();}
+
         return SearchEntity.builder()
                     .searchId(domain.getSearchId())
                     .memberEntity(MemberMapper.toEntity(domain.getMember()))

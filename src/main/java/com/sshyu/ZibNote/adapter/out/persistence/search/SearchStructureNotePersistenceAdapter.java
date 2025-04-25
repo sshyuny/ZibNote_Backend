@@ -1,6 +1,5 @@
 package com.sshyu.zibnote.adapter.out.persistence.search;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +24,10 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
     private final SearchStructureNoteJpaRepository searchStructureNoteJpaRepository;
 
     @Override
-    public void save(SearchStructureNote searchStructureNote) {
-        searchStructureNoteJpaRepository.save(SearchStructureNoteMapper.toEntity(searchStructureNote));
+    public Long save(SearchStructureNote searchStructureNote) {
+        SearchStructureNoteEntity entity = SearchStructureNoteMapper.toEntity(searchStructureNote);
+        searchStructureNoteJpaRepository.save(entity);
+        return entity.getSearchStructureNoteId();
     }
 
     @Override
@@ -49,8 +50,11 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
     }
 
     @Override
-    public void softDeleteBySearchStructureNoteId(Long searchStructureNoteId, LocalDateTime updatedAt) {
-        searchStructureNoteJpaRepository.softDeleteBySearchStructureNoteId(searchStructureNoteId, updatedAt);
+    public void softDeleteBySearchStructureNoteId(Long searchStructureNoteId) {
+        SearchStructureNoteEntity entity = searchStructureNoteJpaRepository.findById(searchStructureNoteId)
+            .orElseThrow(() -> new SearchStructureNoteNotFoundException());
+        entity.softDelete();
+        searchStructureNoteJpaRepository.save(entity);
     }
 
 }

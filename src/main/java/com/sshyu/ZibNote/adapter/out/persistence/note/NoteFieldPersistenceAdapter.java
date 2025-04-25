@@ -1,6 +1,5 @@
 package com.sshyu.zibnote.adapter.out.persistence.note;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,22 +25,21 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     private final NoteFieldJpaRepository noteFieldJpaRepository;
 
     @Override
-    public void save(NoteField noteField) {
+    public Long save(NoteField noteField) {
 
         MemberEntity detachedMember = MemberEntity.builder()
             .memberId(noteField.getMember().getMemberId())
             .build();
 
-        noteFieldJpaRepository.save(
+        NoteFieldEntity entity = noteFieldJpaRepository.save(
             NoteFieldEntity.builder()
                 .memberEntity(detachedMember)
                 .name(noteField.getName())
                 .description(noteField.getDescription())
-                .createdAt(noteField.getCreatedAt())
-                .updatedAt(noteField.getUpdatedAt())
-                .isDeleted(noteField.getIsDeleted())
                 .build()
         );
+
+        return entity.getNoteFieldId();
     }
 
     @Override
@@ -50,15 +48,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
         NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findById(noteFieldId)
             .orElseThrow(() -> new NoteFieldNotFoundException());
 
-        return NoteField.builder()
-                .noteFieldId(noteFieldEntity.getNoteFieldId())
-                .member(Member.builder().memberId(noteFieldEntity.getMemberEntity().getMemberId()).build())
-                .name(noteFieldEntity.getName())
-                .description(noteFieldEntity.getDescription())
-                .createdAt(noteFieldEntity.getCreatedAt())
-                .updatedAt(noteFieldEntity.getUpdatedAt())
-                .isDeleted(noteFieldEntity.getIsDeleted())
-                .build();
+        return NoteFieldMapper.toDomain(noteFieldEntity);
     }
 
     @Override
@@ -88,8 +78,11 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     }
 
     @Override
-    public void softDeleteByNoteFieldId(Long noteFieldId, LocalDateTime updatedAt) {
-        noteFieldJpaRepository.softDeleteByNoteFieldId(noteFieldId, updatedAt);
+    public void softDeleteByNoteFieldId(Long noteFieldId) {
+        NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findById(noteFieldId)
+            .orElseThrow(() -> new NoteFieldNotFoundException());
+        noteFieldEntity.softDelete();
+        noteFieldJpaRepository.save(noteFieldEntity);
     }
     
 }

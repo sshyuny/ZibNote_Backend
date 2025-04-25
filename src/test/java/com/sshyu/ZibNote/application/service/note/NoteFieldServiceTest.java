@@ -30,7 +30,6 @@ public class NoteFieldServiceTest {
     final static Long NOTE_FIELD_ID = 237L;
     final static String NOTE_FIELD_NAME = "놀이터";
     final static String NOTE_FIELD_DESCRIPTION = "놀이터 상태";
-    NoteField savedNoteField;
 
     @BeforeEach
     void beforeEach() {
@@ -64,6 +63,6 @@ public class NoteFieldServiceTest {
         // then
         then(noteFieldRepository)
             .should()
-            .softDeleteByNoteFieldId(eq(NOTE_FIELD_ID), any(LocalDateTime.class));
+            .softDeleteByNoteFieldId(eq(NOTE_FIELD_ID));
     }
 }

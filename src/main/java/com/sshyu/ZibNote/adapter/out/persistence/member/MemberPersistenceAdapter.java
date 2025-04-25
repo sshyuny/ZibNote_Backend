@@ -1,12 +1,11 @@
 package com.sshyu.zibnote.adapter.out.persistence.member;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.repository.MemberJpaRepository;
+import com.sshyu.zibnote.adapter.out.persistence.member.mapper.MemberMapper;
 import com.sshyu.zibnote.domain.member.exception.MemberNotFoundException;
 import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.member.port.out.MemberRepository;
@@ -21,17 +20,15 @@ public class MemberPersistenceAdapter implements MemberRepository {
     private final MemberJpaRepository memberJpaRepository;
 
     @Override
-    public void save(Member member) {
-        LocalDateTime now = LocalDateTime.now();
+    public Long save(Member member) {
         
-        memberJpaRepository.save(
-            MemberEntity.builder()
-                .name(member.getName())
-                .createdAt(now)
-                .updatedAt(now)
-                .isDeleted(0)
-                .build()
-        );
+        MemberEntity memberEntity = MemberEntity.builder()
+            .name(member.getName())
+            .build();
+
+        memberJpaRepository.save(memberEntity);
+
+        return memberEntity.getMemberId();
     }
 
     @Override
@@ -40,13 +37,7 @@ public class MemberPersistenceAdapter implements MemberRepository {
         MemberEntity memberEntity = memberJpaRepository.findById(memberId)
             .orElseThrow(() -> new MemberNotFoundException());
 
-        return Member.builder()
-                .memberId(memberEntity.getMemberId())
-                .name(memberEntity.getName())
-                .createdAt(memberEntity.getCreatedAt())
-                .updatedAt(memberEntity.getUpdatedAt())
-                .isDeleted(memberEntity.getIsDeleted())
-                .build();
+        return MemberMapper.toDomain(memberEntity);
     }
 
     @Override
@@ -55,13 +46,7 @@ public class MemberPersistenceAdapter implements MemberRepository {
         MemberEntity memberEntity = memberJpaRepository.findByName(loginId)
             .orElseThrow(() -> new MemberNotFoundException());
 
-        return Member.builder()
-                .memberId(memberEntity.getMemberId())
-                .name(memberEntity.getName())
-                .createdAt(memberEntity.getCreatedAt())
-                .updatedAt(memberEntity.getUpdatedAt())
-                .isDeleted(memberEntity.getIsDeleted())
-                .build();
+        return MemberMapper.toDomain(memberEntity);
     }
 
 }
