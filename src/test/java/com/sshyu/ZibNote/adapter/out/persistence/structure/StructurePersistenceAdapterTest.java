@@ -90,23 +90,6 @@ public class StructurePersistenceAdapterTest {
     }
 
     @Test
-    void findByAddressContaining_주소검색_중복데이터_필터링_테스트() {
-
-        List<Structure> structures = structurePersistenceAdapter.findByAddressContaining("경기 군포시");
-
-        assertThat(structures.size()).isEqualTo(2);
-    }
-
-    @Test
-    void findByAddressContaining_주소검색_테스트() {
-
-        List<Structure> structures = structurePersistenceAdapter.findByAddressContaining("금정동 850");
-        
-        assertThat(structures.size()).isEqualTo(1);
-        assertThat(STRUCTURE_NAME_1).isEqualTo(structures.get(0).getName());
-    }
-
-    @Test
     void findByNameContaining_이름검색_테스트() {
         List<Structure> structures1 = structurePersistenceAdapter.findByNameContaining("아파트");
         List<Structure> structures2 = structurePersistenceAdapter.findByNameContaining("대림솔거");

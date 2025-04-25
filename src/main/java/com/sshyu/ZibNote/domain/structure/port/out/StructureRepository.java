@@ -10,10 +10,9 @@ public interface StructureRepository {
 
     Structure findByStructureId(final Long structureId);
     
-    /*
-     * 지번주소, 도로명주소 통합 주소 검색
-     */
-    List<Structure> findByAddressContaining(String keyword);
+    List<Structure> findByRoadAddressContaining(String keyword);
+
+    List<Structure> findByNumberAddressContaining(String keyword);
 
     /*
      * 건물 이름(아파트 이름)을 이용한 검색
