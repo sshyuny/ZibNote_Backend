@@ -1,0 +1,52 @@
+package com.sshyu.zibnote.adapter.in.web.structure;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.structure.dto.StructureResDto;
+import com.sshyu.zibnote.adapter.in.web.structure.mapper.StructureDtoMapper;
+import com.sshyu.zibnote.domain.structure.port.in.StructureUseCase;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/structure")
+@RequiredArgsConstructor
+public class StructureController {
+
+    @Autowired
+    StructureUseCase structureUseCase;
+    
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<List<StructureResDto>>> listAddress(@RequestParam(required = false) String address, 
+            @RequestParam(required = false) String name) {
+    
+        if (address != null && !address.isEmpty()) {
+            List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
+                .map(domain -> StructureDtoMapper.toResDto(domain))
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
+        }
+
+        if (name != null && !name.isEmpty()) {
+            List<StructureResDto> resDtos = structureUseCase.listStructuresByName(name).stream()
+                .map(domain -> StructureDtoMapper.toResDto(domain))
+                .collect(Collectors.toList());
+            return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
+        }
+
+        List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
+            .map(domain -> StructureDtoMapper.toResDto(domain))
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
+    }
+
+}

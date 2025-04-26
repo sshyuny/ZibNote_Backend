@@ -69,9 +69,9 @@ public class StructureServiceTest {
     @Test
     void listStructuresByAddress_정상_조회() {
 
-        given(structureRepository.findByNumberAddressContaining("경기 군포시 산본동"))
+        given(structureRepository.findTop10ByNumberAddressContaining("경기 군포시 산본동"))
             .willReturn(structuresByNumberAdrs);
-        given(structureRepository.findByRoadAddressContaining("경기 군포시 산본동"))
+        given(structureRepository.findTop10ByRoadAddressContaining("경기 군포시 산본동"))
             .willReturn(structuresByRoadAdrs);
         
         List<Structure> structures = structureService.listStructuresByAddress("경기 군포시 산본동");
@@ -82,9 +82,9 @@ public class StructureServiceTest {
     @Test
     void listStructuresByAddress_중복데이터_필터링_확인() {
 
-        given(structureRepository.findByNumberAddressContaining("경기 군포시"))
+        given(structureRepository.findTop10ByNumberAddressContaining("경기 군포시"))
             .willReturn(structuresWithSameDataByNumberAdrs);
-        given(structureRepository.findByRoadAddressContaining("경기 군포시"))
+        given(structureRepository.findTop10ByRoadAddressContaining("경기 군포시"))
             .willReturn(structuresWithSameDataByRoadAdrs);
         
         List<Structure> structures = structureService.listStructuresByAddress("경기 군포시");

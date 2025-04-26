@@ -36,23 +36,23 @@ public class StructurePersistenceAdapter implements StructureRepository {
     }
 
     @Override
-    public List<Structure> findByNumberAddressContaining(String keyword) {
-        return structureJpaRepository.findByNumberAddressContaining(keyword).stream()
+    public List<Structure> findTop10ByNumberAddressContaining(String keyword) {
+        return structureJpaRepository.findTop10ByNumberAddressContaining(keyword).stream()
             .map(entity -> StructureMapper.toDomain(entity))
             .collect(Collectors.toList());
     }
 
     @Override
-    public List<Structure> findByRoadAddressContaining(String keyword) {
-        return structureJpaRepository.findByRoadAddressContaining(keyword).stream()
+    public List<Structure> findTop10ByRoadAddressContaining(String keyword) {
+        return structureJpaRepository.findTop10ByRoadAddressContaining(keyword).stream()
             .map(entity -> StructureMapper.toDomain(entity))
             .collect(Collectors.toList());
     }
 
     @Override
-    public List<Structure> findByNameContaining(final String keyword) {
+    public List<Structure> findTop10ByNameContaining(final String keyword) {
 
-        return structureJpaRepository.findByNameContaining(keyword).stream()
+        return structureJpaRepository.findTop10ByNameContaining(keyword).stream()
             .map(entity -> StructureMapper.toDomain(entity))
             .collect(Collectors.toList());
     }

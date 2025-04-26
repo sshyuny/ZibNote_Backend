@@ -91,8 +91,8 @@ public class StructurePersistenceAdapterTest {
 
     @Test
     void findByNameContaining_이름검색_테스트() {
-        List<Structure> structures1 = structurePersistenceAdapter.findByNameContaining("아파트");
-        List<Structure> structures2 = structurePersistenceAdapter.findByNameContaining("대림솔거");
+        List<Structure> structures1 = structurePersistenceAdapter.findTop10ByNameContaining("아파트");
+        List<Structure> structures2 = structurePersistenceAdapter.findTop10ByNameContaining("대림솔거");
 
         assertThat(structures1.size()).isEqualTo(2);
         assertThat(structures2.get(0).getName()).isEqualTo(STRUCTURE_NAME_2);

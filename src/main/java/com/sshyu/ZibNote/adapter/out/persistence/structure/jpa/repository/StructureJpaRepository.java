@@ -8,10 +8,10 @@ import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureE
 
 public interface StructureJpaRepository extends JpaRepository<StructureEntity, Long> {
     
-    List<StructureEntity> findByRoadAddressContaining(String keyword);
+    List<StructureEntity> findTop10ByRoadAddressContaining(String keyword);
 
-    List<StructureEntity> findByNumberAddressContaining(String keyword);
+    List<StructureEntity> findTop10ByNumberAddressContaining(String keyword);
 
-    List<StructureEntity> findByNameContaining(String keyword);
+    List<StructureEntity> findTop10ByNameContaining(String keyword);
     
 }

@@ -22,11 +22,11 @@ public class StructureService implements StructureUseCase {
     @Override
     public List<Structure> listStructuresByAddress(String address) {
 
-        List<Structure> domainsByNumberAddress = structureRepository.findByNumberAddressContaining(address);
+        List<Structure> domainsByNumberAddress = structureRepository.findTop10ByNumberAddressContaining(address);
 
         if (domainsByNumberAddress.size() > 10) { return domainsByNumberAddress; }
 
-        List<Structure> domainsByRoadAddress = structureRepository.findByRoadAddressContaining(address);
+        List<Structure> domainsByRoadAddress = structureRepository.findTop10ByRoadAddressContaining(address);
 
         Map<Long, Structure> domains = new HashMap<>();
         Stream.concat(domainsByNumberAddress.stream(), domainsByRoadAddress.stream())
@@ -37,7 +37,7 @@ public class StructureService implements StructureUseCase {
 
     @Override
     public List<Structure> listStructuresByName(String name) {
-        return structureRepository.findByNameContaining(name);
+        return structureRepository.findTop10ByNameContaining(name);
     }
     
     

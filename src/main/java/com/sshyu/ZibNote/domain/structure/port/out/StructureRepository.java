@@ -10,13 +10,19 @@ public interface StructureRepository {
 
     Structure findByStructureId(final Long structureId);
     
-    List<Structure> findByRoadAddressContaining(String keyword);
+    /**
+     * 도로명주소를 이용한 검색
+     */
+    List<Structure> findTop10ByRoadAddressContaining(String keyword);
 
-    List<Structure> findByNumberAddressContaining(String keyword);
+    /**
+     * 지번주소를 이용한 검색
+     */
+    List<Structure> findTop10ByNumberAddressContaining(String keyword);
 
     /*
      * 건물 이름(아파트 이름)을 이용한 검색
      */
-    List<Structure> findByNameContaining(String keyword);
+    List<Structure> findTop10ByNameContaining(String keyword);
 
 }
