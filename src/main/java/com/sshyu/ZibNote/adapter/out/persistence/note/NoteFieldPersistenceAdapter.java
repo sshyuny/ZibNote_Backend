@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.note.jpa.entity.NoteFieldEntity;
 import com.sshyu.zibnote.adapter.out.persistence.note.jpa.repository.NoteFieldJpaRepository;
-import com.sshyu.zibnote.adapter.out.persistence.note.mapper.NoteFieldMapper;
+import com.sshyu.zibnote.adapter.out.persistence.note.mapper.NoteFieldEntityMapper;
 import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.note.exception.NoteFieldNotFoundException;
 import com.sshyu.zibnote.domain.note.model.NoteField;
@@ -48,7 +48,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
         NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findById(noteFieldId)
             .orElseThrow(() -> new NoteFieldNotFoundException());
 
-        return NoteFieldMapper.toDomain(noteFieldEntity);
+        return NoteFieldEntityMapper.toDomain(noteFieldEntity);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     public List<NoteField> findAllByMember(Long memberId) {
         return noteFieldJpaRepository.findAllByMemberEntityAndIsDeleted(MemberEntity.builder().memberId(memberId).build(), 0)
             .stream()
-            .map(entity -> NoteFieldMapper.toDomain(entity))
+            .map(entity -> NoteFieldEntityMapper.toDomain(entity))
             .collect(Collectors.toList());
     }
 

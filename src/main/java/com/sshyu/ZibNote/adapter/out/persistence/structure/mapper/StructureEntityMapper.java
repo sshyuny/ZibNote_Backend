@@ -3,7 +3,7 @@ package com.sshyu.zibnote.adapter.out.persistence.structure.mapper;
 import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureEntity;
 import com.sshyu.zibnote.domain.structure.model.Structure;
 
-public class StructureMapper {
+public class StructureEntityMapper {
     
     public static Structure toDomain(StructureEntity entity) {
         return Structure.builder()

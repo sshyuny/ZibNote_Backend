@@ -3,7 +3,7 @@ package com.sshyu.zibnote.adapter.out.persistence.member.mapper;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.domain.member.model.Member;
 
-public class MemberMapper {
+public class MemberEntityMapper {
     
     public static Member toDomain(MemberEntity entity) {
 

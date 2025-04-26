@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.repository.MemberJpaRepository;
-import com.sshyu.zibnote.adapter.out.persistence.member.mapper.MemberMapper;
+import com.sshyu.zibnote.adapter.out.persistence.member.mapper.MemberEntityMapper;
 import com.sshyu.zibnote.domain.member.exception.MemberNotFoundException;
 import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.member.port.out.MemberRepository;
@@ -37,7 +37,7 @@ public class MemberPersistenceAdapter implements MemberRepository {
         MemberEntity memberEntity = memberJpaRepository.findById(memberId)
             .orElseThrow(() -> new MemberNotFoundException());
 
-        return MemberMapper.toDomain(memberEntity);
+        return MemberEntityMapper.toDomain(memberEntity);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MemberPersistenceAdapter implements MemberRepository {
         MemberEntity memberEntity = memberJpaRepository.findByName(loginId)
             .orElseThrow(() -> new MemberNotFoundException());
 
-        return MemberMapper.toDomain(memberEntity);
+        return MemberEntityMapper.toDomain(memberEntity);
     }
 
 }

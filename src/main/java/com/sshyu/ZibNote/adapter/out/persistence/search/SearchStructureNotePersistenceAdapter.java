@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity.SearchStructureEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity.SearchStructureNoteEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.repository.SearchStructureNoteJpaRepository;
-import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchStructureNoteMapper;
+import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchStructureNoteEntityMapper;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 import com.sshyu.zibnote.domain.search.port.out.SearchStructureNoteRepository;
@@ -25,7 +25,7 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
 
     @Override
     public Long save(SearchStructureNote searchStructureNote) {
-        SearchStructureNoteEntity entity = SearchStructureNoteMapper.toEntity(searchStructureNote);
+        SearchStructureNoteEntity entity = SearchStructureNoteEntityMapper.toEntity(searchStructureNote);
         searchStructureNoteJpaRepository.save(entity);
         return entity.getSearchStructureNoteId();
     }
@@ -36,7 +36,7 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
         SearchStructureNoteEntity searchStructureEntity = searchStructureNoteJpaRepository.findById(searchStructureNoteId)
             .orElseThrow(() -> new SearchStructureNoteNotFoundException());
         
-        return SearchStructureNoteMapper.toDomain(searchStructureEntity);
+        return SearchStructureNoteEntityMapper.toDomain(searchStructureEntity);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
         final SearchStructureEntity searchStructureRef = SearchStructureEntity.builder().searchStructureId(searchStructureId).build();
 
         return searchStructureNoteJpaRepository.findAllBySearchStructureEntity(searchStructureRef).stream()
-                    .map(entity -> SearchStructureNoteMapper.toDomain(entity))
+                    .map(entity -> SearchStructureNoteEntityMapper.toDomain(entity))
                     .collect(Collectors.toList());
     }
 

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity.SearchEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.repository.SearchJpaRepository;
-import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchMapper;
+import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchEntityMapper;
 import com.sshyu.zibnote.domain.search.exception.SearchNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.port.out.SearchRepository;
@@ -47,7 +47,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
         SearchEntity searchEntity = searchJpaRepository.findById(searchId)
             .orElseThrow(() -> new SearchNotFoundException());
 
-        return SearchMapper.toDomain(searchEntity);
+        return SearchEntityMapper.toDomain(searchEntity);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
             .build();
 
         return searchJpaRepository.findAllByMemberEntityAndIsDeleted(memberRef, 0).stream()
-                    .map(entity -> SearchMapper.toDomain(entity))
+                    .map(entity -> SearchEntityMapper.toDomain(entity))
                     .collect(Collectors.toList());
     }
 

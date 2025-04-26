@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity.SearchEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity.SearchStructureEntity;
 import com.sshyu.zibnote.adapter.out.persistence.search.jpa.repository.SearchStructureJpaRepository;
-import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchMapper;
-import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchStructureMapper;
+import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchEntityMapper;
+import com.sshyu.zibnote.adapter.out.persistence.search.mapper.SearchStructureEntityMapper;
 import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureEntity;
-import com.sshyu.zibnote.adapter.out.persistence.structure.mapper.StructureMapper;
+import com.sshyu.zibnote.adapter.out.persistence.structure.mapper.StructureEntityMapper;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNotFoundException;
 import com.sshyu.zibnote.domain.search.model.SearchStructure;
 import com.sshyu.zibnote.domain.search.port.out.SearchStructureRepository;
@@ -54,8 +54,8 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
 
         return SearchStructure.builder()
                     .searchStructureId(searchStructureEntity.getSearchStructureId())
-                    .search(SearchMapper.toDomain(searchStructureEntity.getSearchEntity()))
-                    .structure(StructureMapper.toDomain(searchStructureEntity.getStructureEntity()))
+                    .search(SearchEntityMapper.toDomain(searchStructureEntity.getSearchEntity()))
+                    .structure(StructureEntityMapper.toDomain(searchStructureEntity.getStructureEntity()))
                     .description(searchStructureEntity.getDescription())
                     .createdAt(searchStructureEntity.getCreatedAt())
                     .updatedAt(searchStructureEntity.getUpdatedAt())
@@ -69,7 +69,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
         SearchEntity searchRef = SearchEntity.builder().searchId(searchId).build();
 
         return searchStructureJpaRepository.findAllBySearchEntity(searchRef).stream()
-                    .map(result -> SearchStructureMapper.toDomain(result))
+                    .map(result -> SearchStructureEntityMapper.toDomain(result))
                     .collect(Collectors.toList());
     }
 
