@@ -19,7 +19,9 @@ public class SearchStructure extends BaseFields {
     private String description;
 
     public void validate() {
-        if  (this.search == null || this.structure == null) { throw new NotValidSearchStructureException(); }
+        if  (this.search.getSearchId() == null || this.structure.getStructureId() == null) {
+            throw new NotValidSearchStructureException();
+        }
     }
 
 }

@@ -1,0 +1,85 @@
+package com.sshyu.zibnote.adapter.in.web.search;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
+import com.sshyu.zibnote.application.service.auth.SessionConst;
+import com.sshyu.zibnote.application.service.auth.SessionMember;
+import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
+import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
+
+@WebMvcTest(SearchStructureController.class)
+public class SearchStructureControllerTest {
+    
+    @Autowired
+    MockMvc mockMvc;
+    @MockitoBean
+    SearchStructureUseCase searchStructureUseCase;
+    @MockitoBean
+    AuthUseCase authUseCase;
+
+    MockHttpSession session = new MockHttpSession();
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // web
+    final static String PATH = "/api/search-structure";
+    // data value
+    final static Long LOGINED_MEMBER_ID = 2345L;
+
+
+    @BeforeEach
+    void beforeEach() {
+
+        given(authUseCase.getMemberId())
+            .willReturn(LOGINED_MEMBER_ID);
+
+        session.setAttribute(SessionConst.LOGIN_MEMBER, SessionMember.builder()
+            .memberId(1L)
+            .name("sshyu")
+            .build()
+        );
+    }
+
+    @Test
+    void post_정상요청() throws Exception {
+
+        // given
+        SearchStructureReqDto reqDto = SearchStructureReqDto.builder()
+            .searchId(LOGINED_MEMBER_ID)
+            .structureId(33L)
+            .description("test")
+            .build();
+
+        String json = objectMapper.writeValueAsString(reqDto);
+
+        // when
+        MvcResult response = mockMvc.perform(post(PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .session(session))
+            .andExpect(status().isOk())
+            .andReturn();
+        String contentAsString = response.getResponse().getContentAsString();
+        ApiResponse<String> value = objectMapper.readValue(contentAsString, new TypeReference<ApiResponse<String>>() {});
+
+        // then
+        assertThat(value.getMessage()).isEqualTo("임장 건물 추가 성공!");
+        assertThat(value.getCode()).isEqualTo("success");
+    }
+}
