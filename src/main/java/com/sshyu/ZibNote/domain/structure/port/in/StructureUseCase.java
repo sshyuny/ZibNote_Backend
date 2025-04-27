@@ -5,6 +5,8 @@ import java.util.List;
 import com.sshyu.zibnote.domain.structure.model.Structure;
 
 public interface StructureUseCase {
+
+    Structure getStructure(Long structureId);
     
     List<Structure> listStructuresByName(String name);
 

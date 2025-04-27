@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.adapter.out.persistence.structure;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import com.sshyu.zibnote.domain.structure.exception.StructureNotFoundException;
 import com.sshyu.zibnote.domain.structure.model.Structure;
 
 import jakarta.persistence.EntityManager;
@@ -41,6 +43,7 @@ public class StructurePersistenceAdapterTest {
     final static LocalDateTime TIME = LocalDateTime.now();
     final static LocalDateTime PLUS_TIME = TIME.plusMinutes(1);
     final static LocalDateTime MINUS_TIME = TIME.minusMinutes(1);
+    final static Long NOT_EXIST_ID = 2345554L;
 
     Long structureId1;
     Long structureId2;
@@ -96,6 +99,14 @@ public class StructurePersistenceAdapterTest {
 
         assertThat(structures1.size()).isEqualTo(2);
         assertThat(structures2.get(0).getName()).isEqualTo(STRUCTURE_NAME_2);
+    }
+
+    @Test
+    void findByStructureId_존재하지_않는_데이터_조회() {
+
+        assertThrows(StructureNotFoundException.class, () -> 
+            structurePersistenceAdapter.findByStructureId(NOT_EXIST_ID)
+        );
     }
     
 }

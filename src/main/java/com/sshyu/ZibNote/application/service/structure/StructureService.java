@@ -20,6 +20,11 @@ public class StructureService implements StructureUseCase {
     StructureRepository structureRepository;
 
     @Override
+    public Structure getStructure(Long structureId) {
+        return structureRepository.findByStructureId(structureId);
+    }
+
+    @Override
     public List<Structure> listStructuresByAddress(String address) {
 
         List<Structure> domainsByNumberAddress = structureRepository.findTop10ByNumberAddressContaining(address);
