@@ -12,7 +12,9 @@ public class SearchStructureDtoMapper {
         return SearchStructureResDto.builder()
                     .searchStructureId(domain.getSearchStructureId())
                     .searchId(domain.getSearch().getSearchId())
+                    .searchTitle(domain.getSearch().getTitle())
                     .structureId(domain.getStructure().getStructureId())
+                    .structureName(domain.getStructure().getName())
                     .description(domain.getDescription())
                     .build();
     }

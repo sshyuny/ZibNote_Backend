@@ -30,11 +30,11 @@ public class SearchStructureEntity extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long searchStructureId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "search_id", nullable = false)
     private SearchEntity searchEntity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "structure_id", nullable = false)
     private StructureEntity structureEntity;
 

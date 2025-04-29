@@ -12,7 +12,11 @@ public class SearchStructureResDto {
 
     private Long searchId;
 
+    private String searchTitle;
+
     private Long structureId;
+
+    private String structureName;
 
     private String description;
     
