@@ -7,18 +7,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureResDto;
 import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchStructureDtoMapper;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/search-structure")
@@ -41,10 +42,10 @@ public class SearchStructureController {
     }
 
     @DeleteMapping
-    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody Long searchStructureId) {
+    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody SearchStructureDeleteReqDto reqDto) {
 
         Long loginedMemberId = authUseCase.getMemberId();
-        searchStructureUseCase.softDeleteSearchStructure(searchStructureId, loginedMemberId);
+        searchStructureUseCase.softDeleteSearchStructure(reqDto.getSearchStructureId(), loginedMemberId);
 
         return ResponseEntity.ok(ApiResponse.successWithMessage("임장 건물 삭제 성공!"));
     }
