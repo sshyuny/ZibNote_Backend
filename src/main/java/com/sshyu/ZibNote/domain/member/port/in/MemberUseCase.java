@@ -7,5 +7,7 @@ public interface MemberUseCase {
     void register(Member member);
 
     Member findByName(String name);
+
+    Member getMember(Long memberId);
     
 }

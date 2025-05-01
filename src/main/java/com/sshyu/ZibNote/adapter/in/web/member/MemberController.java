@@ -54,7 +54,7 @@ public class MemberController {
     @GetMapping
     public ResponseEntity<ApiResponse<String>> get() {
 
-        String memberName = authUseCase.getSessionMember().getName();
+        String memberName = memberUseCase.getMember(authUseCase.getMemberId()).getName();
         return ResponseEntity.ok(ApiResponse.successWithData(memberName));
     }
 
