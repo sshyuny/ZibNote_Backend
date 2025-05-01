@@ -24,4 +24,9 @@ public class MemberService implements MemberUseCase {
         return memberRepository.findByName(name);
     }
 
+    @Override
+    public Member getMember(Long memberId) {
+        return memberRepository.findByMemberId(memberId);
+    }
+
 }

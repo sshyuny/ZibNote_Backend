@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class AuthService implements AuthUseCase {
+public class SessionAuthService implements AuthUseCase {
 
     private final ObjectProvider<HttpSession> httpSessionProvider;
     private final MemberUseCase memberUseCase;
@@ -26,7 +26,6 @@ public class AuthService implements AuthUseCase {
         
         httpSession.setAttribute(SessionConst.LOGIN_MEMBER, SessionMember.builder()
             .memberId(member.getMemberId())
-            .name(member.getName())
             .build()
         );
     }
@@ -36,13 +35,6 @@ public class AuthService implements AuthUseCase {
         
         HttpSession httpSession = httpSessionProvider.getObject();
         httpSession.invalidate();
-    }
-
-    @Override
-    public SessionMember getSessionMember() {
-
-        HttpSession httpSession = httpSessionProvider.getObject();
-        return (SessionMember) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
     }
 
     @Override
