@@ -1,8 +1,10 @@
 package com.sshyu.zibnote.domain.auth.port.in;
 
+import com.sshyu.zibnote.domain.auth.model.Token;
+
 public interface AuthUseCase {
     
-    void login(String name);
+    Token login(String name);
 
     void logout();
 

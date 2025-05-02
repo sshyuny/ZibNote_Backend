@@ -7,6 +7,5 @@ import lombok.Getter;
 public class SessionMember {
     
     private final Long memberId;
-    private final String name;
 
 }

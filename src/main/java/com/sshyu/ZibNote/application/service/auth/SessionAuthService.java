@@ -3,6 +3,7 @@ package com.sshyu.zibnote.application.service.auth;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
+import com.sshyu.zibnote.domain.auth.model.Token;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.member.port.in.MemberUseCase;
@@ -18,7 +19,7 @@ public class SessionAuthService implements AuthUseCase {
     private final MemberUseCase memberUseCase;
 
     @Override
-    public void login(String name) {
+    public Token login(String name) {
 
         Member member = memberUseCase.findByName(name);
         
@@ -28,6 +29,8 @@ public class SessionAuthService implements AuthUseCase {
             .memberId(member.getMemberId())
             .build()
         );
+
+        return Token.builder().build();
     }
 
     @Override
