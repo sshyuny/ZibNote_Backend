@@ -1,25 +1,29 @@
 package com.sshyu.zibnote.configure.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.sshyu.zibnote.configure.interceptor.LoginCheckInterceptor;
+import com.sshyu.zibnote.application.service.auth.JwtUtil;
+import com.sshyu.zibnote.configure.filter.JwtAuthFilter;
 
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    LoginCheckInterceptor loginCheckInterceptor;
+    @Bean
+    public JwtAuthFilter jwtAuthFilter(JwtUtil jwtUtil) {
+        return new JwtAuthFilter(jwtUtil);
+    }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginCheckInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns("/api/member/login", "/api/member/login/*", "/api/member/register");
+    @Bean
+    public FilterRegistrationBean<JwtAuthFilter> jwtFilter(JwtUtil jwtUtil) {
+        FilterRegistrationBean<JwtAuthFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(jwtAuthFilter(jwtUtil));
+        registrationBean.addUrlPatterns("/api/*");
+        return registrationBean;
     }
 
     @Override
