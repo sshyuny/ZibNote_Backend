@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -19,8 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
-import com.sshyu.zibnote.application.service.auth.SessionConst;
-import com.sshyu.zibnote.application.service.auth.SessionMember;
+import com.sshyu.zibnote.application.service.auth.JwtUtil;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
 
@@ -33,12 +33,15 @@ public class SearchStructureControllerTest {
     SearchStructureUseCase searchStructureUseCase;
     @MockitoBean
     AuthUseCase authUseCase;
+    @MockitoBean
+    JwtUtil jwtUtil;
 
     MockHttpSession session = new MockHttpSession();
     ObjectMapper objectMapper = new ObjectMapper();
 
     // web
     final static String PATH = "/api/search-structure";
+    final static String JWT_TOKEN = "dummy.jwt.token";
     // data value
     final static Long LOGINED_MEMBER_ID = 2345L;
 
@@ -48,12 +51,8 @@ public class SearchStructureControllerTest {
 
         given(authUseCase.getMemberId())
             .willReturn(LOGINED_MEMBER_ID);
-
-        session.setAttribute(SessionConst.LOGIN_MEMBER, SessionMember.builder()
-            .memberId(1L)
-            .name("sshyu")
-            .build()
-        );
+        given(jwtUtil.validateToken(JWT_TOKEN))
+            .willReturn(true);
     }
 
     @Test
@@ -67,12 +66,13 @@ public class SearchStructureControllerTest {
             .build();
 
         String json = objectMapper.writeValueAsString(reqDto);
-
+        
         // when
         MvcResult response = mockMvc.perform(post(PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)
-                .session(session))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
+            )
             .andExpect(status().isOk())
             .andReturn();
         String contentAsString = response.getResponse().getContentAsString();

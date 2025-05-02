@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,8 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.structure.dto.StructureResDto;
-import com.sshyu.zibnote.application.service.auth.SessionConst;
-import com.sshyu.zibnote.application.service.auth.SessionMember;
+import com.sshyu.zibnote.application.service.auth.JwtUtil;
 import com.sshyu.zibnote.domain.structure.model.Structure;
 import com.sshyu.zibnote.domain.structure.port.in.StructureUseCase;
 
@@ -34,9 +34,13 @@ public class StructureControllerTest {
     MockMvc mockMvc;
     @MockitoBean
     StructureUseCase structureUseCase;
+    @MockitoBean
+    JwtUtil jwtUtil;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
+    // web
+    final static String JWT_TOKEN = "dummy.jwt.token";
     // data value
     final static Long STRUCTURE_ID_1 = 23L;
     final static String STRUCTURE_NAME_1 = "목화아파트";
@@ -63,11 +67,7 @@ public class StructureControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        session.setAttribute(SessionConst.LOGIN_MEMBER, SessionMember.builder()
-            .memberId(1L)
-            .name("sshyu")
-            .build()
-        );
+        given(jwtUtil.validateToken(JWT_TOKEN)).willReturn(true);
     }
 
     @Test
@@ -83,7 +83,8 @@ public class StructureControllerTest {
 
         // when
         MvcResult response = mockMvc.perform(get("/api/structure/list?address=경기")
-                .session(session))
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
+            )
             .andExpect(status().isOk())
             .andReturn();
 
