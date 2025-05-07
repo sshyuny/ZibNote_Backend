@@ -26,7 +26,7 @@ public class MemberController {
     private final AuthUseCase authUseCase;
     
     @PostMapping("/pass/api/login")
-    public ResponseEntity<ApiResponse<Void>> login(HttpSession httpSession, @RequestBody LoginReqDto loginReqDto) {
+    public ResponseEntity<ApiResponse<String>> login(HttpSession httpSession, @RequestBody LoginReqDto loginReqDto) {
 
         Token token = authUseCase.login(loginReqDto.getName());
         log.info("로그인 성공! " + loginReqDto.getName());
@@ -34,7 +34,7 @@ public class MemberController {
         return ResponseEntity
                     .ok()
                     .header("Authorization", "Bearer " + token.getToken())
-                    .body(ApiResponse.codeAndMessage("login success", "로그인 성공!"));
+                    .body(ApiResponse.successWithDataAndMessage(token.getToken(), "로그인 성공!"));
     }
 
     @PostMapping("/api/logout")
