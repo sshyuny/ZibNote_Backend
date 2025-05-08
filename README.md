@@ -61,7 +61,11 @@ Hexagonal Architecture를 참고하여 외부 변경에 유연하게 대처할 �
 - 환경변수 전달 "SPRING_PROFILES_ACTIVE": "default"
 - 프로젝트 실행
 
+## API
+- [Swagger 사용](http://localhost:8080/swagger-ui.html)
+
 ## 고민했던 점
-- [01. 스키마 구성시 고민했던 점](docs/develop/01_Schema.md)
-- [02. JPA 사용시 고민했던 점 및 리팩토링](docs/develop/02_Refactoring_in_JPA.md)
-- [03. 아키텍처 구성시 고민했던 점 및 리팩토링](docs/develop/03_Refactoring_in_Architecture.md)
+- [01. 스키마 구성시 고민점과 해결 방법](docs/develop/01_Schema.md)
+- [02. JPA 사용 방법 변경 및 리팩토링](docs/develop/02_Refactoring_in_JPA.md)
+- [03. 아키텍처 구성시 고민점 및 리팩토링](docs/develop/03_Refactoring_in_Architecture.md)
+- [04. 로그인 인증 및 상태 유지 방식 변경 기록](docs/develop/04_Auth.md)
