@@ -12,4 +12,6 @@ public interface SearchStructureUseCase {
 
     void softDeleteSearchStructure(Long searchStructureId, Long loginedMemberId);
 
+    SearchStructure assertSearchStructureOwner(Long searchStructureId, Long loginedMemberId);
+
 }

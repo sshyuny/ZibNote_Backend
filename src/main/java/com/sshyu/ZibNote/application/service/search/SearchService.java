@@ -24,6 +24,7 @@ public class SearchService implements SearchUseCase {
 
     @Override
     public Search getSearch(Long searchId) {
+
         return searchRepository.findBySearchId(searchId);
     }
 
@@ -36,12 +37,18 @@ public class SearchService implements SearchUseCase {
     @Override
     public void softDeleteSearch(Long searchId, Long memberId) {
 
-        Search selectedSearch = searchRepository.findBySearchId(searchId);
+        assertSearchOwner(searchId, memberId);
 
-        selectedSearch.assureOwner(memberId);
-
-        searchRepository.softDeleteBySearchId(selectedSearch.getSearchId());
+        searchRepository.softDeleteBySearchId(searchId);
     }
-    
+
+    @Override
+    public Search assertSearchOwner(Long searchId, Long memberId) {
+
+        Search search = searchRepository.findBySearchId(searchId);
+        search.assureOwner(memberId);
+
+        return search;
+    }
     
 }

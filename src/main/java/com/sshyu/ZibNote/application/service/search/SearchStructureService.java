@@ -30,6 +30,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      *   <li>도메인 검증: SearchStructure 도메인 검증</li>
      *   <li>데이터 주인 확인: Search 주인이 로그인된 Member와 동일한지 확인</li>
      *   <li>데이터 존재 확인: Structure 데이터 존재하는지 확인</li>
+     *   <li>데이터 생성: SearchStructure 생성</li>
      * </ol>
      * 
      * SearchStructure를 생성한다.
@@ -55,6 +56,7 @@ public class SearchStructureService implements SearchStructureUseCase {
     /**
      * <ol>
      *   <li>데이터 주인 확인: Search 주인이 로그인된 Member와 동일한지 확인</li>
+     *   <li>데이터 조회: Search로 등록된 Structure 조회하여 반환</li>
      * </ol>
      * 
      * Search로 등록된 Structure들을 반환한다.
@@ -73,19 +75,38 @@ public class SearchStructureService implements SearchStructureUseCase {
     /**
      * <ol>
      *   <li>데이터 주인 확인: Search 주인이 로그인된 Member와 동일한지 확인</li>
+     *   <li>데이터 삭제: SearchStructure 삭제</li>
      * </ol>
      * 
-     * 데이터를 삭제한다.
+     * SearchStructure를 삭제한다.
      * 
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
     public void softDeleteSearchStructure(Long searchStructureId, Long loginedMemberId) {
 
-        SearchStructure searchStructure = searchStructureRepository.findBySearchStructureId(searchStructureId);
-        searchStructure.getSearch().assureOwner(loginedMemberId);
+        assertSearchStructureOwner(searchStructureId, loginedMemberId);
 
         searchStructureRepository.softDeleteBySearchStructureId(searchStructureId);
+    }
+
+    /**
+     * <ol>
+     *   <li>데이터 조회: SearchStructure와 그 참조 데이터인 Search 조회</li>
+     *   <li>데이터 주인 확인: Search 주인이 로그인된 Member와 동일한지 확인</li>
+     * </ol>
+     * 
+     * SearchStructure 주인이 로그인된 계정과 동일한지 검증한다.
+     * 
+     * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
+     */
+    @Override
+    public SearchStructure assertSearchStructureOwner(Long searchStructureId, Long loginedMemberId) {
+
+        SearchStructure searchStructure = searchStructureRepository.findBySearchStructureId(searchStructureId);
+        searchUseCase.assertSearchOwner(searchStructure.getSearch().getSearchId(), loginedMemberId);
+
+        return searchStructure;
     }
     
 }
