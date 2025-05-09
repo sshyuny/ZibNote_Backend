@@ -94,6 +94,8 @@ public class SearchStructureServiceTest {
 
         given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_OF_A))
             .willReturn(searchStructureOfMemberA);
+        given(searchUseCase.assertSearchOwner(SEARCH_ID_OF_A, MEMBER_B))
+            .willThrow(UnauthorizedAccessException.class);
 
         assertThrows(UnauthorizedAccessException.class, () -> 
             searchStructureService.softDeleteSearchStructure(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B)

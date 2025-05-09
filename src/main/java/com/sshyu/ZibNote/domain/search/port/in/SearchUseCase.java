@@ -14,4 +14,6 @@ public interface SearchUseCase {
 
     void softDeleteSearch(Long searchId, Long memberId);
 
+    Search assertSearchOwner(Long searchId, Long memberId);
+
 }
