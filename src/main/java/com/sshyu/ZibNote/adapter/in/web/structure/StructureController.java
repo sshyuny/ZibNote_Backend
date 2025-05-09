@@ -26,8 +26,8 @@ public class StructureController {
     StructureUseCase structureUseCase;
     
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<StructureResDto>>> listAddress(@RequestParam(required = false) String address, 
-            @RequestParam(required = false) String name) {
+    public ResponseEntity<ApiResponse<List<StructureResDto>>> listAddress(@RequestParam(value = "address", required = false) String address, 
+            @RequestParam(value = "name", required = false) String name) {
     
         if (address != null && !address.isEmpty()) {
             List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
