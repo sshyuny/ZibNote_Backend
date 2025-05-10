@@ -9,10 +9,10 @@ spring:
         format_sql: true
         hbm2ddl.auto: create-drop
   datasource:
-    url: jdbc:mysql://localhost:3306/zibnote_db
-    username: zibnote_admin
-    password: pw11
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:h2:mem:tempDB;MODE=MySQL
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
 
 logging:
   level:
