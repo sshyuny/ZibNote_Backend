@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.MemberPersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.note.NoteFieldPersistenceAdapter;
@@ -29,7 +29,7 @@ import jakarta.persistence.EntityManager;
 @DataJpaTest
 @Import({SearchStructureNotePersistenceAdapter.class, SearchStructurePersistenceAdapter.class, SearchPersistenceAdapter.class, 
     StructurePersistenceAdapter.class, NoteFieldPersistenceAdapter.class, MemberPersistenceAdapter.class})
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test")
 public class SearchStructureNotePersistenceAdapterTest {
     
     @Autowired

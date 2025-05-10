@@ -10,9 +10,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.sshyu.zibnote.domain.structure.exception.StructureNotFoundException;
 import com.sshyu.zibnote.domain.structure.model.Structure;
@@ -21,7 +21,7 @@ import jakarta.persistence.EntityManager;
 
 @DataJpaTest
 @Import(StructurePersistenceAdapter.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test")
 public class StructurePersistenceAdapterTest {
 
     @Autowired
@@ -97,7 +97,7 @@ public class StructurePersistenceAdapterTest {
         List<Structure> structures1 = structurePersistenceAdapter.findTop10ByNameContaining("아파트");
         List<Structure> structures2 = structurePersistenceAdapter.findTop10ByNameContaining("대림솔거");
 
-        assertThat(structures1.size()).isEqualTo(4);
+        assertThat(structures1.size()).isEqualTo(2);
         assertThat(structures2.get(0).getName()).isEqualTo(STRUCTURE_NAME_2);
     }
 
