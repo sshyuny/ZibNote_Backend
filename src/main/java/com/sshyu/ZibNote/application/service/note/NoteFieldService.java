@@ -16,16 +16,40 @@ public class NoteFieldService implements NoteFieldUseCase {
 
     private final NoteFieldRepository noteFieldRepository;
 
+    /**
+     * NoteField를 등록한다.
+     * 
+     * @param noteField 등록하려는 NoteField
+     */
     @Override
     public void registerNoteField(NoteField noteField) {
+
         noteFieldRepository.save(noteField);
     }
 
+    /**
+     * 로그인한 사용자가 등록한 NoteField 목록을 조회한다.
+     * 
+     * @param memberId 로그인한 사용자 ID
+     * @return 로그인한 사용자가 등록한 NoteField 목록
+     */
     @Override
     public List<NoteField> listNoteFieldsByMember(Long memberId) {
+
         return noteFieldRepository.findAllByMember(memberId);
     }
 
+    /**
+     * NoteField를 삭제한다.
+     * 
+     * <ol>
+     *   <li>로그인한 사용자가 NoteField에 접근 가능한지 확인</li>
+     *   <li>NoteFiled 삭제</li>
+     * </ol>
+     * 
+     * @param noteFieldId 삭제하려는 NoteField ID
+     * @param memberId 로그인한 사용자 ID
+     */
     @Override
     public void softDeleteNoteField(Long noteFieldId, Long memberId) {
 

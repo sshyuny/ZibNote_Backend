@@ -26,18 +26,20 @@ public class SearchStructureService implements SearchStructureUseCase {
     private final StructureUseCase structureUseCase;
 
     /**
+     * SearchStructure를 등록한다.
+     * 
      * <ol>
-     *   <li>도메인 검증: SearchStructure 도메인 검증</li>
-     *   <li>데이터 주인 확인: Search 주인이 로그인된 Member와 동일한지 확인</li>
-     *   <li>데이터 존재 확인: Structure 데이터 존재하는지 확인</li>
-     *   <li>데이터 생성: SearchStructure 생성</li>
+     *   <li>SearchStructure 유효성 검사</li>
+     *   <li>로그인한 사용자가 Search에 접근 가능한지 확인</li>
+     *   <li>Structure 엔티티 존재하는지 확인</li>
+     *   <li>SearchStructure 생성</li>
      * </ol>
      * 
-     * SearchStructure를 생성한다.
-     * 
-     * @throws NotValidSearchStructureException SearchStructure 도메인 검증에 실패할 경우
-     * @throws SearchNotFoundException Search가 존재하지 않을 경우
-     * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
+     * @param searchStructure 등록하려는 SearchStructure
+     * @param loginedMemberId 로그인한 사용자 ID
+     * @throws NotValidSearchStructureException SearchStructure 유효성 검사에 실패 시
+     * @throws SearchNotFoundException Search가 존재하지 않는 경우
+     * @throws UnauthorizedAccessException 로그인한 사용자가 Search를 참조할 권한이 없는 경우
      * @throws StructureNotFoundException Structure가 존재하지 않을 경우
      */
     @Override
@@ -54,13 +56,16 @@ public class SearchStructureService implements SearchStructureUseCase {
     }
 
     /**
+     * Search ID로 연결된 SearchStructure들을 조회한다.
+     * 
      * <ol>
-     *   <li>데이터 주인 확인: Search 주인이 로그인된 Member와 동일한지 확인</li>
-     *   <li>데이터 조회: Search로 등록된 Structure 조회하여 반환</li>
+     *   <li>로그인한 사용자가 Search에 접근 가능한지 확인</li>
+     *   <li>Search ID에 연결된 Structure 목록 조회</li>
      * </ol>
      * 
-     * Search로 등록된 Structure들을 반환한다.
-     * 
+     * @param sesarchId SearchStructure와 연결된 것들로 조회하려는 Search ID
+     * @param loginedMemberId 로그인한 사용자 ID
+     * @return Search ID에 연결된 Structure 목록
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
@@ -73,13 +78,15 @@ public class SearchStructureService implements SearchStructureUseCase {
     }
 
     /**
-     * <ol>
-     *   <li>데이터 주인 확인: Search 주인이 로그인된 Member와 동일한지 확인</li>
-     *   <li>데이터 삭제: SearchStructure 삭제</li>
-     * </ol>
-     * 
      * SearchStructure를 삭제한다.
      * 
+     * <ol>
+     *   <li>로그인한 사용자가 SearchStructure(내부 Search)에 접근 가능한지 확인</li>
+     *   <li>SearchStructure 삭제</li>
+     * </ol>
+     * 
+     * @param searchStructureId 삭제하려는 SearchStructure ID
+     * @param loginedMemberId 로그인한 사용자 ID
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
@@ -91,13 +98,16 @@ public class SearchStructureService implements SearchStructureUseCase {
     }
 
     /**
+     * 로그인한 계정이 SearchStructure에 접근 가능한지 확인한다.
+     * 
      * <ol>
-     *   <li>데이터 조회: SearchStructure와 그 참조 데이터인 Search 조회</li>
-     *   <li>데이터 주인 확인: Search 주인이 로그인된 Member와 동일한지 확인</li>
+     *   <li>SearchStructure와 그 참조 엔티티 Search 조회</li>
+     *   <li>로그인한 사용자가 Search에 접근 가능한지 확인</li>
      * </ol>
      * 
-     * SearchStructure 주인이 로그인된 계정과 동일한지 검증한다.
-     * 
+     * @param searchStructureId 확인 대상 ID
+     * @param loginedMemberId 로그인한 사용자 ID
+     * @return 확인 완료된 SearchStructure
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override

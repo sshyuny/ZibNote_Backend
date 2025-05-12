@@ -21,6 +21,14 @@ public class JwtAuthService implements AuthUseCase {
     private final JwtUtil jwtUtil;
     private final MemberUseCase memberUseCase;
 
+    /**
+     * 로그인한 뒤 JWT 토큰을 반환 한다.
+     * 
+     * 등록된 사용자인지 확인 후, JWT를 발급하여 반환한다.
+     * 
+     * @param name 로그인할 사용자 이름
+     * @return 발급된 JWT 토큰
+     */
     @Override
     public Token login(String name) {
 
@@ -31,12 +39,23 @@ public class JwtAuthService implements AuthUseCase {
         return Token.builder().token(token).build();
     }
 
+    /**
+     * 로그아웃한다.
+     */
     @Override
     public void logout() {
     }
 
+    /**
+     * 로그인한 사용자의 ID를 반환한다.
+     * 
+     * 로그인시 요청메시지에 넣어두었던 ID를 꺼내서 반환한다.
+     * 
+     * @return 로그인한 사용자의 ID
+     */
     @Override
     public Long getMemberId() {
+
         HttpServletRequest request = requestProvider.getObject();
         return (Long) request.getAttribute("memberId");
     }

@@ -24,11 +24,13 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      * SearchStructureNote를 등록한다.
      * 
      * <ol>
-     *   <li>도메인 검증: SearchStructureNote 유효성 검사</li>
-     *   <li>권한 확인: 로그인 계정이 SearchStructure(내부 Search)에 접근 가능한지 확인</li>
-     *   <li>엔티티 저장: SearchStructureNote 저장</li>
+     *   <li>SearchStructureNote 유효성 검사</li>
+     *   <li>로그인 계정이 SearchStructure(내부 Search)에 접근 가능한지 확인</li>
+     *   <li>SearchStructureNote 저장</li>
      * </ol>
      * 
+     * @param searchStructureNote 등록하려는 SearchStructureNote
+     * @param loginedMemberId 로그인한 사용자 ID
      * @throws NotValidSearchStructureNoteException SearchStructureNote 유효성 검사 실패 시
      * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
      */
@@ -44,13 +46,16 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
     }
 
     /**
-     * SearchStructureId로 연결된 SearchStructureNote들을 조회한다.
+     * SearchStructure ID로 연결된 SearchStructureNote들을 조회한다.
      * 
      * <ol>
-     *   <li>권한 확인: 로그인 계정이 SearchStructure(내부 Search)에 접근 가능한지 확인</li>
-     *   <li>엔티티 조회: SearchStructureNote 목록 조회</li>
+     *   <li>로그인 계정이 SearchStructure(내부 Search)에 접근 가능한지 확인</li>
+     *   <li>SearchStructureNote 목록 조회</li>
      * </ol>
      * 
+     * @param searchStructureId SearchStructureNote와 연결된 것들로 조회하려는 SearchStructure ID
+     * @param loginedMemberId 로그인한 사용자 ID
+     * @return SearchStructure ID와 연결된 SearchStructureNote 목록
      * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
      */
     @Override
@@ -66,11 +71,13 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      * SearchStructureNote를 삭제한다.
      * 
      * <ol>
-     *   <li>엔티티 조회: SearchStructureNote를 ID로 조회</li>
-     *   <li>권한 확인: 로그인 계정이 SearchStructureNote(내부 Search)에 접근이 가능한지 확인</li>
-     *   <li>엔티티 삭제: SearchStructureNote 삭제</li>
+     *   <li>SearchStructureNote를 ID로 조회</li>
+     *   <li>로그인 계정이 SearchStructureNote(내부 Search)에 접근이 가능한지 확인</li>
+     *   <li>SearchStructureNote 삭제</li>
      * </ol>
      * 
+     * @param searchStructureNoteId 삭제하려는 SearchStructureNote ID
+     * @param loginedMemberId 로그인한 사용자 ID
      * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
      */
     @Override

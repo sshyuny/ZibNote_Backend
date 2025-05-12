@@ -14,16 +14,34 @@ public class MemberService implements MemberUseCase {
 
     private final MemberRepository memberRepository;
 
+    /**
+     * 사용자를 등록한다.
+     * 
+     * @param member 등록할 사용자
+     */
     @Override
     public void register(Member member) {
+
         memberRepository.save(member);        
     }
 
+    /**
+     * 이름으로 사용자를 검색한다.
+     * 
+     * @param name 사용자 이름
+     * @return 검색된 사용자
+     */
     @Override
     public Member findByName(String name) {
         return memberRepository.findByName(name);
     }
 
+    /**
+     * ID로 사용자를 조회한다.
+     * 
+     * @param memberId 조회 대상 ID
+     * @return ID에 일치하는 Member
+     */
     @Override
     public Member getMember(Long memberId) {
         return memberRepository.findByMemberId(memberId);
