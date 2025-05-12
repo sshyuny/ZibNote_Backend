@@ -27,13 +27,11 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     @Override
     public Long save(NoteField noteField) {
 
-        MemberEntity detachedMember = MemberEntity.builder()
-            .memberId(noteField.getMember().getMemberId())
-            .build();
+        final MemberEntity memberRef = MemberEntity.ref(noteField.getMember().getMemberId());
 
         NoteFieldEntity entity = noteFieldJpaRepository.save(
             NoteFieldEntity.builder()
-                .memberEntity(detachedMember)
+                .memberEntity(memberRef)
                 .name(noteField.getName())
                 .description(noteField.getDescription())
                 .build()
@@ -55,7 +53,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     public NoteField findByMemberAndName(Long memberId, String name) {
 
         NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findByMemberEntityAndName(
-            MemberEntity.builder().memberId(memberId).build(), name)
+                MemberEntity.ref(memberId), name)
             .orElseThrow(() -> new NoteFieldNotFoundException());
 
         return NoteField.builder()
@@ -70,8 +68,9 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     }
 
     @Override
-    public List<NoteField> findAllByMember(Long memberId) {
-        return noteFieldJpaRepository.findAllByMemberEntityAndIsDeleted(MemberEntity.builder().memberId(memberId).build(), 0)
+    public List<NoteField> findAllByMemberId(Long memberId) {
+
+        return noteFieldJpaRepository.findAllByMemberEntity(MemberEntity.ref(memberId))
             .stream()
             .map(entity -> NoteFieldEntityMapper.toDomain(entity))
             .collect(Collectors.toList());

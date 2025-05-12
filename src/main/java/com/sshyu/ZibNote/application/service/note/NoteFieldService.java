@@ -36,7 +36,7 @@ public class NoteFieldService implements NoteFieldUseCase {
     @Override
     public List<NoteField> listNoteFieldsByMember(Long memberId) {
 
-        return noteFieldRepository.findAllByMember(memberId);
+        return noteFieldRepository.findAllByMemberId(memberId);
     }
 
     /**

@@ -25,6 +25,7 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
 
     @Override
     public Long save(SearchStructureNote searchStructureNote) {
+
         SearchStructureNoteEntity entity = SearchStructureNoteEntityMapper.toEntity(searchStructureNote);
         searchStructureNoteJpaRepository.save(entity);
         return entity.getSearchStructureNoteId();
@@ -42,7 +43,7 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
     @Override
     public List<SearchStructureNote> findAllBySearchStructureId(Long searchStructureId) {
 
-        final SearchStructureEntity searchStructureRef = SearchStructureEntity.builder().searchStructureId(searchStructureId).build();
+        final SearchStructureEntity searchStructureRef = SearchStructureEntity.ref(searchStructureId);
 
         return searchStructureNoteJpaRepository.findAllBySearchStructureEntity(searchStructureRef).stream()
                     .map(entity -> SearchStructureNoteEntityMapper.toDomain(entity))
@@ -51,8 +52,10 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
 
     @Override
     public void softDeleteBySearchStructureNoteId(Long searchStructureNoteId) {
+
         SearchStructureNoteEntity entity = searchStructureNoteJpaRepository.findById(searchStructureNoteId)
             .orElseThrow(() -> new SearchStructureNoteNotFoundException());
+        
         entity.softDelete();
         searchStructureNoteJpaRepository.save(entity);
     }

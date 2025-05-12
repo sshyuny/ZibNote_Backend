@@ -12,7 +12,7 @@ public interface NoteFieldRepository {
     
     NoteField findByMemberAndName(Long memberId, String name);
 
-    List<NoteField> findAllByMember(Long memberId);
+    List<NoteField> findAllByMemberId(Long memberId);
 
     void softDeleteByNoteFieldId(Long noteFieldId);
     

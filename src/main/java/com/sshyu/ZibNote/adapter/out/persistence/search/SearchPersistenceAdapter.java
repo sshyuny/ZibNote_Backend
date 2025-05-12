@@ -26,9 +26,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
     @Override
     public Long save(final Search search) {
 
-        final MemberEntity memberRef = MemberEntity.builder()
-            .memberId(search.getMember().getMemberId())
-            .build();
+        final MemberEntity memberRef = MemberEntity.ref(search.getMember().getMemberId());
 
         SearchEntity searchEntity = SearchEntity.builder()
             .memberEntity(memberRef)
@@ -53,11 +51,9 @@ public class SearchPersistenceAdapter implements SearchRepository {
     @Override
     public List<Search> findAllByMemberId(final Long memberId) {
 
-        final MemberEntity memberRef = MemberEntity.builder()
-            .memberId(memberId)
-            .build();
+        final MemberEntity memberRef = MemberEntity.ref(memberId);
 
-        return searchJpaRepository.findAllByMemberEntityAndIsDeleted(memberRef, 0).stream()
+        return searchJpaRepository.findAllByMemberEntity(memberRef).stream()
                     .map(entity -> SearchEntityMapper.toDomain(entity))
                     .collect(Collectors.toList());
     }

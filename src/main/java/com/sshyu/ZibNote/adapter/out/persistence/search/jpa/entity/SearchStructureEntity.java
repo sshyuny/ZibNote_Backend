@@ -42,4 +42,10 @@ public class SearchStructureEntity extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    public static SearchStructureEntity ref(Long searchStructureId) {
+        return SearchStructureEntity.builder()
+                    .searchStructureId(searchStructureId)
+                    .build();
+    }
+
 }

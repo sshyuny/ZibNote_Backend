@@ -12,6 +12,6 @@ public interface NoteFieldJpaRepository extends JpaRepository<NoteFieldEntity, L
     
     Optional<NoteFieldEntity> findByMemberEntityAndName(MemberEntity memberEntity, String name);
 
-    List<NoteFieldEntity> findAllByMemberEntityAndIsDeleted(MemberEntity memberEntity, int isDeleted);
+    List<NoteFieldEntity> findAllByMemberEntity(MemberEntity memberEntity);
 
 }

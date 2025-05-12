@@ -29,12 +29,8 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     @Override
     public Long save(final SearchStructure searchStructure) {
 
-        final SearchEntity searchRef = SearchEntity.builder()
-            .searchId(searchStructure.getSearch().getSearchId())
-            .build();
-        final StructureEntity structureRef = StructureEntity.builder()
-            .structureId(searchStructure.getStructure().getStructureId())
-            .build();
+        final SearchEntity searchRef = SearchEntity.ref(searchStructure.getSearch().getSearchId());
+        final StructureEntity structureRef = StructureEntity.ref(searchStructure.getStructure().getStructureId());
 
         SearchStructureEntity searchStructureEntity = SearchStructureEntity.builder()
             .searchEntity(searchRef)
@@ -66,7 +62,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     @Override
     public List<SearchStructure> findAllBySearchId(final Long searchId) {
 
-        SearchEntity searchRef = SearchEntity.builder().searchId(searchId).build();
+        SearchEntity searchRef = SearchEntity.ref(searchId);
 
         return searchStructureJpaRepository.findAllBySearchEntity(searchRef).stream()
                     .map(result -> SearchStructureEntityMapper.toDomain(result))

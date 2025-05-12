@@ -28,5 +28,10 @@ public class MemberEntity extends BaseEntity {
 
     @Column(nullable = false, length = 50)
     private String name;
-
+    
+    public static MemberEntity ref(Long memberId) {
+        return MemberEntity.builder()
+                    .memberId(memberId)
+                    .build();
+    }
 }

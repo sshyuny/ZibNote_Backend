@@ -9,6 +9,6 @@ import com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity.SearchEntity;
 
 public interface SearchJpaRepository extends JpaRepository<SearchEntity, Long> {
     
-    List<SearchEntity> findAllByMemberEntityAndIsDeleted(MemberEntity memberEntity, int isDeleted);
+    List<SearchEntity> findAllByMemberEntity(MemberEntity memberEntity);
 
 }

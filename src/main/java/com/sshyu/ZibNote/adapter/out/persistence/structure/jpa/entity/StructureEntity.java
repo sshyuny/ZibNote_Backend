@@ -50,4 +50,10 @@ public class StructureEntity extends BaseEntity {
 
     private Integer builtYear;
 
+    public static StructureEntity ref(Long structureId) {
+        return StructureEntity.builder()
+                    .structureId(structureId)
+                    .build();
+    }
+
 }
