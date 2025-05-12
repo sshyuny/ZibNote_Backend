@@ -83,7 +83,7 @@ public class SearchStructureNotePersistenceAdapterTest {
 
         searchId = searchPersistenceAdapter.save(
             Search.builder()
-                .member(Member.builder().memberId(memberId).build())
+                .member(Member.onlyId(memberId))
                 .title(SEARCH_TITLE)
                 .region(SEARCH_REGION)
                 .description(SEARCH_DESCRIPTION)
@@ -105,15 +105,15 @@ public class SearchStructureNotePersistenceAdapterTest {
         
         searchStructureId = searchStructurePersistenceAdapter.save(
             SearchStructure.builder()
-            .search(Search.builder().searchId(searchId).build())
-            .structure(Structure.builder().structureId(structureId).build())
-            .description(SEARCH_STRUCTURE_DESCRIPTION)
-            .build()
-            );
+                .search(Search.onlyId(searchId))
+                .structure(Structure.onlyId(structureId))
+                .description(SEARCH_STRUCTURE_DESCRIPTION)
+                .build()
+        );
             
         noteFieldId = noteFieldPersistenceAdapter.save(
             NoteField.builder()
-                .member(Member.builder().memberId(memberId).build())
+                .member(Member.onlyId(memberId))
                 .name(NOTE_FIELD_NAME)
                 .description(NOTE_FIELD_DESCRIPTION)
                 .build()
@@ -121,8 +121,8 @@ public class SearchStructureNotePersistenceAdapterTest {
 
         searchStructureNoteid = searchStructureNotePersistenceAdapter.save(
             SearchStructureNote.builder()
-                .searchStructure(SearchStructure.builder().searchStructureId(searchStructureId).build())
-                .noteField(NoteField.builder().noteFieldId(noteFieldId).build())
+                .searchStructure(SearchStructure.onlyId(searchStructureId))
+                .noteField(NoteField.onlyId(noteFieldId))
                 .evalType(SEARCH_STRUCTURE_NOTE_EVAL_TYPE)
                 .evalValue(SEARCH_STRUCTURE_NOTE_EVAL_VALUE)
                 .note(SEARCH_STRUCTURE_NOTE_NOTE)

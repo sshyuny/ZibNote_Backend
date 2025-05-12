@@ -83,7 +83,7 @@ public class SearchStructureNoteServiceIntegrationTest {
 
         searchId = searchPersistenceAdapter.save(
             Search.builder()
-                .member(Member.builder().memberId(memberId).build())
+                .member(Member.onlyId(memberId))
                 .title(SEARCH_TITLE)
                 .region(SEARCH_REGION)
                 .build()
@@ -106,45 +106,45 @@ public class SearchStructureNoteServiceIntegrationTest {
         
         searchStructureId1 = searchStructurePersistenceAdapter.save(
             SearchStructure.builder()
-            .search(Search.builder().searchId(searchId).build())
-            .structure(Structure.builder().structureId(structureId1).build())
-            .build()
+                .search(Search.onlyId(searchId))
+                .structure(Structure.onlyId(structureId1))
+                .build()
         );
         searchStructureId2 = searchStructurePersistenceAdapter.save(
             SearchStructure.builder()
-            .search(Search.builder().searchId(searchId).build())
-            .structure(Structure.builder().structureId(structureId2).build())
-            .build()
+                .search(Search.onlyId(searchId))
+                .structure(Structure.onlyId(structureId2))
+                .build()
         );
 
         noteFieldId1 = noteFieldPersistenceAdapter.save(
             NoteField.builder()
-                .member(Member.builder().memberId(memberId).build())
+                .member(Member.onlyId(memberId))
                 .name(NOTE_FIELD_NAME_1)
                 .build()
         );
         noteFieldId2 = noteFieldPersistenceAdapter.save(
             NoteField.builder()
-                .member(Member.builder().memberId(memberId).build())
+                .member(Member.onlyId(memberId))
                 .name(NOTE_FIELD_NAME_2)
                 .build()
         );
 
         noteWithSearchStructure1AndNoteField1 = SearchStructureNote.builder()
-            .searchStructure(SearchStructure.builder().searchStructureId(searchStructureId1).build())
-            .noteField(NoteField.builder().noteFieldId(noteFieldId1).build())
+            .searchStructure(SearchStructure.onlyId(searchStructureId1))
+            .noteField(NoteField.onlyId(noteFieldId1))
             .build();
         noteWithSearchStructure1AndNoteField2 = SearchStructureNote.builder()
-            .searchStructure(SearchStructure.builder().searchStructureId(searchStructureId1).build())
-            .noteField(NoteField.builder().noteFieldId(noteFieldId2).build())
+            .searchStructure(SearchStructure.onlyId(searchStructureId1))
+            .noteField(NoteField.onlyId(noteFieldId2))
             .build();
         noteWithSearchStructure2AndNoteField1 = SearchStructureNote.builder()
-            .searchStructure(SearchStructure.builder().searchStructureId(searchStructureId2).build())
-            .noteField(NoteField.builder().noteFieldId(noteFieldId1).build())
+            .searchStructure(SearchStructure.onlyId(searchStructureId2))
+            .noteField(NoteField.onlyId(noteFieldId1))
             .build();
         noteWithSearchStructure2AndNoteField2 = SearchStructureNote.builder()
-            .searchStructure(SearchStructure.builder().searchStructureId(searchStructureId2).build())
-            .noteField(NoteField.builder().noteFieldId(noteFieldId2).build())
+            .searchStructure(SearchStructure.onlyId(searchStructureId2))
+            .noteField(NoteField.onlyId(noteFieldId2))
             .build();
     }
 

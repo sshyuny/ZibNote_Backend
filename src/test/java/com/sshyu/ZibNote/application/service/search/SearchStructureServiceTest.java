@@ -39,12 +39,10 @@ public class SearchStructureServiceTest {
     // test value
     final static Long MEMBER_B = 789L;
 
-    Structure structure = Structure.builder()
-        .structureId(STRUCTURE_ID)
-        .build();
+    Structure structure = Structure.onlyId(STRUCTURE_ID);
     Search searchOfMemberA = Search.builder()
         .searchId(SEARCH_ID_OF_A)
-        .member(Member.builder().memberId(MEMBER_A).build())
+        .member(Member.onlyId(MEMBER_A))
         .build();
     SearchStructure searchStructureOfMemberA = SearchStructure.builder()
         .searchStructureId(SEARCH_STRUCTURE_ID_OF_A)

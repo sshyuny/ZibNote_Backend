@@ -18,6 +18,12 @@ public class SearchStructure extends BaseFields {
 
     private String description;
 
+    public static SearchStructure onlyId(Long searchStructureId) {
+        return SearchStructure.builder()
+                    .searchStructureId(searchStructureId)
+                    .build();
+    }
+
     public void validate() {
         if  (this.search.getSearchId() == null || this.structure.getStructureId() == null) {
             throw new NotValidSearchStructureException();

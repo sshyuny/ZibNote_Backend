@@ -18,4 +18,10 @@ public class Structure extends BaseFields {
     private BigDecimal longitude;
     private Integer builtYear;
 
+    public static Structure onlyId(Long structureId) {
+        return Structure.builder()
+                    .structureId(structureId)
+                    .build();
+    }
+
 }

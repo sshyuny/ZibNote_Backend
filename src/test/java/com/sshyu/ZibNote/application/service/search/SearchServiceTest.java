@@ -27,7 +27,7 @@ public class SearchServiceTest {
     final static Long SEARCH_ID_OF_A = 22L;
     Search searchOfMemberA = Search.builder()
         .searchId(SEARCH_ID_OF_A)
-        .member(Member.builder().memberId(MEMBER_A).build())
+        .member(Member.onlyId(MEMBER_A))
         .build();
 
     @Test

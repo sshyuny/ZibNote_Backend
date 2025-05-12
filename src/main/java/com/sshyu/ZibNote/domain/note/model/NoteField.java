@@ -18,6 +18,12 @@ public class NoteField extends BaseFields {
 
     private final String description;
 
+    public static NoteField onlyId(Long noteFieldId) {
+        return NoteField.builder()
+                    .noteFieldId(noteFieldId)
+                    .build();
+    }
+
     public void assureOwner(Long memberId) {
         if (!this.member.getMemberId().equals(memberId)) {
             throw new UnauthorizedAccessException();

@@ -66,7 +66,7 @@ public class SearchStructurePersistenceAdapterTest {
         
         searchId = searchPersistenceAdapter.save(
             Search.builder()
-                .member(Member.builder().memberId(memberId).build())
+                .member(Member.onlyId(memberId))
                 .title(SEARCH_TITLE)
                 .region(SEARCH_REGION)
                 .description(SEARCH_DESCRIPTION)
@@ -88,8 +88,8 @@ public class SearchStructurePersistenceAdapterTest {
 
         searchStructureId = searchStructurePersistenceAdapter.save(
             SearchStructure.builder()
-                .search(Search.builder().searchId(searchId).build())
-                .structure(Structure.builder().structureId(structureId).build())
+                .search(Search.onlyId(searchId))
+                .structure(Structure.onlyId(structureId))
                 .description(SEARCH_STRUCTURE_DESCRIPTION)
                 .build()
         );

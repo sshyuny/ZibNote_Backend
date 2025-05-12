@@ -58,7 +58,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
 
         return NoteField.builder()
             .noteFieldId(noteFieldEntity.getNoteFieldId())
-            .member(Member.builder().memberId(noteFieldEntity.getMemberEntity().getMemberId()).build())
+            .member(Member.onlyId(noteFieldEntity.getMemberEntity().getMemberId()))
             .name(noteFieldEntity.getName())
             .description(noteFieldEntity.getDescription())
             .createdAt(noteFieldEntity.getCreatedAt())

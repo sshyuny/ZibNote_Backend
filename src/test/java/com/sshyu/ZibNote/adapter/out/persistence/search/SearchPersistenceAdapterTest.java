@@ -53,7 +53,7 @@ public class SearchPersistenceAdapterTest {
 
         searchId = searchPersistenceAdapter.save(
             Search.builder()
-                .member(Member.builder().memberId(memberId).build())
+                .member(Member.onlyId(memberId))
                 .title(SEARCH_TITLE)
                 .region(SEARCH_REGION)
                 .description(SEARCH_DESCRIPTION)

@@ -52,7 +52,7 @@ public class NoteFieldPersistenceAdapterTest {
 
         noteFieldId = noteFieldPersistenceAdapter.save(
             NoteField.builder()
-                .member(Member.builder().memberId(memberId).build())
+                .member(Member.onlyId(memberId))
                 .name(NOTE_FIELD_NAME)
                 .description(NOTE_FIELD_DESCRIPTION)
                 .build()

@@ -26,4 +26,10 @@ public class Search extends BaseFields {
         }
     }
 
+    public static Search onlyId(Long searchId) {
+        return Search.builder()
+                    .searchId(searchId)
+                    .build();
+    }
+
 }

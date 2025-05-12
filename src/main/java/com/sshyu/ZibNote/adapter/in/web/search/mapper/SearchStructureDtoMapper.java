@@ -21,8 +21,8 @@ public class SearchStructureDtoMapper {
 
     public static SearchStructure toDomain(SearchStructureReqDto reqDto) {
         return SearchStructure.builder()
-                    .search(Search.builder().searchId(reqDto.getSearchId()).build())
-                    .structure(Structure.builder().structureId(reqDto.getStructureId()).build())
+                    .search(Search.onlyId(reqDto.getSearchId()))
+                    .structure(Structure.onlyId(reqDto.getStructureId()))
                     .description(reqDto.getDescription())
                     .build();
     }

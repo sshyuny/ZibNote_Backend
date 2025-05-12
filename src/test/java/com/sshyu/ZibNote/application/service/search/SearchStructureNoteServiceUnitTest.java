@@ -55,10 +55,8 @@ public class SearchStructureNoteServiceUnitTest {
     @BeforeEach
     void setUp() {
 
-        Member memberA = Member.builder().memberId(MEMBER_A).build();
-        Structure structure = Structure.builder()
-            .structureId(STRUCTURE_ID)
-            .build();
+        Member memberA = Member.onlyId(MEMBER_A);
+        Structure structure = Structure.onlyId(STRUCTURE_ID);
         Search searchOfMemberA = Search.builder()
             .searchId(SEARCH_ID_OF_A)
             .member(memberA)

@@ -10,8 +10,8 @@ public class SearchStructureNoteDtoMapper {
     
     public static SearchStructureNote toDomain(NotePostReqDto reqDto) {
         return SearchStructureNote.builder()
-                    .searchStructure(SearchStructure.builder().searchStructureId(reqDto.getSearchStructureId()).build())
-                    .noteField(NoteField.builder().noteFieldId(reqDto.getNoteFieldId()).build())
+                    .searchStructure(SearchStructure.onlyId(reqDto.getSearchStructureId()))
+                    .noteField(NoteField.onlyId(reqDto.getNoteFieldId()))
                     .evalType(reqDto.getEvalType())
                     .evalValue(reqDto.getEvalValue())
                     .note(reqDto.getEvalValue())

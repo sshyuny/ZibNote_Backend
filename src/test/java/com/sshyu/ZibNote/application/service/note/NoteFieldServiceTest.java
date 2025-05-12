@@ -35,7 +35,7 @@ public class NoteFieldServiceTest {
     void beforeEach() {
         NoteField savedNoteField = NoteField.builder()
             .noteFieldId(NOTE_FIELD_ID)
-            .member(Member.builder().memberId(MEMBER_ID_1).build())
+            .member(Member.onlyId(MEMBER_ID_1))
             .name(NOTE_FIELD_NAME)
             .description(NOTE_FIELD_DESCRIPTION)
             .createdAt(LocalDateTime.now())
