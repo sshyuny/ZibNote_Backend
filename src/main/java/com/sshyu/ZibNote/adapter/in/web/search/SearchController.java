@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.search.dto.SearchDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchResDto;
+import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchDtoMapper;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.search.model.Search;
@@ -44,7 +46,7 @@ public class SearchController {
     }
 
     @DeleteMapping
-    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody SearchReqDto reqDto) {
+    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody SearchDeleteReqDto reqDto) {
 
         searchUseCase.softDeleteSearch(reqDto.getSearchId(), authUseCase.getMemberId());
 
@@ -56,12 +58,7 @@ public class SearchController {
 
         final List<SearchResDto> resDtos = searchUseCase.listSearchesByMember(authUseCase.getMemberId())
             .stream()
-            .map(domain -> SearchResDto.builder()
-                .searchId(domain.getSearchId())
-                .title(domain.getTitle())
-                .region(domain.getRegion())
-                .description(domain.getDescription())
-                .build())
+            .map(domain -> SearchDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
 
         return ResponseEntity.ok(ApiResponse.successWithData(resDtos));

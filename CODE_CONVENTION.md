@@ -44,7 +44,7 @@ public class Member extends BaseFields {
 ### 3. final 사용
 - 프로젝트에서 불변성을 지향하기 위해 `final`을 붙여 변수의 재할당을 방지합니다.
     - 대상: 메서드 파라미터, 지역 변수, 테스트 변수, 도메인 모델의 필드
-    - (DTO의 필드는 테스트시 ObjectMapper 사용을 위해 예외)
+    - (DTO의 필드는 `@NoArgsConstructor` 사용을 위해 예외)
     - (JPA Entity 필드는 예외)
 - 객체의 경우 참조값 불변을 의미하며 내부 필드가 변경되는 상황을 포함합니다.
 - 짧은 줄의 코드로 구성된 메서드에도 가급적 붙여 일관성을 유지합니다.

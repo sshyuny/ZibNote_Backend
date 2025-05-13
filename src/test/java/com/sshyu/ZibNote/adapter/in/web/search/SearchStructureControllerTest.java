@@ -59,11 +59,9 @@ public class SearchStructureControllerTest {
     void post_정상요청() throws Exception {
 
         // given
-        SearchStructureReqDto reqDto = SearchStructureReqDto.builder()
-            .searchId(LOGINED_MEMBER_ID)
-            .structureId(33L)
-            .description("test")
-            .build();
+        SearchStructureReqDto reqDto = new SearchStructureReqDto(
+            22L, 33L, "test"
+        );
 
         String json = objectMapper.writeValueAsString(reqDto);
         

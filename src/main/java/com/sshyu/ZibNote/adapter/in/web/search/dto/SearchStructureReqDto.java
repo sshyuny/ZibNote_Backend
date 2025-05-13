@@ -1,18 +1,21 @@
 package com.sshyu.zibnote.adapter.in.web.search.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter
 public class SearchStructureReqDto {
     
-    @NotBlank
+    @NotNull
     private Long searchId;
 
-    @NotBlank
+    @NotNull
     private Long structureId;
 
     @NotBlank

@@ -19,14 +19,14 @@ public class SearchStructureNoteDtoMapper {
     }
 
     public static NoteResDto toResDto(final SearchStructureNote domain) {
-        return NoteResDto.builder()
-                    .searchStructureNoteId(domain.getSearchStructureNoteId())
-                    .searchStructureId(domain.getSearchStructure().getSearchStructureId())
-                    .noteFieldId(domain.getNoteField().getNoteFieldId())
-                    .evalType(domain.getEvalType().getName())
-                    .evalValue(domain.getEvalValue())
-                    .note(domain.getNote())
-                    .build();
+        return new NoteResDto(
+            domain.getSearchStructureNoteId(), 
+            domain.getSearchStructure().getSearchStructureId(), 
+            domain.getNoteField().getNoteFieldId(), 
+            domain.getEvalType().getName(), 
+            domain.getEvalValue(), 
+            domain.getNote()
+        );
     }
 
 }

@@ -1,10 +1,12 @@
 package com.sshyu.zibnote.adapter.in.web.note.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter
 public class NoteFieldResDto {
 

@@ -9,14 +9,14 @@ import com.sshyu.zibnote.domain.structure.model.Structure;
 public class SearchStructureDtoMapper {
     
     public static SearchStructureResDto toResDto(final SearchStructure domain) {
-        return SearchStructureResDto.builder()
-                    .searchStructureId(domain.getSearchStructureId())
-                    .searchId(domain.getSearch().getSearchId())
-                    .searchTitle(domain.getSearch().getTitle())
-                    .structureId(domain.getStructure().getStructureId())
-                    .structureName(domain.getStructure().getName())
-                    .description(domain.getDescription())
-                    .build();
+        return new SearchStructureResDto(
+            domain.getSearchStructureId(),
+            domain.getSearch().getSearchId(),
+            domain.getSearch().getTitle(),
+            domain.getStructure().getStructureId(),
+            domain.getStructure().getName(),
+            domain.getDescription()
+        );
     }
 
     public static SearchStructure toDomain(final SearchStructureReqDto reqDto) {

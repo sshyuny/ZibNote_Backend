@@ -2,17 +2,21 @@ package com.sshyu.zibnote.adapter.in.web.search.dto;
 
 import com.sshyu.zibnote.domain.search.model.EvalType;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Builder @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 public class NotePostReqDto {
     
-    @NotBlank
+    @NotNull
     private Long searchStructureId;
 
-    @NotBlank
+    @NotNull
     private Long noteFieldId;
 
     private EvalType evalType;

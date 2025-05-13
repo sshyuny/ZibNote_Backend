@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldReqDto;
 import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldResDto;
+import com.sshyu.zibnote.adapter.in.web.note.mapper.NoteFieldDtoMapper;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.note.model.NoteField;
@@ -48,18 +50,14 @@ public class NoteFieldController {
 
         final List<NoteFieldResDto> noteFieldResDtos = noteFieldUseCase.listNoteFieldsByMember(authUseCase.getMemberId())
             .stream()
-            .map(domain -> NoteFieldResDto.builder()
-                .noteFieldId(domain.getNoteFieldId())
-                .name(domain.getName())
-                .description(domain.getDescription())
-                .build())
+            .map(domain -> NoteFieldDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
 
         return ResponseEntity.ok(ApiResponse.successWithData(noteFieldResDtos));
     }
 
     @DeleteMapping
-    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody NoteFieldReqDto reqDto) {
+    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody NoteFieldDeleteReqDto reqDto) {
 
         noteFieldUseCase.softDeleteNoteField(reqDto.getNoteFieldId(), authUseCase.getMemberId());
 

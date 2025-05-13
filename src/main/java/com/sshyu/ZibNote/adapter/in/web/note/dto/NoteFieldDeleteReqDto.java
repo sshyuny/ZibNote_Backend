@@ -1,4 +1,4 @@
-package com.sshyu.zibnote.adapter.in.web.search.dto;
+package com.sshyu.zibnote.adapter.in.web.note.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
-public class NoteGetListReqDto {
+public class NoteFieldDeleteReqDto {
     
     @NotNull
-    private Long searchStructureId;
+    private Long noteFieldId;
 
 }

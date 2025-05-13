@@ -1,13 +1,17 @@
 package com.sshyu.zibnote.adapter.in.web.note.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter
 public class NoteFieldReqDto {
-
-    private Long noteFieldId;
     
+    @NotBlank
     private String name;
 
     private String description;
