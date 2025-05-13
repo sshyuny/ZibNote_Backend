@@ -7,7 +7,6 @@ import static org.mockito.BDDMockito.given;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,16 +14,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
-import com.sshyu.zibnote.domain.member.model.Member;
-import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.search.exception.NotValidSearchStructureNoteException;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
-import com.sshyu.zibnote.domain.search.model.Search;
-import com.sshyu.zibnote.domain.search.model.SearchStructure;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
 import com.sshyu.zibnote.domain.search.port.out.SearchStructureNoteRepository;
-import com.sshyu.zibnote.domain.structure.model.Structure;
+import com.sshyu.zibnote.fixture.MemberFixture;
+import com.sshyu.zibnote.fixture.SearchStructureFixture;
+import com.sshyu.zibnote.fixture.SearchStructureNoteFixture;
 
 @ExtendWith(MockitoExtension.class)
 public class SearchStructureNoteServiceUnitTest {
@@ -36,79 +33,35 @@ public class SearchStructureNoteServiceUnitTest {
     @Mock
     SearchStructureNoteRepository searchStructureNoteRepository;
 
-    final static Long MEMBER_A = 555L;
-    final static Long MEMBER_B = 777L;
-    final static Long SEARCH_ID_OF_A = 22L;
-    final static Long SEARCH_STRUCTURE_ID_OF_A = 88993L;
+    final static Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
+    final static Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
+    final static Long SEARCH_STRUCTURE_ID_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_ID_OF_MEMBER_A;
+    final static Long SAVED_NOTE_ID_OF_A_1 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_1;
+    final static Long SAVED_NOTE_ID_OF_A_2 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_2;
     final static Long NEW_NOTE_ID = 9L;
-    final static Long SAVED_NOTE_ID_OF_A_1 = 88L;
-    final static Long SAVED_NOTE_ID_OF_A_2 = 89L;
     final static Long NOT_EXIST_NOTE_ID = 99999L;
-    final static Long NOTE_FIELD_ID_OF_A = 237L;    
-    final static Long STRUCTURE_ID = 33L;
 
-    SearchStructureNote validNoteOfMemberA;
-    SearchStructureNote invalidNote;
-    SearchStructureNote savedNote1;
-    SearchStructureNote savedNote2;
-    
-    @BeforeEach
-    void setUp() {
+    SearchStructureNote validNoteOfMemberA = SearchStructureNoteFixture.ofValidNote();
+    SearchStructureNote invalidNote = SearchStructureNoteFixture.ofInvalidNote();
+    SearchStructureNote savedNote1 = SearchStructureNoteFixture.ofNote1withMemberA();
+    SearchStructureNote savedNote2 = SearchStructureNoteFixture.ofNote2withMemberA();
 
-        Member memberA = Member.onlyId(MEMBER_A);
-        Structure structure = Structure.onlyId(STRUCTURE_ID);
-        Search searchOfMemberA = Search.builder()
-            .searchId(SEARCH_ID_OF_A)
-            .member(memberA)
-            .build();
-        SearchStructure searchStructureOfMemberA = SearchStructure.builder()
-            .searchStructureId(SEARCH_STRUCTURE_ID_OF_A)
-            .search(searchOfMemberA)
-            .structure(structure)
-            .build();
-        NoteField noteFieldOfMemberA = NoteField.builder()
-            .noteFieldId(NOTE_FIELD_ID_OF_A)
-            .member(memberA)
-            .name("놀이터")
-            .build();
-
-        validNoteOfMemberA = SearchStructureNote.builder()
-            .searchStructureNoteId(null)
-            .searchStructure(searchStructureOfMemberA)
-            .noteField(noteFieldOfMemberA)
-            .build();
-        invalidNote = SearchStructureNote.builder()
-            .searchStructureNoteId(null)
-            .searchStructure(searchStructureOfMemberA)
-            .noteField(null)
-            .build();
-        savedNote1 = SearchStructureNote.builder()
-            .searchStructureNoteId(SAVED_NOTE_ID_OF_A_1)
-            .searchStructure(searchStructureOfMemberA)
-            .noteField(noteFieldOfMemberA)
-            .build();
-        savedNote2 = SearchStructureNote.builder()
-            .searchStructureNoteId(SAVED_NOTE_ID_OF_A_2)
-            .searchStructure(searchStructureOfMemberA)
-            .noteField(noteFieldOfMemberA)
-            .build();
-    }
 
     @Test
     void registerSearchStructureNote_도메인_검증_실패시_예외_발생() {
 
         assertThrows(NotValidSearchStructureNoteException.class, () -> 
-            sut.registerSearchStructureNote(invalidNote, MEMBER_A));
+            sut.registerSearchStructureNote(invalidNote, MEMBER_A_ID));
     }
 
     @Test
     void registerSearchStructureNote_비인가_사용자_Search_접근시_예외_발생() {
 
-        given(searchStructureUseCase.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B))
+        given(searchStructureUseCase.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B_ID))
             .willThrow(UnauthorizedAccessException.class);
         
         assertThrows(UnauthorizedAccessException.class, () -> 
-            sut.registerSearchStructureNote(validNoteOfMemberA, MEMBER_B));
+            sut.registerSearchStructureNote(validNoteOfMemberA, MEMBER_B_ID));
     }
 
     @Test
@@ -117,18 +70,18 @@ public class SearchStructureNoteServiceUnitTest {
         given(searchStructureNoteRepository.save(validNoteOfMemberA))
             .willReturn(NEW_NOTE_ID);
 
-        assertThat(sut.registerSearchStructureNote(validNoteOfMemberA, MEMBER_A))
+        assertThat(sut.registerSearchStructureNote(validNoteOfMemberA, MEMBER_A_ID))
             .isEqualTo(NEW_NOTE_ID);
     }
 
     @Test
     void listSearchStructureNotesBySearchStructure_비인가_사용자_Search_접근시_예외_발생() {
 
-        given(searchStructureUseCase.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B))
+        given(searchStructureUseCase.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B_ID))
             .willThrow(UnauthorizedAccessException.class);
 
         assertThrows(UnauthorizedAccessException.class, () ->
-            sut.listSearchStructureNotesBySearchStructure(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B));
+            sut.listSearchStructureNotesBySearchStructure(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B_ID));
     }
 
     @Test
@@ -139,7 +92,7 @@ public class SearchStructureNoteServiceUnitTest {
         given(searchStructureNoteRepository.findAllBySearchStructureId(SEARCH_STRUCTURE_ID_OF_A))
             .willReturn(notes);
 
-        List<SearchStructureNote> result = sut.listSearchStructureNotesBySearchStructure(SEARCH_STRUCTURE_ID_OF_A, MEMBER_A);
+        List<SearchStructureNote> result = sut.listSearchStructureNotesBySearchStructure(SEARCH_STRUCTURE_ID_OF_A, MEMBER_A_ID);
 
         assertThat(result).hasSize(2)
             .extracting("searchStructureNoteId")
@@ -153,7 +106,7 @@ public class SearchStructureNoteServiceUnitTest {
             .willThrow(SearchStructureNoteNotFoundException.class);
 
         assertThrows(SearchStructureNoteNotFoundException.class, () -> 
-            sut.softDeleteSearchStructureNote(NOT_EXIST_NOTE_ID, MEMBER_A));
+            sut.softDeleteSearchStructureNote(NOT_EXIST_NOTE_ID, MEMBER_A_ID));
     }
 
     @Test
@@ -161,11 +114,11 @@ public class SearchStructureNoteServiceUnitTest {
 
         given(searchStructureNoteRepository.findBySearchStructureNoteId(SAVED_NOTE_ID_OF_A_1))
             .willReturn(savedNote1);
-        given(searchStructureUseCase.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B))
+        given(searchStructureUseCase.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B_ID))
             .willThrow(UnauthorizedAccessException.class);
 
         assertThrows(UnauthorizedAccessException.class, () -> 
-            sut.softDeleteSearchStructureNote(SAVED_NOTE_ID_OF_A_1, MEMBER_B));
+            sut.softDeleteSearchStructureNote(SAVED_NOTE_ID_OF_A_1, MEMBER_B_ID));
     }
 
     @Test
@@ -174,7 +127,7 @@ public class SearchStructureNoteServiceUnitTest {
         given(searchStructureNoteRepository.findBySearchStructureNoteId(SAVED_NOTE_ID_OF_A_1))
             .willReturn(savedNote1);
         
-        assertDoesNotThrow(() -> sut.softDeleteSearchStructureNote(SAVED_NOTE_ID_OF_A_1, MEMBER_A));
+        assertDoesNotThrow(() -> sut.softDeleteSearchStructureNote(SAVED_NOTE_ID_OF_A_1, MEMBER_A_ID));
     }
 
 }

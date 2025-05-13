@@ -19,13 +19,14 @@ import com.sshyu.zibnote.adapter.out.persistence.search.SearchStructureNotePersi
 import com.sshyu.zibnote.adapter.out.persistence.search.SearchStructurePersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.structure.StructurePersistenceAdapter;
 import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
-import com.sshyu.zibnote.domain.member.model.Member;
-import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
-import com.sshyu.zibnote.domain.search.model.Search;
-import com.sshyu.zibnote.domain.search.model.SearchStructure;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
-import com.sshyu.zibnote.domain.structure.model.Structure;
+import com.sshyu.zibnote.fixture.MemberFixture;
+import com.sshyu.zibnote.fixture.NoteFieldFixture;
+import com.sshyu.zibnote.fixture.SearchFixture;
+import com.sshyu.zibnote.fixture.SearchStructureFixture;
+import com.sshyu.zibnote.fixture.SearchStructureNoteFixture;
+import com.sshyu.zibnote.fixture.StructureFixture;
 
 import jakarta.persistence.EntityManager;
 
@@ -51,16 +52,6 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Autowired
     MemberPersistenceAdapter memberPersistenceAdapter;
 
-    final static String MEMBER_NAME = "sshyu";
-    final static String NOTE_FIELD_NAME_1 = "놀이터";
-    final static String NOTE_FIELD_NAME_2 = "상권과 거리";
-    final static String SEARCH_TITLE = "산본역 2025 임장";
-    final static String SEARCH_REGION = "경기도 군포시";
-    final static String STTURTURE_NAME_1 = "대림솔거아파트";
-    final static String STTURTURE_NAME_2 = "한양백두9단지아파트";
-    final static String STRUCTURE_ADDRESS_1 = "경기 군포시 산본동 1146";
-    final static String STRUCTURE_ADDRESS_2 = "경기 군포시 산본동 1119";
-
     Long memberId;
     Long searchId;
     Long structureId1;
@@ -77,75 +68,23 @@ public class SearchStructureNoteServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         
-        memberId = memberPersistenceAdapter.save(
-            Member.builder().name(MEMBER_NAME).build()
-        );
+        memberId = memberPersistenceAdapter.save(MemberFixture.withoutId(MemberFixture.NAME));
 
-        searchId = searchPersistenceAdapter.save(
-            Search.builder()
-                .member(Member.onlyId(memberId))
-                .title(SEARCH_TITLE)
-                .region(SEARCH_REGION)
-                .build()
-        );
+        searchId = searchPersistenceAdapter.save(SearchFixture.withoutId(memberId, SearchFixture.TITLE, SearchFixture.REGION));
 
-        structureId1 = structurePersistenceAdapter.save(
-            Structure.builder()
-                .name(STTURTURE_NAME_1)
-                .numberAddress(STRUCTURE_ADDRESS_1)
-                .builtYear(1992)
-                .build()
-        );
-        structureId2 = structurePersistenceAdapter.save(
-            Structure.builder()
-                .name(STTURTURE_NAME_2)
-                .numberAddress(STRUCTURE_ADDRESS_2)
-                .builtYear(1994)
-                .build()
-        );
+        structureId1 = structurePersistenceAdapter.save(StructureFixture.ofStructureAptSollWithoutId());
+        structureId2 = structurePersistenceAdapter.save(StructureFixture.ofStructureBaekduAptWithoutId());
         
-        searchStructureId1 = searchStructurePersistenceAdapter.save(
-            SearchStructure.builder()
-                .search(Search.onlyId(searchId))
-                .structure(Structure.onlyId(structureId1))
-                .build()
-        );
-        searchStructureId2 = searchStructurePersistenceAdapter.save(
-            SearchStructure.builder()
-                .search(Search.onlyId(searchId))
-                .structure(Structure.onlyId(structureId2))
-                .build()
-        );
+        searchStructureId1 = searchStructurePersistenceAdapter.save(SearchStructureFixture.withoutId(searchId, structureId1));
+        searchStructureId2 = searchStructurePersistenceAdapter.save(SearchStructureFixture.withoutId(searchId, structureId2));
 
-        noteFieldId1 = noteFieldPersistenceAdapter.save(
-            NoteField.builder()
-                .member(Member.onlyId(memberId))
-                .name(NOTE_FIELD_NAME_1)
-                .build()
-        );
-        noteFieldId2 = noteFieldPersistenceAdapter.save(
-            NoteField.builder()
-                .member(Member.onlyId(memberId))
-                .name(NOTE_FIELD_NAME_2)
-                .build()
-        );
+        noteFieldId1 = noteFieldPersistenceAdapter.save(NoteFieldFixture.withoutId(memberId, NoteFieldFixture.NAME_1));
+        noteFieldId2 = noteFieldPersistenceAdapter.save(NoteFieldFixture.withoutId(memberId, NoteFieldFixture.NAME_2));
 
-        noteWithSearchStructure1AndNoteField1 = SearchStructureNote.builder()
-            .searchStructure(SearchStructure.onlyId(searchStructureId1))
-            .noteField(NoteField.onlyId(noteFieldId1))
-            .build();
-        noteWithSearchStructure1AndNoteField2 = SearchStructureNote.builder()
-            .searchStructure(SearchStructure.onlyId(searchStructureId1))
-            .noteField(NoteField.onlyId(noteFieldId2))
-            .build();
-        noteWithSearchStructure2AndNoteField1 = SearchStructureNote.builder()
-            .searchStructure(SearchStructure.onlyId(searchStructureId2))
-            .noteField(NoteField.onlyId(noteFieldId1))
-            .build();
-        noteWithSearchStructure2AndNoteField2 = SearchStructureNote.builder()
-            .searchStructure(SearchStructure.onlyId(searchStructureId2))
-            .noteField(NoteField.onlyId(noteFieldId2))
-            .build();
+        noteWithSearchStructure1AndNoteField1 = SearchStructureNoteFixture.withoutId(searchStructureId1, noteFieldId1);
+        noteWithSearchStructure1AndNoteField2 = SearchStructureNoteFixture.withoutId(searchStructureId1, noteFieldId2);
+        noteWithSearchStructure2AndNoteField1 = SearchStructureNoteFixture.withoutId(searchStructureId2, noteFieldId1);
+        noteWithSearchStructure2AndNoteField2 = SearchStructureNoteFixture.withoutId(searchStructureId2, noteFieldId2);
     }
 
     @Test
