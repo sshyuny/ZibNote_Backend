@@ -24,21 +24,21 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             return true; // 무조건 통과
         }
 
-        String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT 토큰이 없습니다.");
             return false;
         }
         
-        String token = authHeader.substring(7);
+        final String token = authHeader.substring(7);
 
         if (!jwtUtil.validateToken(token)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "잘못된 접근입니다.");
             return false;
         }
         
-        Long memberId = jwtUtil.extractMemberId(token);
+        final Long memberId = jwtUtil.extractMemberId(token);
         request.setAttribute("memberId", memberId);
         return true;
     }

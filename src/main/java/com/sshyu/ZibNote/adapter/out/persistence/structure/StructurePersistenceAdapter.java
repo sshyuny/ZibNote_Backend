@@ -25,7 +25,7 @@ public class StructurePersistenceAdapter implements StructureRepository {
     @Override
     public Long save(final Structure structure) {
 
-        StructureEntity structureEntity = StructureEntityMapper.toEntity(structure);
+        final StructureEntity structureEntity = StructureEntityMapper.toEntity(structure);
         structureJpaRepository.save(structureEntity);
 
         return structureEntity.getStructureId();
@@ -34,14 +34,14 @@ public class StructurePersistenceAdapter implements StructureRepository {
     @Override
     public Structure findByStructureId(final Long structureId) {
 
-        StructureEntity structureEntity = structureJpaRepository.findById(structureId)
+        final StructureEntity structureEntity = structureJpaRepository.findById(structureId)
             .orElseThrow(() -> new StructureNotFoundException());
             
         return StructureEntityMapper.toDomain(structureEntity);
     }
 
     @Override
-    public List<Structure> findTop10ByNumberAddressContaining(String keyword) {
+    public List<Structure> findTop10ByNumberAddressContaining(final String keyword) {
 
         return structureJpaRepository.findTop10ByNumberAddressContaining(keyword).stream()
             .map(entity -> StructureEntityMapper.toDomain(entity))
@@ -49,7 +49,7 @@ public class StructurePersistenceAdapter implements StructureRepository {
     }
 
     @Override
-    public List<Structure> findTop10ByRoadAddressContaining(String keyword) {
+    public List<Structure> findTop10ByRoadAddressContaining(final String keyword) {
 
         return structureJpaRepository.findTop10ByRoadAddressContaining(keyword).stream()
             .map(entity -> StructureEntityMapper.toDomain(entity))

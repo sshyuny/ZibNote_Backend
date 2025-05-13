@@ -10,17 +10,17 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder @Getter
 public class SearchStructureNote extends BaseFields {
     
-    private Long searchStructureNoteId;
+    private final Long searchStructureNoteId;
 
-    private SearchStructure searchStructure;
+    private final SearchStructure searchStructure;
 
-    private NoteField noteField;
+    private final NoteField noteField;
 
-    private EvalType evalType;
+    private final EvalType evalType;
 
-    private String evalValue;
+    private final String evalValue;
 
-    private String note;
+    private final String note;
 
     public void validateForRegister() {
         if (searchStructure == null || searchStructure.getSearchStructureId() == null) {

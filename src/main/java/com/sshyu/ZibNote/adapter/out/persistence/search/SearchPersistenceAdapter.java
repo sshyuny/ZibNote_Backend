@@ -28,7 +28,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
 
         final MemberEntity memberRef = MemberEntity.ref(search.getMember().getMemberId());
 
-        SearchEntity searchEntity = SearchEntity.builder()
+        final SearchEntity searchEntity = SearchEntity.builder()
             .memberEntity(memberRef)
             .title(search.getTitle() )
             .region(search.getRegion())
@@ -42,7 +42,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
     @Override
     public Search findBySearchId(final Long searchId) {
 
-        SearchEntity searchEntity = searchJpaRepository.findById(searchId)
+        final SearchEntity searchEntity = searchJpaRepository.findById(searchId)
             .orElseThrow(() -> new SearchNotFoundException());
 
         return SearchEntityMapper.toDomain(searchEntity);
@@ -60,8 +60,10 @@ public class SearchPersistenceAdapter implements SearchRepository {
 
     @Override
     public void softDeleteBySearchId(final Long searchId) {
-        SearchEntity searchEntity = searchJpaRepository.findById(searchId)
+
+        final SearchEntity searchEntity = searchJpaRepository.findById(searchId)
             .orElseThrow(() -> new SearchNotFoundException());
+
         searchEntity.softDelete();
         searchJpaRepository.save(searchEntity);
     }

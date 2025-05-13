@@ -23,27 +23,28 @@ import lombok.RequiredArgsConstructor;
 public class StructureController {
 
     @Autowired
-    StructureUseCase structureUseCase;
+    private final StructureUseCase structureUseCase;
     
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<StructureResDto>>> listAddress(@RequestParam(value = "address", required = false) String address, 
+    public ResponseEntity<ApiResponse<List<StructureResDto>>> listAddress(
+            @RequestParam(value = "address", required = false) String address, 
             @RequestParam(value = "name", required = false) String name) {
     
         if (address != null && !address.isEmpty()) {
-            List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
+            final List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
                 .map(domain -> StructureDtoMapper.toResDto(domain))
                 .collect(Collectors.toList());
             return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
         }
 
         if (name != null && !name.isEmpty()) {
-            List<StructureResDto> resDtos = structureUseCase.listStructuresByName(name).stream()
+            final List<StructureResDto> resDtos = structureUseCase.listStructuresByName(name).stream()
                 .map(domain -> StructureDtoMapper.toResDto(domain))
                 .collect(Collectors.toList());
             return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
         }
 
-        List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
+        final List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
             .map(domain -> StructureDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
         return ResponseEntity.ok(ApiResponse.successWithData(resDtos));

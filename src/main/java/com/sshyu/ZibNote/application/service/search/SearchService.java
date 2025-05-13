@@ -24,7 +24,7 @@ public class SearchService implements SearchUseCase {
      * @param search 등록하려는 Search
      */
     @Override
-    public void registerSearch(Search search) {
+    public void registerSearch(final Search search) {
 
         searchRepository.save(search);
     }
@@ -37,7 +37,7 @@ public class SearchService implements SearchUseCase {
      * @throws SearchNotFoundException 일치하는 Search가 없는 경우
      */
     @Override
-    public Search getSearch(Long searchId) {
+    public Search getSearch(final Long searchId) {
 
         return searchRepository.findBySearchId(searchId);
     }
@@ -49,7 +49,7 @@ public class SearchService implements SearchUseCase {
      * @return 로그인한 사용자가 등록한 Search 목록
      */
     @Override
-    public List<Search> listSearchesByMember(Long memberId) {
+    public List<Search> listSearchesByMember(final Long memberId) {
         
         return searchRepository.findAllByMemberId(memberId);
     }
@@ -67,7 +67,7 @@ public class SearchService implements SearchUseCase {
      * @throws UnauthorizedAccessException 로그인한 사용자가 Search 접근 권한 없는 경우
      */
     @Override
-    public void softDeleteSearch(Long searchId, Long memberId) {
+    public void softDeleteSearch(final Long searchId, final Long memberId) {
 
         assertSearchOwner(searchId, memberId);
 
@@ -88,9 +88,9 @@ public class SearchService implements SearchUseCase {
      * @throws UnauthorizedAccessException 주어진 계정에 Search 접근 권한 없는 경우
      */
     @Override
-    public Search assertSearchOwner(Long searchId, Long memberId) {
+    public Search assertSearchOwner(final Long searchId, final Long memberId) {
 
-        Search search = searchRepository.findBySearchId(searchId);
+        final Search search = searchRepository.findBySearchId(searchId);
         search.assureOwner(memberId);
 
         return search;

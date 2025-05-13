@@ -24,9 +24,9 @@ public class JwtUtil {
      * @param memberId 로그인할 ID
      * @return 발급된 JWT 토큰
      */
-    public String generateToken(Long memberId) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + validityInMs);
+    public String generateToken(final Long memberId) {
+        final Date now = new Date();
+        final Date expiry = new Date(now.getTime() + validityInMs);
         
         return Jwts.builder()
             .subject(String.valueOf(memberId))
@@ -42,13 +42,15 @@ public class JwtUtil {
      * @param token JWT 토큰
      * @return 사용자 ID
      */
-    public Long extractMemberId(String token) {
-        String memberIdStr = Jwts.parser()
+    public Long extractMemberId(final String token) {
+
+        final String memberIdStr = Jwts.parser()
             .verifyWith(randomKey)
             .build()
             .parseSignedClaims(token)
             .getPayload()
             .getSubject();
+            
         return Long.valueOf(memberIdStr);
     }
 
@@ -58,7 +60,7 @@ public class JwtUtil {
      * @param token JWT 토큰
      * @return 유효한 토큰 여부
      */
-    public boolean validateToken(String token) {
+    public boolean validateToken(final String token) {
         try {
             Jwts.parser()
                 .verifyWith(randomKey)

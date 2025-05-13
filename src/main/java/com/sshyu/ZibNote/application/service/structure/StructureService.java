@@ -25,7 +25,7 @@ public class StructureService implements StructureUseCase {
      * @param structureId 조회 대상 ID
      */
     @Override
-    public Structure getStructure(Long structureId) {
+    public Structure getStructure(final Long structureId) {
 
         return structureRepository.findByStructureId(structureId);
     }
@@ -43,14 +43,14 @@ public class StructureService implements StructureUseCase {
      * @return 검색된 Sturcture 목록
      */
     @Override
-    public List<Structure> listStructuresByAddress(String address) {
+    public List<Structure> listStructuresByAddress(final String address) {
 
-        List<Structure> domainsByNumberAddress = structureRepository.findTop10ByNumberAddressContaining(address);
+        final List<Structure> domainsByNumberAddress = structureRepository.findTop10ByNumberAddressContaining(address);
         if (domainsByNumberAddress.size() >= 8) { return domainsByNumberAddress; }
 
-        List<Structure> domainsByRoadAddress = structureRepository.findTop10ByRoadAddressContaining(address);
+        final List<Structure> domainsByRoadAddress = structureRepository.findTop10ByRoadAddressContaining(address);
 
-        Map<Long, Structure> domains = new HashMap<>();
+        final Map<Long, Structure> domains = new HashMap<>();
         Stream.concat(domainsByNumberAddress.stream(), domainsByRoadAddress.stream())
                 .forEach(domain -> domains.putIfAbsent(domain.getStructureId(), domain));
 
@@ -64,7 +64,7 @@ public class StructureService implements StructureUseCase {
      * @return 검색된 Structure 목록
      */
     @Override
-    public List<Structure> listStructuresByName(String name) {
+    public List<Structure> listStructuresByName(final String name) {
 
         return structureRepository.findTop10ByNameContaining(name);
     }

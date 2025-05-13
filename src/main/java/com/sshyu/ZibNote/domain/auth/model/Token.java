@@ -6,6 +6,6 @@ import lombok.Getter;
 @Builder @Getter
 public class Token {
     
-    private String token;
+    private final String token;
 
 }

@@ -6,7 +6,7 @@ import com.sshyu.zibnote.domain.note.model.NoteField;
 
 public class NoteFieldEntityMapper {
 
-    public static NoteField toDomain(NoteFieldEntity entity) {
+    public static NoteField toDomain(final NoteFieldEntity entity) {
         return NoteField.builder()
                     .noteFieldId(entity.getNoteFieldId())
                     .member(MemberEntityMapper.toDomain(entity.getMemberEntity()))
@@ -18,7 +18,7 @@ public class NoteFieldEntityMapper {
                     .build();
     }
     
-    public static NoteFieldEntity toEntity(NoteField domain) {
+    public static NoteFieldEntity toEntity(final NoteField domain) {
         return NoteFieldEntity.builder()
                     .noteFieldId(domain.getNoteFieldId())
                     .memberEntity(MemberEntityMapper.toEntity(domain.getMember()))

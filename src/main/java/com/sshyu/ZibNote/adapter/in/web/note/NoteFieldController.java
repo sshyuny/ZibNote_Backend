@@ -46,7 +46,7 @@ public class NoteFieldController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<NoteFieldResDto>>> getList() {
 
-        List<NoteFieldResDto> noteFieldResDtos = noteFieldUseCase.listNoteFieldsByMember(authUseCase.getMemberId())
+        final List<NoteFieldResDto> noteFieldResDtos = noteFieldUseCase.listNoteFieldsByMember(authUseCase.getMemberId())
             .stream()
             .map(domain -> NoteFieldResDto.builder()
                 .noteFieldId(domain.getNoteFieldId())

@@ -15,7 +15,7 @@ public class ApiResponse<T> {
     private String message;
     private T data;
 
-    public static <T> ApiResponse<T> successWithDataAndMessage(T data, String message) {
+    public static <T> ApiResponse<T> successWithDataAndMessage(final T data, final String message) {
         return ApiResponse.<T>builder()
                 .code("success")
                 .data(data)
@@ -23,14 +23,14 @@ public class ApiResponse<T> {
                 .build();
     }
 
-    public static <T> ApiResponse<T> successWithData(T data) {
+    public static <T> ApiResponse<T> successWithData(final T data) {
         return ApiResponse.<T>builder()
                 .code("success")
                 .data(data)
                 .build();
     }
 
-    public static ApiResponse<Void> successWithMessage(String message) {
+    public static ApiResponse<Void> successWithMessage(final String message) {
         return ApiResponse.<Void>builder()
                 .code("success")
                 .data(null)
@@ -38,7 +38,7 @@ public class ApiResponse<T> {
                 .build();
     }
 
-    public static ApiResponse<Void> codeAndMessage(String code, String message) {
+    public static ApiResponse<Void> codeAndMessage(final String code, final String message) {
         return ApiResponse.<Void>builder()
                 .code(code)
                 .message(message)
@@ -46,7 +46,7 @@ public class ApiResponse<T> {
                 .build();
     }
 
-    public static ApiResponse<Void> onlyCode(String code) {
+    public static ApiResponse<Void> onlyCode(final String code) {
         return ApiResponse.<Void>builder()
                 .code(code)
                 .data(null)

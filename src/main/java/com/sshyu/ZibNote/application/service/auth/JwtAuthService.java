@@ -30,11 +30,11 @@ public class JwtAuthService implements AuthUseCase {
      * @return 발급된 JWT 토큰
      */
     @Override
-    public Token login(String name) {
+    public Token login(final String name) {
 
-        Member member = memberUseCase.findByName(name);
+        final Member member = memberUseCase.findByName(name);
         
-        String token = jwtUtil.generateToken(member.getMemberId());
+        final String token = jwtUtil.generateToken(member.getMemberId());
         
         return Token.builder().token(token).build();
     }

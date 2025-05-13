@@ -8,12 +8,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.sshyu.zibnote.configure.interceptor.LoginCheckInterceptor;
 
+import lombok.RequiredArgsConstructor;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
-    LoginCheckInterceptor loginCheckInterceptor;
+    private final LoginCheckInterceptor loginCheckInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

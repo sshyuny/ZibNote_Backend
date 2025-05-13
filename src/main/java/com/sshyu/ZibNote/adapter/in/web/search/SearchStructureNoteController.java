@@ -33,7 +33,7 @@ public class SearchStructureNoteController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody NotePostReqDto reqDto) {
 
-        Long memberId = authUseCase.getMemberId();
+        final Long memberId = authUseCase.getMemberId();
         searchStructureNoteUseCase.registerSearchStructureNote(SearchStructureNoteDtoMapper.toDomain(reqDto), memberId);
 
         return ResponseEntity.ok(ApiResponse.successWithMessage("저장 성공!"));
@@ -42,7 +42,7 @@ public class SearchStructureNoteController {
     @DeleteMapping
     public ResponseEntity<ApiResponse<Void>> delete(@RequestBody NoteDeleteReqDto reqDto) {
 
-        Long memberId = authUseCase.getMemberId();
+        final Long memberId = authUseCase.getMemberId();
         searchStructureNoteUseCase.softDeleteSearchStructureNote(reqDto.getSearchStructureNoteId(), memberId);
 
         return ResponseEntity.ok(ApiResponse.successWithMessage("삭제 완료"));
@@ -51,8 +51,8 @@ public class SearchStructureNoteController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<NoteResDto>>> getList(@RequestBody NoteGetListReqDto reqDto) {
 
-        Long memberId = authUseCase.getMemberId();
-        List<NoteResDto> list = searchStructureNoteUseCase.listSearchStructureNotesBySearchStructure(reqDto.getSearchStructureId(), memberId)
+        final Long memberId = authUseCase.getMemberId();
+        final List<NoteResDto> list = searchStructureNoteUseCase.listSearchStructureNotesBySearchStructure(reqDto.getSearchStructureId(), memberId)
             .stream()
             .map(domain -> SearchStructureNoteDtoMapper.toResDto(domain))
             .collect(Collectors.toList());

@@ -10,15 +10,21 @@ import lombok.experimental.SuperBuilder;
 @Getter @SuperBuilder
 public class Structure extends BaseFields {
     
-    private Long structureId;
-    private String name;
-    private String numberAddress;
-    private String roadAddress;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
-    private Integer builtYear;
+    private final Long structureId;
 
-    public static Structure onlyId(Long structureId) {
+    private final String name;
+
+    private final String numberAddress;
+
+    private final String roadAddress;
+
+    private final BigDecimal latitude;
+
+    private final BigDecimal longitude;
+
+    private final Integer builtYear;
+
+    public static Structure onlyId(final Long structureId) {
         return Structure.builder()
                     .structureId(structureId)
                     .build();

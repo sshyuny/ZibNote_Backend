@@ -5,7 +5,7 @@ import com.sshyu.zibnote.domain.member.model.Member;
 
 public class MemberEntityMapper {
     
-    public static Member toDomain(MemberEntity entity) {
+    public static Member toDomain(final MemberEntity entity) {
 
         if (entity == null) { return Member.builder().build(); }
 
@@ -18,7 +18,7 @@ public class MemberEntityMapper {
                     .build();
     }
 
-    public static MemberEntity toEntity(Member domain) {
+    public static MemberEntity toEntity(final Member domain) {
 
         if (domain == null) { return MemberEntity.builder().build(); }
         

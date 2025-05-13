@@ -28,7 +28,7 @@ public class MemberController {
     @PostMapping("/pass/api/login")
     public ResponseEntity<ApiResponse<String>> login(HttpSession httpSession, @RequestBody LoginReqDto loginReqDto) {
 
-        Token token = authUseCase.login(loginReqDto.getName());
+        final Token token = authUseCase.login(loginReqDto.getName());
         log.info("로그인 성공! " + loginReqDto.getName());
 
         return ResponseEntity
@@ -56,7 +56,7 @@ public class MemberController {
     @GetMapping("/api/member")
     public ResponseEntity<ApiResponse<String>> get() {
 
-        String memberName = memberUseCase.getMember(authUseCase.getMemberId()).getName();
+        final String memberName = memberUseCase.getMember(authUseCase.getMemberId()).getName();
         return ResponseEntity.ok(ApiResponse.successWithData(memberName));
     }
 

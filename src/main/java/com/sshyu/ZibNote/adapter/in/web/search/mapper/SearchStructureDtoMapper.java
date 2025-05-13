@@ -8,7 +8,7 @@ import com.sshyu.zibnote.domain.structure.model.Structure;
 
 public class SearchStructureDtoMapper {
     
-    public static SearchStructureResDto toResDto(SearchStructure domain) {
+    public static SearchStructureResDto toResDto(final SearchStructure domain) {
         return SearchStructureResDto.builder()
                     .searchStructureId(domain.getSearchStructureId())
                     .searchId(domain.getSearch().getSearchId())
@@ -19,7 +19,7 @@ public class SearchStructureDtoMapper {
                     .build();
     }
 
-    public static SearchStructure toDomain(SearchStructureReqDto reqDto) {
+    public static SearchStructure toDomain(final SearchStructureReqDto reqDto) {
         return SearchStructure.builder()
                     .search(Search.onlyId(reqDto.getSearchId()))
                     .structure(Structure.onlyId(reqDto.getStructureId()))

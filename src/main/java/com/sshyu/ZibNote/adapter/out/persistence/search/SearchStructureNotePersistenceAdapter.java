@@ -24,24 +24,25 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
     private final SearchStructureNoteJpaRepository searchStructureNoteJpaRepository;
 
     @Override
-    public Long save(SearchStructureNote searchStructureNote) {
+    public Long save(final SearchStructureNote searchStructureNote) {
 
-        SearchStructureNoteEntity entity = SearchStructureNoteEntityMapper.toEntity(searchStructureNote);
+        final SearchStructureNoteEntity entity = SearchStructureNoteEntityMapper.toEntity(searchStructureNote);
         searchStructureNoteJpaRepository.save(entity);
+
         return entity.getSearchStructureNoteId();
     }
 
     @Override
-    public SearchStructureNote findBySearchStructureNoteId(Long searchStructureNoteId) {
+    public SearchStructureNote findBySearchStructureNoteId(final Long searchStructureNoteId) {
 
-        SearchStructureNoteEntity searchStructureEntity = searchStructureNoteJpaRepository.findById(searchStructureNoteId)
+        final SearchStructureNoteEntity entity = searchStructureNoteJpaRepository.findById(searchStructureNoteId)
             .orElseThrow(() -> new SearchStructureNoteNotFoundException());
         
-        return SearchStructureNoteEntityMapper.toDomain(searchStructureEntity);
+        return SearchStructureNoteEntityMapper.toDomain(entity);
     }
 
     @Override
-    public List<SearchStructureNote> findAllBySearchStructureId(Long searchStructureId) {
+    public List<SearchStructureNote> findAllBySearchStructureId(final Long searchStructureId) {
 
         final SearchStructureEntity searchStructureRef = SearchStructureEntity.ref(searchStructureId);
 
@@ -51,9 +52,9 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
     }
 
     @Override
-    public void softDeleteBySearchStructureNoteId(Long searchStructureNoteId) {
+    public void softDeleteBySearchStructureNoteId(final Long searchStructureNoteId) {
 
-        SearchStructureNoteEntity entity = searchStructureNoteJpaRepository.findById(searchStructureNoteId)
+        final SearchStructureNoteEntity entity = searchStructureNoteJpaRepository.findById(searchStructureNoteId)
             .orElseThrow(() -> new SearchStructureNoteNotFoundException());
         
         entity.softDelete();

@@ -19,9 +19,9 @@ public class SessionAuthService implements AuthUseCase {
     private final MemberUseCase memberUseCase;
 
     @Override
-    public Token login(String name) {
+    public Token login(final String name) {
 
-        Member member = memberUseCase.findByName(name);
+        final Member member = memberUseCase.findByName(name);
         
         HttpSession httpSession = httpSessionProvider.getObject();
         
@@ -44,7 +44,7 @@ public class SessionAuthService implements AuthUseCase {
     public Long getMemberId() {
 
         HttpSession httpSession = httpSessionProvider.getObject();
-        SessionMember sessionMember = (SessionMember) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
+        final SessionMember sessionMember = (SessionMember) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
 
         return sessionMember.getMemberId();
     }

@@ -32,7 +32,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
         final SearchEntity searchRef = SearchEntity.ref(searchStructure.getSearch().getSearchId());
         final StructureEntity structureRef = StructureEntity.ref(searchStructure.getStructure().getStructureId());
 
-        SearchStructureEntity searchStructureEntity = SearchStructureEntity.builder()
+        final SearchStructureEntity searchStructureEntity = SearchStructureEntity.builder()
             .searchEntity(searchRef)
             .structureEntity(structureRef)
             .description(searchStructure.getDescription())
@@ -62,7 +62,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     @Override
     public List<SearchStructure> findAllBySearchId(final Long searchId) {
 
-        SearchEntity searchRef = SearchEntity.ref(searchId);
+        final SearchEntity searchRef = SearchEntity.ref(searchId);
 
         return searchStructureJpaRepository.findAllBySearchEntity(searchRef).stream()
                     .map(result -> SearchStructureEntityMapper.toDomain(result))
@@ -71,11 +71,12 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
 
     @Override
     public void softDeleteBySearchStructureId(final Long searchStructureId) {
-        SearchStructureEntity searchStructureEntity = searchStructureJpaRepository.findById(searchStructureId)
+
+        final SearchStructureEntity searchStructureEntity = searchStructureJpaRepository.findById(searchStructureId)
             .orElseThrow(() -> new SearchStructureNotFoundException());
+
         searchStructureEntity.softDelete();
         searchStructureJpaRepository.save(searchStructureEntity);
     }
 
-    
 }

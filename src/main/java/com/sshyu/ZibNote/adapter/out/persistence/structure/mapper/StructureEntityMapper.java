@@ -5,7 +5,7 @@ import com.sshyu.zibnote.domain.structure.model.Structure;
 
 public class StructureEntityMapper {
     
-    public static Structure toDomain(StructureEntity entity) {
+    public static Structure toDomain(final StructureEntity entity) {
         return Structure.builder()
                     .structureId(entity.getStructureId())
                     .name(entity.getName())
@@ -20,7 +20,7 @@ public class StructureEntityMapper {
                     .build();
     }
 
-    public static StructureEntity toEntity(Structure domain) {
+    public static StructureEntity toEntity(final Structure domain) {
 
         if (domain == null) {return StructureEntity.builder().build();}
 

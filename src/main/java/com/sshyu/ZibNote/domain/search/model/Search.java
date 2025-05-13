@@ -20,13 +20,13 @@ public class Search extends BaseFields {
 
     private final String description;
 
-    public void assureOwner(Long memberId) {
+    public void assureOwner(final Long memberId) {
         if (!this.member.getMemberId().equals(memberId)) {
             throw new UnauthorizedAccessException();
         }
     }
 
-    public static Search onlyId(Long searchId) {
+    public static Search onlyId(final Long searchId) {
         return Search.builder()
                     .searchId(searchId)
                     .build();

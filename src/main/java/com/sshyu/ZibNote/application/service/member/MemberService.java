@@ -20,7 +20,7 @@ public class MemberService implements MemberUseCase {
      * @param member 등록할 사용자
      */
     @Override
-    public void register(Member member) {
+    public void register(final Member member) {
 
         memberRepository.save(member);        
     }
@@ -32,7 +32,8 @@ public class MemberService implements MemberUseCase {
      * @return 검색된 사용자
      */
     @Override
-    public Member findByName(String name) {
+    public Member findByName(final String name) {
+
         return memberRepository.findByName(name);
     }
 
@@ -43,7 +44,8 @@ public class MemberService implements MemberUseCase {
      * @return ID에 일치하는 Member
      */
     @Override
-    public Member getMember(Long memberId) {
+    public Member getMember(final Long memberId) {
+        
         return memberRepository.findByMemberId(memberId);
     }
 

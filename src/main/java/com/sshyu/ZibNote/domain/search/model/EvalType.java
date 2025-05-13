@@ -9,7 +9,7 @@ public enum EvalType {
 
     private String name;
     
-    private EvalType(String name) {
+    private EvalType(final String name) {
         this.name = name;
     }
 

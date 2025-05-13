@@ -6,7 +6,7 @@ import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 
 public class SearchStructureNoteEntityMapper {
     
-    public static SearchStructureNote toDomain(SearchStructureNoteEntity entity) {
+    public static SearchStructureNote toDomain(final SearchStructureNoteEntity entity) {
         return SearchStructureNote.builder()
                     .searchStructureNoteId(entity.getSearchStructureNoteId())
                     .searchStructure(SearchStructureEntityMapper.toDomain(entity.getSearchStructureEntity()))
@@ -20,7 +20,7 @@ public class SearchStructureNoteEntityMapper {
                     .build();
     }
 
-    public static SearchStructureNoteEntity toEntity(SearchStructureNote domain) {
+    public static SearchStructureNoteEntity toEntity(final SearchStructureNote domain) {
         return SearchStructureNoteEntity.builder()
                     .searchStructureNoteId(domain.getSearchStructureNoteId())
                     .searchStructureEntity(SearchStructureEntityMapper.toEntity(domain.getSearchStructure()))

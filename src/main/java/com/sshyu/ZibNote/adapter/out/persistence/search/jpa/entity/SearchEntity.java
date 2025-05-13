@@ -42,7 +42,7 @@ public class SearchEntity extends BaseEntity {
     @Column(length = 255)
     private String description;
 
-    public static SearchEntity ref(Long searchId) {
+    public static SearchEntity ref(final Long searchId) {
         return SearchEntity.builder()
                     .searchId(searchId)
                     .build();

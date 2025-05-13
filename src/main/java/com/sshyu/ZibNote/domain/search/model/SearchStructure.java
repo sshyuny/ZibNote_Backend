@@ -10,15 +10,15 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder @Getter
 public class SearchStructure extends BaseFields {
     
-    private Long searchStructureId;
+    private final Long searchStructureId;
 
-    private Search search;
+    private final Search search;
 
-    private Structure structure;
+    private final Structure structure;
 
-    private String description;
+    private final String description;
 
-    public static SearchStructure onlyId(Long searchStructureId) {
+    public static SearchStructure onlyId(final Long searchStructureId) {
         return SearchStructure.builder()
                     .searchStructureId(searchStructureId)
                     .build();

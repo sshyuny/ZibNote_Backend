@@ -22,7 +22,7 @@ public class NoteFieldService implements NoteFieldUseCase {
      * @param noteField 등록하려는 NoteField
      */
     @Override
-    public void registerNoteField(NoteField noteField) {
+    public void registerNoteField(final NoteField noteField) {
 
         noteFieldRepository.save(noteField);
     }
@@ -34,7 +34,7 @@ public class NoteFieldService implements NoteFieldUseCase {
      * @return 로그인한 사용자가 등록한 NoteField 목록
      */
     @Override
-    public List<NoteField> listNoteFieldsByMember(Long memberId) {
+    public List<NoteField> listNoteFieldsByMember(final Long memberId) {
 
         return noteFieldRepository.findAllByMemberId(memberId);
     }
@@ -51,9 +51,9 @@ public class NoteFieldService implements NoteFieldUseCase {
      * @param memberId 로그인한 사용자 ID
      */
     @Override
-    public void softDeleteNoteField(Long noteFieldId, Long memberId) {
+    public void softDeleteNoteField(final Long noteFieldId, final Long memberId) {
 
-        NoteField selectedNoteField = noteFieldRepository.findByNoteFieldId(noteFieldId);
+        final NoteField selectedNoteField = noteFieldRepository.findByNoteFieldId(noteFieldId);
         
         selectedNoteField.assureOwner(memberId);
 

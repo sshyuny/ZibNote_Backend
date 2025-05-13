@@ -8,7 +8,7 @@ import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 
 public class SearchStructureNoteDtoMapper {
     
-    public static SearchStructureNote toDomain(NotePostReqDto reqDto) {
+    public static SearchStructureNote toDomain(final NotePostReqDto reqDto) {
         return SearchStructureNote.builder()
                     .searchStructure(SearchStructure.onlyId(reqDto.getSearchStructureId()))
                     .noteField(NoteField.onlyId(reqDto.getNoteFieldId()))
@@ -18,7 +18,7 @@ public class SearchStructureNoteDtoMapper {
                     .build();
     }
 
-    public static NoteResDto toResDto(SearchStructureNote domain) {
+    public static NoteResDto toResDto(final SearchStructureNote domain) {
         return NoteResDto.builder()
                     .searchStructureNoteId(domain.getSearchStructureNoteId())
                     .searchStructureId(domain.getSearchStructure().getSearchStructureId())

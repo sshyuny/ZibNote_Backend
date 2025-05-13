@@ -54,7 +54,7 @@ public class SearchController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<SearchResDto>>> getList() {
 
-        List<SearchResDto> resDtos = searchUseCase.listSearchesByMember(authUseCase.getMemberId())
+        final List<SearchResDto> resDtos = searchUseCase.listSearchesByMember(authUseCase.getMemberId())
             .stream()
             .map(domain -> SearchResDto.builder()
                 .searchId(domain.getSearchId())

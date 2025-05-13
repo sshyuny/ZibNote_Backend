@@ -20,9 +20,9 @@ public class MemberPersistenceAdapter implements MemberRepository {
     private final MemberJpaRepository memberJpaRepository;
 
     @Override
-    public Long save(Member member) {
+    public Long save(final Member member) {
         
-        MemberEntity memberEntity = MemberEntity.builder()
+        final MemberEntity memberEntity = MemberEntity.builder()
             .name(member.getName())
             .build();
 
@@ -32,18 +32,18 @@ public class MemberPersistenceAdapter implements MemberRepository {
     }
 
     @Override
-    public Member findByMemberId(Long memberId) {
+    public Member findByMemberId(final Long memberId) {
 
-        MemberEntity memberEntity = memberJpaRepository.findById(memberId)
+        final MemberEntity memberEntity = memberJpaRepository.findById(memberId)
             .orElseThrow(() -> new MemberNotFoundException());
 
         return MemberEntityMapper.toDomain(memberEntity);
     }
 
     @Override
-    public Member findByName(String loginId) {
+    public Member findByName(final String loginId) {
 
-        MemberEntity memberEntity = memberJpaRepository.findByName(loginId)
+        final MemberEntity memberEntity = memberJpaRepository.findByName(loginId)
             .orElseThrow(() -> new MemberNotFoundException());
 
         return MemberEntityMapper.toDomain(memberEntity);

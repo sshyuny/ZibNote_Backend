@@ -25,11 +25,11 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     private final NoteFieldJpaRepository noteFieldJpaRepository;
 
     @Override
-    public Long save(NoteField noteField) {
+    public Long save(final NoteField noteField) {
 
         final MemberEntity memberRef = MemberEntity.ref(noteField.getMember().getMemberId());
 
-        NoteFieldEntity entity = noteFieldJpaRepository.save(
+        final NoteFieldEntity entity = noteFieldJpaRepository.save(
             NoteFieldEntity.builder()
                 .memberEntity(memberRef)
                 .name(noteField.getName())
@@ -41,18 +41,18 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     }
 
     @Override
-    public NoteField findByNoteFieldId(Long noteFieldId) {
+    public NoteField findByNoteFieldId(final Long noteFieldId) {
 
-        NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findById(noteFieldId)
+        final NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findById(noteFieldId)
             .orElseThrow(() -> new NoteFieldNotFoundException());
 
         return NoteFieldEntityMapper.toDomain(noteFieldEntity);
     }
 
     @Override
-    public NoteField findByMemberAndName(Long memberId, String name) {
+    public NoteField findByMemberAndName(final Long memberId, final String name) {
 
-        NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findByMemberEntityAndName(
+        final NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findByMemberEntityAndName(
                 MemberEntity.ref(memberId), name)
             .orElseThrow(() -> new NoteFieldNotFoundException());
 
@@ -68,7 +68,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     }
 
     @Override
-    public List<NoteField> findAllByMemberId(Long memberId) {
+    public List<NoteField> findAllByMemberId(final Long memberId) {
 
         return noteFieldJpaRepository.findAllByMemberEntity(MemberEntity.ref(memberId))
             .stream()
@@ -77,9 +77,11 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     }
 
     @Override
-    public void softDeleteByNoteFieldId(Long noteFieldId) {
-        NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findById(noteFieldId)
+    public void softDeleteByNoteFieldId(final Long noteFieldId) {
+
+        final NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findById(noteFieldId)
             .orElseThrow(() -> new NoteFieldNotFoundException());
+
         noteFieldEntity.softDelete();
         noteFieldJpaRepository.save(noteFieldEntity);
     }

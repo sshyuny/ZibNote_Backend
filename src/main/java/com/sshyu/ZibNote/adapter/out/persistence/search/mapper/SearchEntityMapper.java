@@ -7,7 +7,7 @@ import com.sshyu.zibnote.domain.search.model.Search;
 
 public class SearchEntityMapper {
     
-    public static Search toDomain(SearchEntity entity) {
+    public static Search toDomain(final SearchEntity entity) {
 
         if (entity == null) { throw new SearchNotFoundException(); }
 
@@ -23,7 +23,7 @@ public class SearchEntityMapper {
                     .build();
     }
 
-    public static SearchEntity toEntity(Search domain) {
+    public static SearchEntity toEntity(final Search domain) {
 
         if (domain == null) {return SearchEntity.builder().build();}
 

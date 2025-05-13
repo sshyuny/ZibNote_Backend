@@ -5,7 +5,7 @@ import com.sshyu.zibnote.domain.structure.model.Structure;
 
 public class StructureDtoMapper {
     
-    public static StructureResDto toResDto(Structure domain) {
+    public static StructureResDto toResDto(final Structure domain) {
         return StructureResDto.builder()
                     .structureId(domain.getStructureId())
                     .name(domain.getName())

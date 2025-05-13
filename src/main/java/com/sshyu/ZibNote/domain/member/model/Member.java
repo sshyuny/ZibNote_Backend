@@ -8,11 +8,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder @Getter
 public class Member extends BaseFields {
     
-    private Long memberId;
+    private final Long memberId;
 
-    private String name;
+    private final String name;
 
-    public static Member onlyId(Long memberId) {
+    public static Member onlyId(final Long memberId) {
         return Member.builder().memberId(memberId).build();
     }
     

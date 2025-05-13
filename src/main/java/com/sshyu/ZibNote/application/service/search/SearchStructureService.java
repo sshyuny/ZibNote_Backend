@@ -43,11 +43,11 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws StructureNotFoundException Structure가 존재하지 않을 경우
      */
     @Override
-    public void registerSearchStructure(SearchStructure searchStructure, Long loginedMemberId) {
+    public void registerSearchStructure(final SearchStructure searchStructure, final Long loginedMemberId) {
 
         searchStructure.validate();
 
-        Search search = searchUseCase.getSearch(searchStructure.getSearch().getSearchId());
+        final Search search = searchUseCase.getSearch(searchStructure.getSearch().getSearchId());
         search.assureOwner(loginedMemberId);
         
         structureUseCase.getStructure(searchStructure.getStructure().getStructureId());
@@ -69,9 +69,9 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public List<SearchStructure> listSearchStructuresBySearch(Long searchId, Long loginedMemberId) {
+    public List<SearchStructure> listSearchStructuresBySearch(final Long searchId, final Long loginedMemberId) {
 
-        Search search = searchUseCase.getSearch(searchId);
+        final Search search = searchUseCase.getSearch(searchId);
         search.assureOwner(loginedMemberId);
 
         return searchStructureRepository.findAllBySearchId(searchId);
@@ -90,7 +90,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public void softDeleteSearchStructure(Long searchStructureId, Long loginedMemberId) {
+    public void softDeleteSearchStructure(final Long searchStructureId, final Long loginedMemberId) {
 
         assertSearchStructureOwner(searchStructureId, loginedMemberId);
 
@@ -111,9 +111,9 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public SearchStructure assertSearchStructureOwner(Long searchStructureId, Long loginedMemberId) {
+    public SearchStructure assertSearchStructureOwner(final Long searchStructureId, final Long loginedMemberId) {
 
-        SearchStructure searchStructure = searchStructureRepository.findBySearchStructureId(searchStructureId);
+        final SearchStructure searchStructure = searchStructureRepository.findBySearchStructureId(searchStructureId);
         searchUseCase.assertSearchOwner(searchStructure.getSearch().getSearchId(), loginedMemberId);
 
         return searchStructure;

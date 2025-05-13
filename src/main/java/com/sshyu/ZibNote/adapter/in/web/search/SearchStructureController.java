@@ -33,7 +33,7 @@ public class SearchStructureController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody SearchStructureReqDto searchStructureReqDto) {
 
-        Long loginedMemberId = authUseCase.getMemberId();
+        final Long loginedMemberId = authUseCase.getMemberId();
         searchStructureUseCase.registerSearchStructure(
             SearchStructureDtoMapper.toDomain(searchStructureReqDto), loginedMemberId
         );
@@ -44,7 +44,7 @@ public class SearchStructureController {
     @DeleteMapping
     public ResponseEntity<ApiResponse<Void>> delete(@RequestBody SearchStructureDeleteReqDto reqDto) {
 
-        Long loginedMemberId = authUseCase.getMemberId();
+        final Long loginedMemberId = authUseCase.getMemberId();
         searchStructureUseCase.softDeleteSearchStructure(reqDto.getSearchStructureId(), loginedMemberId);
 
         return ResponseEntity.ok(ApiResponse.successWithMessage("임장 건물 삭제 성공!"));
@@ -53,8 +53,8 @@ public class SearchStructureController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<SearchStructureResDto>>> getList(@RequestParam("searchId") Long searchId) {
 
-        Long loginedMemberId = authUseCase.getMemberId();
-        List<SearchStructureResDto> searchStructureDtos = searchStructureUseCase.listSearchStructuresBySearch(searchId, loginedMemberId)
+        final Long loginedMemberId = authUseCase.getMemberId();
+        final List<SearchStructureResDto> searchStructureDtos = searchStructureUseCase.listSearchStructuresBySearch(searchId, loginedMemberId)
             .stream()
             .map(domain -> SearchStructureDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
