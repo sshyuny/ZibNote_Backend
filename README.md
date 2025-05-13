@@ -50,19 +50,27 @@ Hexagonal Architecture를 참고하여 외부 변경에 유연하게 대처할 �
 [adapter]  PersistenceAdapter
 ```
 
+## 테스트 코드
+- Repository 계층: `@DataJpaTest`를 사용하여 직접 데이터베이스 위에서 실행되는 내용 테스트
+- Service 계층: 단위 테스트와 통합 테스트 구분하여 작성
+- Controller: `@WebMvcTest`를 사용하여 간단히 요청/응답 검증
+
+## 코드 컨벤션
+[CODE_CONVENTION 정리](CODE_CONVENTION.md)
+
 ## 실행 방법
 ### LOCAL
-- 환경변수 전달 "SPRING_PROFILES_ACTIVE": "local"
-- 프로젝트 실행
+1. 환경변수 전달 `"SPRING_PROFILES_ACTIVE": "local"`
+2. 프로젝트 실행
 ### DEFAULT
-- MySQL 서버 설치 및 실행
-    - MySQL 서버에서 [DDL](docs/database/mysql_ddl.sql) 실행 
-    - 또는 application.yml에서 `hbm2ddl.auto: create`로 변경
-- 환경변수 전달 "SPRING_PROFILES_ACTIVE": "default"
-- 프로젝트 실행
+1. MySQL 서버 설치 및 실행
+    - 1.1. MySQL 서버에서 [DDL](docs/database/mysql_ddl.sql) 실행 
+    - 1.2. 또는 application.yml에서 `hbm2ddl.auto: create`로 변경
+2. 환경변수 전달 `"SPRING_PROFILES_ACTIVE": "default"`
+3. 프로젝트 실행
 
 ## API
-- [Swagger 사용](http://localhost:8080/swagger-ui.html)
+- Swagger 사용 (로컬 구동시 확인 가능 http://localhost:8080/swagger-ui.html)
 
 ## 고민했던 점
 - [01. 스키마 구성시 고민점과 해결 방법](docs/develop/01_Schema.md)
