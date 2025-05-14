@@ -22,9 +22,9 @@ public class NoteFieldService implements NoteFieldUseCase {
      * @param noteField 등록하려는 NoteField
      */
     @Override
-    public void registerNoteField(final NoteField noteField) {
+    public Long registerNoteField(final NoteField noteField) {
 
-        noteFieldRepository.save(noteField);
+        return noteFieldRepository.save(noteField);
     }
 
     /**

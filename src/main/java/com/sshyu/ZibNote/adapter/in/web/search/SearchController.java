@@ -17,8 +17,6 @@ import com.sshyu.zibnote.adapter.in.web.search.dto.SearchReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchResDto;
 import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchDtoMapper;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
-import com.sshyu.zibnote.domain.member.model.Member;
-import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.port.in.SearchUseCase;
 
 import lombok.RequiredArgsConstructor;
@@ -34,13 +32,8 @@ public class SearchController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody SearchReqDto reqDto) {
 
-        searchUseCase.registerSearch(Search.builder()
-            .member(Member.onlyId(authUseCase.getMemberId()))
-            .title(reqDto.getTitle())
-            .region(reqDto.getRegion())
-            .description(reqDto.getDescription())
-            .build()
-        );
+        final Long memberId = authUseCase.getMemberId();
+        searchUseCase.registerSearch(SearchDtoMapper.toDomain(reqDto, memberId));
 
         return ResponseEntity.ok(ApiResponse.successWithMessage("임장 등록 성공!"));
     }

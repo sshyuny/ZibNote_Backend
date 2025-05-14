@@ -24,9 +24,9 @@ public class SearchService implements SearchUseCase {
      * @param search 등록하려는 Search
      */
     @Override
-    public void registerSearch(final Search search) {
+    public Long registerSearch(final Search search) {
 
-        searchRepository.save(search);
+        return searchRepository.save(search);
     }
 
     /**

@@ -6,7 +6,7 @@ import com.sshyu.zibnote.domain.search.model.SearchStructure;
 
 public interface SearchStructureUseCase {
     
-    void registerSearchStructure(SearchStructure searchStructure, Long loginedMemberId);
+    Long registerSearchStructure(SearchStructure searchStructure, Long loginedMemberId);
     
     List<SearchStructure> listSearchStructuresBySearch(Long searchId, Long loginedMemberId);
 

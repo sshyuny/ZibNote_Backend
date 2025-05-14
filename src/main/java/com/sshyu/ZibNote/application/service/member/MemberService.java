@@ -20,9 +20,9 @@ public class MemberService implements MemberUseCase {
      * @param member 등록할 사용자
      */
     @Override
-    public void register(final Member member) {
+    public Long register(final Member member) {
 
-        memberRepository.save(member);        
+        return memberRepository.save(member);        
     }
 
     /**

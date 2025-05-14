@@ -43,7 +43,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws StructureNotFoundException Structure가 존재하지 않을 경우
      */
     @Override
-    public void registerSearchStructure(final SearchStructure searchStructure, final Long loginedMemberId) {
+    public Long registerSearchStructure(final SearchStructure searchStructure, final Long loginedMemberId) {
 
         searchStructure.validate();
 
@@ -52,7 +52,7 @@ public class SearchStructureService implements SearchStructureUseCase {
         
         structureUseCase.getStructure(searchStructure.getStructure().getStructureId());
 
-        searchStructureRepository.save(searchStructure);
+        return searchStructureRepository.save(searchStructure);
     }
 
     /**

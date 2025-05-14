@@ -6,7 +6,7 @@ import com.sshyu.zibnote.domain.search.model.Search;
 
 public interface SearchUseCase {
     
-    void registerSearch(Search search);
+    Long registerSearch(Search search);
 
     Search getSearch(Long searchId);
 

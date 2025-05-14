@@ -17,8 +17,6 @@ import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldReqDto;
 import com.sshyu.zibnote.adapter.in.web.note.dto.NoteFieldResDto;
 import com.sshyu.zibnote.adapter.in.web.note.mapper.NoteFieldDtoMapper;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
-import com.sshyu.zibnote.domain.member.model.Member;
-import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.note.port.in.NoteFieldUseCase;
 
 import lombok.RequiredArgsConstructor;
@@ -34,13 +32,8 @@ public class NoteFieldController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody NoteFieldReqDto reqDto) {
 
-        noteFieldUseCase.registerNoteField(
-            NoteField.builder()
-                .member(Member.onlyId(authUseCase.getMemberId()))
-                .name(reqDto.getName())
-                .description(reqDto.getDescription())
-                .build()
-        );
+        final Long loginedMemberId = authUseCase.getMemberId();
+        noteFieldUseCase.registerNoteField(NoteFieldDtoMapper.toDomain(reqDto, loginedMemberId));
 
         return ResponseEntity.ok(ApiResponse.successWithMessage("조사항목 추가 성공"));
     }

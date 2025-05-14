@@ -4,7 +4,7 @@ import com.sshyu.zibnote.domain.member.model.Member;
 
 public interface MemberUseCase {
     
-    void register(Member member);
+    Long register(Member member);
 
     Member findByName(String name);
 
