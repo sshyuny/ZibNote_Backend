@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.sshyu.zibnote.domain.note.exception.NoteFieldNotFoundException;
 import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.note.port.in.NoteFieldUseCase;
 import com.sshyu.zibnote.domain.note.port.out.NoteFieldRepository;
@@ -49,6 +50,7 @@ public class NoteFieldService implements NoteFieldUseCase {
      * 
      * @param noteFieldId 삭제하려는 NoteField ID
      * @param memberId 로그인한 사용자 ID
+     * @throws NoteFieldNotFoundException 일치하는 NoteField가 없을 경우
      */
     @Override
     public void softDeleteNoteField(final Long noteFieldId, final Long memberId) {

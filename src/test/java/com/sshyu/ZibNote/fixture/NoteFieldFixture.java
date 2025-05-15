@@ -5,15 +5,24 @@ import com.sshyu.zibnote.domain.note.model.NoteField;
 
 public class NoteFieldFixture {
 
-    public static final Long NOTE_FIELD_OF_MEMBER_A = 2001L;
+    public static final Long NOTE_FIELD_1_OF_MEMBER_A = 2001L;
+    public static final Long NOTE_FIELD_2_OF_MEMBER_A = 2001L;
+
     public static final String NAME_1 = "놀이터";
     public static final String NAME_2 = "상권과 거리";
     
-    public static NoteField ofNoteFieldWithMemberA() {
+    public static NoteField ofNoteField1WithMemberA() {
         return NoteField.builder()
-            .noteFieldId(NOTE_FIELD_OF_MEMBER_A)
+            .noteFieldId(NOTE_FIELD_1_OF_MEMBER_A)
             .member(MemberFixture.ofMemberA())
             .name(NAME_1)
+            .build();
+    }
+    public static NoteField ofNoteField2WithMemberA() {
+        return NoteField.builder()
+            .noteFieldId(NOTE_FIELD_2_OF_MEMBER_A)
+            .member(MemberFixture.ofMemberA())
+            .name(NAME_2)
             .build();
     }
 

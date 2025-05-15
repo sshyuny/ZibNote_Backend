@@ -13,14 +13,14 @@ public class SearchStructureNoteFixture {
         return SearchStructureNoteFixture.of(
             NOTE_ID_OF_MEMBER_A_1, 
             SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
-            NoteFieldFixture.NOTE_FIELD_OF_MEMBER_A
+            NoteFieldFixture.NOTE_FIELD_1_OF_MEMBER_A
         );
     }
     public static SearchStructureNote ofNote2WithMemberA() {
         return SearchStructureNoteFixture.of(
             NOTE_ID_OF_MEMBER_A_2, 
             SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
-            NoteFieldFixture.NOTE_FIELD_OF_MEMBER_A
+            NoteFieldFixture.NOTE_FIELD_1_OF_MEMBER_A
         );
     }
 
@@ -28,7 +28,7 @@ public class SearchStructureNoteFixture {
         return SearchStructureNoteFixture.of(
             null, 
             SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
-            NoteFieldFixture.NOTE_FIELD_OF_MEMBER_A
+            NoteFieldFixture.NOTE_FIELD_1_OF_MEMBER_A
         );
     }
     public static SearchStructureNote ofInvalidNote() {

@@ -1,11 +1,13 @@
 package com.sshyu.zibnote.application.service.note;
 
-import java.time.LocalDateTime;
-
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.*;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,56 +15,95 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
-import com.sshyu.zibnote.domain.member.model.Member;
+import com.sshyu.zibnote.domain.note.exception.NoteFieldNotFoundException;
 import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.note.port.out.NoteFieldRepository;
+import com.sshyu.zibnote.fixture.MemberFixture;
+import com.sshyu.zibnote.fixture.NoteFieldFixture;
 
 @ExtendWith(MockitoExtension.class)
 public class NoteFieldServiceUnitTest {
     
+    @InjectMocks
+    NoteFieldService sut;
     @Mock
     NoteFieldRepository noteFieldRepository;
-    @InjectMocks
-    NoteFieldService noteFieldService;
 
-    final static Long MEMBER_ID_1 = 1L;
-    final static Long MEMBER_ID_2 = 22L;
-    final static Long NOTE_FIELD_ID = 237L;
-    final static String NOTE_FIELD_NAME = "놀이터";
-    final static String NOTE_FIELD_DESCRIPTION = "놀이터 상태";
+    final static Long MEMBER_ID_A = MemberFixture.MEMBER_A_ID;
+    final static Long MEMBER_ID_B = MemberFixture.MEMBER_B_ID;
+    final static Long NOTE_FIELD_1_ID = NoteFieldFixture.NOTE_FIELD_1_OF_MEMBER_A;
 
-    @BeforeEach
-    void beforeEach() {
-        NoteField savedNoteField = NoteField.builder()
-            .noteFieldId(NOTE_FIELD_ID)
-            .member(Member.onlyId(MEMBER_ID_1))
-            .name(NOTE_FIELD_NAME)
-            .description(NOTE_FIELD_DESCRIPTION)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .isDeleted(0)
-            .build();
-
-        given(noteFieldRepository.findByNoteFieldId(NOTE_FIELD_ID))
-            .willReturn(savedNoteField); 
-    }
+    NoteField noteFieldBeforeSaving = NoteFieldFixture.of(null, MEMBER_ID_A, NoteFieldFixture.NAME_1);
+    NoteField noteField1WithMemberA = NoteFieldFixture.ofNoteField1WithMemberA();
+    NoteField noteField2WithMemberA = NoteFieldFixture.ofNoteField2WithMemberA();
 
 
     @Test
-    void softDeleteNoteField_권한없는_NoteField_삭제() {
-        // when / then
-        assertThrows(UnauthorizedAccessException.class, () -> 
-            noteFieldService.softDeleteNoteField(NOTE_FIELD_ID, MEMBER_ID_2));
+    void registerNoteField_정상_등록() {
+        //given
+        Long newNoteFieldId = 2222L;
+        given(noteFieldRepository.save(noteFieldBeforeSaving))
+            .willReturn(newNoteFieldId);
+
+        //when/then
+        assertThat(sut.registerNoteField(noteFieldBeforeSaving))
+            .isEqualTo(newNoteFieldId);
+    }
+
+    @Test
+    void listNoteFieldsByMember_리스트_반환() {
+
+        given(noteFieldRepository.findAllByMemberId(MEMBER_ID_A))
+            .willReturn(List.of(noteField1WithMemberA, noteField2WithMemberA));
+
+        assertThat(sut.listNoteFieldsByMember(MEMBER_ID_A))
+            .hasSize(2)
+            .contains(noteField1WithMemberA, noteField2WithMemberA);
+    }
+
+    @Test
+    void listNoteFieldsByMember_빈_리스트_반환() {
+
+        given(noteFieldRepository.findAllByMemberId(MEMBER_ID_A))
+            .willReturn(List.of());
+
+        assertThat(sut.listNoteFieldsByMember(MEMBER_ID_A))
+            .hasSize(0);
     }
 
     @Test
     void softDeleteNoteField_정상적인_삭제() {
+        //given
+        given(noteFieldRepository.findByNoteFieldId(NOTE_FIELD_1_ID))
+            .willReturn(noteField1WithMemberA);
+
         // when
-        noteFieldService.softDeleteNoteField(NOTE_FIELD_ID, MEMBER_ID_1);
+        sut.softDeleteNoteField(NOTE_FIELD_1_ID, MEMBER_ID_A);
 
         // then
         then(noteFieldRepository)
             .should()
-            .softDeleteByNoteFieldId(eq(NOTE_FIELD_ID));
+            .softDeleteByNoteFieldId(eq(NOTE_FIELD_1_ID));
     }
+
+    @Test
+    void softDeleteNoteField_권한없는_NoteField_삭제() {
+
+        given(noteFieldRepository.findByNoteFieldId(NOTE_FIELD_1_ID))
+            .willReturn(noteField1WithMemberA);
+
+        assertThrows(UnauthorizedAccessException.class, () -> 
+            sut.softDeleteNoteField(NOTE_FIELD_1_ID, MEMBER_ID_B));
+    }
+
+    @Test
+    void softDeleteNoteField_존재하지_않는_ID로_시도시_예외_발생() {
+
+        given(noteFieldRepository.findByNoteFieldId(NOTE_FIELD_1_ID))
+            .willThrow(NoteFieldNotFoundException.class);
+
+        assertThrows(NoteFieldNotFoundException.class, () ->
+            sut.softDeleteNoteField(NOTE_FIELD_1_ID, MEMBER_ID_A));
+    }
+
 }
