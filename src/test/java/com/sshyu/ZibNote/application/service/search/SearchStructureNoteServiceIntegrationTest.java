@@ -68,9 +68,9 @@ public class SearchStructureNoteServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         
-        memberId = memberPersistenceAdapter.save(MemberFixture.withoutId(MemberFixture.NAME));
+        memberId = memberPersistenceAdapter.save(MemberFixture.withoutId(MemberFixture.NAME_A));
 
-        searchId = searchPersistenceAdapter.save(SearchFixture.withoutId(memberId, SearchFixture.TITLE, SearchFixture.REGION));
+        searchId = searchPersistenceAdapter.save(SearchFixture.withoutId(memberId, SearchFixture.TITLE_1, SearchFixture.REGION_1));
 
         structureId1 = structurePersistenceAdapter.save(StructureFixture.ofStructureAptSollWithoutId());
         structureId2 = structurePersistenceAdapter.save(StructureFixture.ofStructureBaekduAptWithoutId());

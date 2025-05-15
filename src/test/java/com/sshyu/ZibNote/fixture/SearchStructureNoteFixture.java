@@ -9,25 +9,25 @@ public class SearchStructureNoteFixture {
     public static final Long NOTE_ID_OF_MEMBER_A_1 = 6001L;
     public static final Long NOTE_ID_OF_MEMBER_A_2 = 6002L;
 
-    public static SearchStructureNote ofNote1withMemberA() {
+    public static SearchStructureNote ofNote1WithMemberA() {
         return SearchStructureNoteFixture.of(
-            NOTE_ID_OF_MEMBER_A_1, SearchStructureFixture.ofSearchStructureWithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
+            NOTE_ID_OF_MEMBER_A_1, SearchStructureFixture.ofSearchStructure1WithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
         );
     }
-    public static SearchStructureNote ofNote2withMemberA() {
+    public static SearchStructureNote ofNote2WithMemberA() {
         return SearchStructureNoteFixture.of(
-            NOTE_ID_OF_MEMBER_A_2, SearchStructureFixture.ofSearchStructureWithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
+            NOTE_ID_OF_MEMBER_A_2, SearchStructureFixture.ofSearchStructure1WithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
         );
     }
 
     public static SearchStructureNote ofValidNote() {
         return SearchStructureNoteFixture.of(
-            null, SearchStructureFixture.ofSearchStructureWithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
+            null, SearchStructureFixture.ofSearchStructure1WithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
         );
     }
     public static SearchStructureNote ofInvalidNote() {
         return SearchStructureNoteFixture.of(
-            null, SearchStructureFixture.ofSearchStructureWithMemberA(), null
+            null, SearchStructureFixture.ofSearchStructure1WithMemberA(), null
         );
     }
     
