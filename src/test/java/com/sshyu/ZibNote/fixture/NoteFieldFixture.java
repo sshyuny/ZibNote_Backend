@@ -16,8 +16,10 @@ public class NoteFieldFixture {
             .name(NAME_1)
             .build();
     }
-    public static NoteField withoutId(final Long memberId, final String name) {
+
+    public static NoteField of(final Long noteFieldId, final Long memberId, final String name) {
         return NoteField.builder()
+            .noteFieldId(noteFieldId)
             .member(Member.onlyId(memberId))
             .name(name)
             .build();

@@ -11,38 +11,40 @@ public class SearchStructureNoteFixture {
 
     public static SearchStructureNote ofNote1WithMemberA() {
         return SearchStructureNoteFixture.of(
-            NOTE_ID_OF_MEMBER_A_1, SearchStructureFixture.ofSearchStructure1WithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
+            NOTE_ID_OF_MEMBER_A_1, 
+            SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
+            NoteFieldFixture.NOTE_FIELD_OF_MEMBER_A
         );
     }
     public static SearchStructureNote ofNote2WithMemberA() {
         return SearchStructureNoteFixture.of(
-            NOTE_ID_OF_MEMBER_A_2, SearchStructureFixture.ofSearchStructure1WithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
+            NOTE_ID_OF_MEMBER_A_2, 
+            SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
+            NoteFieldFixture.NOTE_FIELD_OF_MEMBER_A
         );
     }
 
     public static SearchStructureNote ofValidNote() {
         return SearchStructureNoteFixture.of(
-            null, SearchStructureFixture.ofSearchStructure1WithMemberA(), NoteFieldFixture.ofNoteFieldWithMemberA()
+            null, 
+            SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
+            NoteFieldFixture.NOTE_FIELD_OF_MEMBER_A
         );
     }
     public static SearchStructureNote ofInvalidNote() {
         return SearchStructureNoteFixture.of(
-            null, SearchStructureFixture.ofSearchStructure1WithMemberA(), null
+            null, 
+            SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
+            null
         );
     }
-    
-    public static SearchStructureNote of(final Long searchStructureNoteId, final SearchStructure searchStructure, final NoteField noteField) {
+
+    public static SearchStructureNote of(final Long searchStructureNoteId, final Long searchStructureId, final Long noteFieldId) {
         return SearchStructureNote.builder()
             .searchStructureNoteId(searchStructureNoteId)
-            .searchStructure(searchStructure)
-            .noteField(noteField)
-            .build();
-    }
-    public static SearchStructureNote withoutId(final Long searchStructureId, final Long noteFieldId) {
-        return SearchStructureNote.builder()
             .searchStructure(SearchStructure.onlyId(searchStructureId))
             .noteField(NoteField.onlyId(noteFieldId))
             .build();
     }
-    
+
 }

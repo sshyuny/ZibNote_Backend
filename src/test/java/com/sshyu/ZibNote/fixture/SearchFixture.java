@@ -30,12 +30,13 @@ public class SearchFixture {
             .build();
     }
     
-    public static Search withoutId(final Long memberId, final String title, final String region) {
+    public static Search of(final Long searchId, final Long memberId, final String title, final String region) {
         return Search.builder()
+            .searchId(searchId)
             .member(Member.onlyId(memberId))
             .title(title)
             .region(region)
             .build();
     }
-    
+
 }

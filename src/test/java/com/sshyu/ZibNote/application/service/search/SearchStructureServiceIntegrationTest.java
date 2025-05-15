@@ -58,7 +58,7 @@ public class SearchStructureServiceIntegrationTest {
         memberAId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_A));
         memberBId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_B));
 
-        searchId = searchPersistenceAdapter.save(SearchFixture.withoutId(memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1));
+        searchId = searchPersistenceAdapter.save(SearchFixture.of(null, memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1));
 
         structureId1 = structurePersistenceAdapter.save(StructureFixture.ofStructureAptSollWithoutId());
         structureId2 = structurePersistenceAdapter.save(StructureFixture.ofStructureBaekduAptWithoutId());

@@ -23,13 +23,6 @@ public class SearchStructureFixture {
             .structure(StructureFixture.ofStructureSolApt())
             .build();
     }
-    
-    public static SearchStructure withoutId(final Long searchId, final Long structureId) {
-        return SearchStructure.builder()
-            .search(Search.onlyId(searchId))
-            .structure(Structure.onlyId(structureId))
-            .build();
-    }
 
     public static SearchStructure of(final Long searchStructureId, final Long searchId, final Long structureId) {
         return SearchStructure.builder()

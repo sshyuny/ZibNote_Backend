@@ -24,10 +24,4 @@ public class MemberFixture {
             .build();
     }
 
-    public static Member withoutId(final String name) {
-        return Member.builder()
-            .name(name)
-            .build();
-    }
-    
 }

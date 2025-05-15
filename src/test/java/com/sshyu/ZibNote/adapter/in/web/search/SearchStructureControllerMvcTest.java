@@ -25,7 +25,7 @@ import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
 
 @WebMvcTest(SearchStructureController.class)
-public class SearchStructureControllerTest {
+public class SearchStructureControllerMvcTest {
     
     @Autowired
     MockMvc mockMvc;

@@ -45,11 +45,11 @@ public class SearchServiceIntegrationTest {
     
     @BeforeEach
     void setUp() {
-        memberAId = memberPersistenceAdapter.save(MemberFixture.withoutId(MemberFixture.NAME_A));
-        memberBId = memberPersistenceAdapter.save(MemberFixture.withoutId(MemberFixture.NAME_B));
+        memberAId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_A));
+        memberBId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_B));
         
-        Search search1 = SearchFixture.withoutId(memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1);
-        Search search2 = SearchFixture.withoutId(memberAId, SearchFixture.TITLE_2, SearchFixture.REGION_2);
+        Search search1 = SearchFixture.of(null, memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1);
+        Search search2 = SearchFixture.of(null, memberAId, SearchFixture.TITLE_2, SearchFixture.REGION_2);
         search1Id = searchPersistenceAdapter.save(search1);
         search2Id = searchPersistenceAdapter.save(search2);
     }
@@ -57,7 +57,7 @@ public class SearchServiceIntegrationTest {
     @Test
     void registerSearch_정상_등록() {
         //when
-        Search search = SearchFixture.withoutId(memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1);
+        Search search = SearchFixture.of(null, memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1);
         Long searchId = sut.registerSearch(search);
 
         em.flush();

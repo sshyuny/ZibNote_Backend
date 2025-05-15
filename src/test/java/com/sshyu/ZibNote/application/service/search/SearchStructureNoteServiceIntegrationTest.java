@@ -68,23 +68,23 @@ public class SearchStructureNoteServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         
-        memberId = memberPersistenceAdapter.save(MemberFixture.withoutId(MemberFixture.NAME_A));
+        memberId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_A));
 
-        searchId = searchPersistenceAdapter.save(SearchFixture.withoutId(memberId, SearchFixture.TITLE_1, SearchFixture.REGION_1));
+        searchId = searchPersistenceAdapter.save(SearchFixture.of(null, memberId, SearchFixture.TITLE_1, SearchFixture.REGION_1));
 
         structureId1 = structurePersistenceAdapter.save(StructureFixture.ofStructureAptSollWithoutId());
         structureId2 = structurePersistenceAdapter.save(StructureFixture.ofStructureBaekduAptWithoutId());
         
-        searchStructureId1 = searchStructurePersistenceAdapter.save(SearchStructureFixture.withoutId(searchId, structureId1));
-        searchStructureId2 = searchStructurePersistenceAdapter.save(SearchStructureFixture.withoutId(searchId, structureId2));
+        searchStructureId1 = searchStructurePersistenceAdapter.save(SearchStructureFixture.of(null, searchId, structureId1));
+        searchStructureId2 = searchStructurePersistenceAdapter.save(SearchStructureFixture.of(null, searchId, structureId2));
 
-        noteFieldId1 = noteFieldPersistenceAdapter.save(NoteFieldFixture.withoutId(memberId, NoteFieldFixture.NAME_1));
-        noteFieldId2 = noteFieldPersistenceAdapter.save(NoteFieldFixture.withoutId(memberId, NoteFieldFixture.NAME_2));
+        noteFieldId1 = noteFieldPersistenceAdapter.save(NoteFieldFixture.of(null, memberId, NoteFieldFixture.NAME_1));
+        noteFieldId2 = noteFieldPersistenceAdapter.save(NoteFieldFixture.of(null, memberId, NoteFieldFixture.NAME_2));
 
-        noteWithSearchStructure1AndNoteField1 = SearchStructureNoteFixture.withoutId(searchStructureId1, noteFieldId1);
-        noteWithSearchStructure1AndNoteField2 = SearchStructureNoteFixture.withoutId(searchStructureId1, noteFieldId2);
-        noteWithSearchStructure2AndNoteField1 = SearchStructureNoteFixture.withoutId(searchStructureId2, noteFieldId1);
-        noteWithSearchStructure2AndNoteField2 = SearchStructureNoteFixture.withoutId(searchStructureId2, noteFieldId2);
+        noteWithSearchStructure1AndNoteField1 = SearchStructureNoteFixture.of(null, searchStructureId1, noteFieldId1);
+        noteWithSearchStructure1AndNoteField2 = SearchStructureNoteFixture.of(null, searchStructureId1, noteFieldId2);
+        noteWithSearchStructure2AndNoteField1 = SearchStructureNoteFixture.of(null, searchStructureId2, noteFieldId1);
+        noteWithSearchStructure2AndNoteField2 = SearchStructureNoteFixture.of(null, searchStructureId2, noteFieldId2);
     }
 
     @Test

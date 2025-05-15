@@ -17,7 +17,7 @@ import com.sshyu.zibnote.domain.structure.model.Structure;
 import com.sshyu.zibnote.domain.structure.port.out.StructureRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class StructureServiceTest {
+public class StructureServiceUnitTest {
     
     @Mock
     StructureRepository structureRepository;

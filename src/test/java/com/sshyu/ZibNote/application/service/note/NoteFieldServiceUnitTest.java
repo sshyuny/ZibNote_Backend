@@ -18,7 +18,7 @@ import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.note.port.out.NoteFieldRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class NoteFieldServiceTest {
+public class NoteFieldServiceUnitTest {
     
     @Mock
     NoteFieldRepository noteFieldRepository;

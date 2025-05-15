@@ -28,7 +28,7 @@ import com.sshyu.zibnote.domain.structure.port.in.StructureUseCase;
 
 
 @WebMvcTest(StructureController.class)
-public class StructureControllerTest {
+public class StructureControllerTestMvc {
 
     @Autowired
     MockMvc mockMvc;

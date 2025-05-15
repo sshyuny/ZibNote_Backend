@@ -35,7 +35,7 @@ public class SearchServiceUnitTest {
 
     Search search1WithMemberA = SearchFixture.ofSearch1WithMemberA();
     Search search2WithMemberA = SearchFixture.ofSearch2WithMemberA();
-    Search searchWithoutId = SearchFixture.withoutId(MEMBER_A_ID, SearchFixture.TITLE_1, SearchFixture.REGION_1);
+    Search searchWithoutId = SearchFixture.of(null, MEMBER_A_ID, SearchFixture.TITLE_1, SearchFixture.REGION_1);
 
 
     @Test
