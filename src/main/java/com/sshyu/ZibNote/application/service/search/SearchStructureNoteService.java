@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
-import com.sshyu.zibnote.domain.search.exception.NotValidSearchStructureNoteException;
+import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureNoteException;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureNoteUseCase;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
@@ -31,7 +31,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      * 
      * @param searchStructureNote 등록하려는 SearchStructureNote
      * @param loginedMemberId 로그인한 사용자 ID
-     * @throws NotValidSearchStructureNoteException SearchStructureNote 유효성 검사 실패 시
+     * @throws InvalidSearchStructureNoteException SearchStructureNote 유효성 검사 실패 시
      * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
      */
     @Override

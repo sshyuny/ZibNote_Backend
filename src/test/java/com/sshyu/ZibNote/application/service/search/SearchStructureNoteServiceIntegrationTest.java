@@ -18,7 +18,7 @@ import com.sshyu.zibnote.adapter.out.persistence.search.SearchPersistenceAdapter
 import com.sshyu.zibnote.adapter.out.persistence.search.SearchStructureNotePersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.search.SearchStructurePersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.structure.StructurePersistenceAdapter;
-import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 import com.sshyu.zibnote.fixture.MemberFixture;

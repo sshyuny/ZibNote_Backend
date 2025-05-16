@@ -1,6 +1,6 @@
-package com.sshyu.zibnote.domain.member.exception;
+package com.sshyu.zibnote.domain.common.exception;
 
-public class UnauthorizedAccessException extends RuntimeException {
+public class UnauthorizedAccessException extends ZibnoteRuntimeException {
 
     public UnauthorizedAccessException() {
         super();
@@ -9,5 +9,5 @@ public class UnauthorizedAccessException extends RuntimeException {
     public UnauthorizedAccessException(String message) {
         super(message);
     }
-    
+
 }

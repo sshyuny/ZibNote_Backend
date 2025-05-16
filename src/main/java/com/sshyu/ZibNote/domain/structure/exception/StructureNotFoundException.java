@@ -1,6 +1,8 @@
 package com.sshyu.zibnote.domain.structure.exception;
 
-public class StructureNotFoundException extends RuntimeException {
+import com.sshyu.zibnote.domain.common.exception.ResourceNotFoundException;
+
+public class StructureNotFoundException extends ResourceNotFoundException {
     
     public StructureNotFoundException() {
         super();

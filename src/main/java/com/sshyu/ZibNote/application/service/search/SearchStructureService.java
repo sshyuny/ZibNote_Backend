@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
-import com.sshyu.zibnote.domain.search.exception.NotValidSearchStructureException;
+import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureException;
 import com.sshyu.zibnote.domain.search.exception.SearchNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.model.SearchStructure;
@@ -37,7 +37,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * 
      * @param searchStructure 등록하려는 SearchStructure
      * @param loginedMemberId 로그인한 사용자 ID
-     * @throws NotValidSearchStructureException SearchStructure 유효성 검사에 실패 시
+     * @throws InvalidSearchStructureException SearchStructure 유효성 검사에 실패 시
      * @throws SearchNotFoundException Search가 존재하지 않는 경우
      * @throws UnauthorizedAccessException 로그인한 사용자가 Search를 참조할 권한이 없는 경우
      * @throws StructureNotFoundException Structure가 존재하지 않을 경우

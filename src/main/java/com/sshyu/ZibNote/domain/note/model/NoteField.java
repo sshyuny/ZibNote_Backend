@@ -1,7 +1,7 @@
 package com.sshyu.zibnote.domain.note.model;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
-import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.member.model.Member;
 
 import lombok.Getter;

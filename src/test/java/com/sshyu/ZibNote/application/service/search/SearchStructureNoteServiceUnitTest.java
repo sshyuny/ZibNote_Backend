@@ -13,8 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
-import com.sshyu.zibnote.domain.search.exception.NotValidSearchStructureNoteException;
+import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureNoteException;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
@@ -50,7 +50,7 @@ public class SearchStructureNoteServiceUnitTest {
     @Test
     void registerSearchStructureNote_도메인_검증_실패시_예외_발생() {
 
-        assertThrows(NotValidSearchStructureNoteException.class, () -> 
+        assertThrows(InvalidSearchStructureNoteException.class, () -> 
             sut.registerSearchStructureNote(invalidNote, MEMBER_A_ID));
     }
 

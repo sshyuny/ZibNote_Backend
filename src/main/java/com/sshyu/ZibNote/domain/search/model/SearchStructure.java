@@ -1,7 +1,7 @@
 package com.sshyu.zibnote.domain.search.model;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
-import com.sshyu.zibnote.domain.search.exception.NotValidSearchStructureException;
+import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureException;
 import com.sshyu.zibnote.domain.structure.model.Structure;
 
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class SearchStructure extends BaseFields {
 
     public void validate() {
         if  (this.search.getSearchId() == null || this.structure.getStructureId() == null) {
-            throw new NotValidSearchStructureException();
+            throw new InvalidSearchStructureException();
         }
     }
 

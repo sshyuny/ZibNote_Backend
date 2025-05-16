@@ -1,7 +1,7 @@
 package com.sshyu.zibnote.domain.search.model;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
-import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.member.model.Member;
 
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class Search extends BaseFields {
 
     public void assureOwner(final Long memberId) {
         if (!this.member.getMemberId().equals(memberId)) {
-            throw new UnauthorizedAccessException();
+            throw new UnauthorizedAccessException("존재하지 않거나 접근할 수 없는 데이터입니다.");
         }
     }
 

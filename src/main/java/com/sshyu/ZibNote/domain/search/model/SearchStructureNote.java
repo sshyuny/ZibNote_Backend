@@ -2,7 +2,7 @@ package com.sshyu.zibnote.domain.search.model;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
 import com.sshyu.zibnote.domain.note.model.NoteField;
-import com.sshyu.zibnote.domain.search.exception.NotValidSearchStructureNoteException;
+import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureNoteException;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -24,10 +24,10 @@ public class SearchStructureNote extends BaseFields {
 
     public void validateForRegister() {
         if (searchStructure == null || searchStructure.getSearchStructureId() == null) {
-            throw new NotValidSearchStructureNoteException();
+            throw new InvalidSearchStructureNoteException();
         }
         if (noteField == null || noteField.getNoteFieldId() == null) {
-            throw new NotValidSearchStructureNoteException();
+            throw new InvalidSearchStructureNoteException();
         }
     }
     

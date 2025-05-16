@@ -78,3 +78,4 @@ Hexagonal Architecture를 참고하여 외부 변경에 유연하게 대처할 �
 - [03. 아키텍처 구성시 고민점 및 리팩토링](docs/develop/03_Refactoring_in_Architecture.md)
 - [04. 로그인 인증 및 상태 유지 방식 변경 기록](docs/develop/04_Auth.md)
 - [05. CORS를 처리하는 다양한 방법](docs/develop/05_CORS.md)
+- [06. 예외 클래스 구조 정리](docs/develop/06_Exception_Class.md)

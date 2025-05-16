@@ -1,6 +1,8 @@
 package com.sshyu.zibnote.domain.note.exception;
 
-public class NoteFieldNotFoundException extends RuntimeException {
+import com.sshyu.zibnote.domain.common.exception.ResourceNotFoundException;
+
+public class NoteFieldNotFoundException extends ResourceNotFoundException {
 
     public NoteFieldNotFoundException() {
         super();

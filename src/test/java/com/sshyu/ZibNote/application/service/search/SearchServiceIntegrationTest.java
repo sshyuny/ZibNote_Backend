@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.MemberPersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.search.SearchPersistenceAdapter;
-import com.sshyu.zibnote.domain.member.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.search.exception.SearchNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.fixture.MemberFixture;
