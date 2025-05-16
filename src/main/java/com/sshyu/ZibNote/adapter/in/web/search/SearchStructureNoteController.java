@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
+import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NoteDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NoteGetListReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NotePostReqDto;
@@ -36,7 +38,9 @@ public class SearchStructureNoteController {
         final Long memberId = authUseCase.getMemberId();
         searchStructureNoteUseCase.registerSearchStructureNote(SearchStructureNoteDtoMapper.toDomain(reqDto), memberId);
 
-        return ResponseEntity.ok(ApiResponse.successWithMessage("저장 성공!"));
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_REGISTER.getMessage())
+        );
     }
 
     @DeleteMapping
@@ -45,7 +49,9 @@ public class SearchStructureNoteController {
         final Long memberId = authUseCase.getMemberId();
         searchStructureNoteUseCase.softDeleteSearchStructureNote(reqDto.getSearchStructureNoteId(), memberId);
 
-        return ResponseEntity.ok(ApiResponse.successWithMessage("삭제 완료"));
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_DELETE.getMessage())
+        );
     }
 
     @GetMapping("/list")
@@ -57,7 +63,9 @@ public class SearchStructureNoteController {
             .map(domain -> SearchStructureNoteDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
 
-        return ResponseEntity.ok(ApiResponse.successWithData(list));
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_GET.getMessage(), list)
+        );
     }
 
 }

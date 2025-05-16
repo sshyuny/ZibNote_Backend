@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
+import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureResDto;
@@ -38,7 +40,9 @@ public class SearchStructureController {
             SearchStructureDtoMapper.toDomain(searchStructureReqDto), loginedMemberId
         );
 
-        return ResponseEntity.ok(ApiResponse.successWithMessage("임장 건물 추가 성공!"));
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_REGISTER.getMessage())
+        );
     }
 
     @DeleteMapping
@@ -47,7 +51,9 @@ public class SearchStructureController {
         final Long loginedMemberId = authUseCase.getMemberId();
         searchStructureUseCase.softDeleteSearchStructure(reqDto.getSearchStructureId(), loginedMemberId);
 
-        return ResponseEntity.ok(ApiResponse.successWithMessage("임장 건물 삭제 성공!"));
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_DELETE.getMessage())
+        );
     }
 
     @GetMapping("/list")
@@ -59,7 +65,9 @@ public class SearchStructureController {
             .map(domain -> SearchStructureDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
 
-        return ResponseEntity.ok(ApiResponse.successWithData(searchStructureDtos));
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_GET.getMessage(), searchStructureDtos)
+        );
     }
 
 }

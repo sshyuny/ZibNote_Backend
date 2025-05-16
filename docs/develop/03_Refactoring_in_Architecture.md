@@ -16,7 +16,7 @@
 - 데이터를 조회한 뒤 후처리를 거치는 로직이 Repository에 있었으나, Repository는 데이터를 조회하는 것 까지만 하도록 작게 나누고, 후처리 로직을 Service단으로 옮긴다!
     - `List<Structure> findByAddressContaining(String keyword)` 메서드에 있는 로직을 Service로 옮기고, 해당 메서드는 데이터를 단순 조회하는 두 메서드 `List<Structure> findByNumberAddressContaining(String keyword)`, `List<Structure> findByRoadAddressContaining(String keyword)` 으로 쪼갬.
 
-## 2. 컨트롤러 DTO 리팩토링
+### 2. 컨트롤러 DTO 리팩토링
 - 초반부 테스트를 간편하게 하기 위해 DTO에도 `@Builder`를 사용하였으나, 명확한 DTO 사용을 위해 이를 제거하고 사용할 어노테이션을 정리한다.
     - `@Getter`, `@Setter`, `@NoArgsConstructor`, `@AllArgsConstructor` 사용
     - `@Builder` 사용 하지 않음!

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
+import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
 import com.sshyu.zibnote.adapter.in.web.structure.dto.StructureResDto;
 import com.sshyu.zibnote.adapter.in.web.structure.mapper.StructureDtoMapper;
 import com.sshyu.zibnote.domain.structure.port.in.StructureUseCase;
@@ -34,20 +36,26 @@ public class StructureController {
             final List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
                 .map(domain -> StructureDtoMapper.toResDto(domain))
                 .collect(Collectors.toList());
-            return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
+            return ResponseEntity.ok(
+                ApiResponse.of(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_GET.getMessage(), resDtos)
+            );
         }
 
         if (name != null && !name.isEmpty()) {
             final List<StructureResDto> resDtos = structureUseCase.listStructuresByName(name).stream()
                 .map(domain -> StructureDtoMapper.toResDto(domain))
                 .collect(Collectors.toList());
-            return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
+            return ResponseEntity.ok(
+                ApiResponse.of(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_GET.getMessage(), resDtos)
+            );
         }
 
         final List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
             .map(domain -> StructureDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
-        return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_GET.getMessage(), resDtos)
+        );
     }
 
 }

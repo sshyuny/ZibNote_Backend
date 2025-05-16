@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
+import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchResDto;
@@ -35,7 +37,9 @@ public class SearchController {
         final Long memberId = authUseCase.getMemberId();
         searchUseCase.registerSearch(SearchDtoMapper.toDomain(reqDto, memberId));
 
-        return ResponseEntity.ok(ApiResponse.successWithMessage("임장 등록 성공!"));
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_REGISTER.getMessage())
+        );
     }
 
     @DeleteMapping
@@ -43,7 +47,9 @@ public class SearchController {
 
         searchUseCase.softDeleteSearch(reqDto.getSearchId(), authUseCase.getMemberId());
 
-        return ResponseEntity.ok(ApiResponse.successWithMessage("임장 삭제 성공"));
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_DELETE.getMessage())
+        );
     }
 
     @GetMapping("/list")
@@ -54,7 +60,9 @@ public class SearchController {
             .map(domain -> SearchDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
 
-        return ResponseEntity.ok(ApiResponse.successWithData(resDtos));
+        return ResponseEntity.ok(
+            ApiResponse.of(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_GET.getMessage(), resDtos)
+        );
     }
 
 }

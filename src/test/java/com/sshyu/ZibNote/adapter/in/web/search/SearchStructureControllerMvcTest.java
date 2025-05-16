@@ -18,7 +18,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sshyu.zibnote.adapter.in.web.common.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
+import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
+import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
 import com.sshyu.zibnote.application.service.auth.JwtUtil;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
@@ -74,10 +76,10 @@ public class SearchStructureControllerMvcTest {
             .andExpect(status().isOk())
             .andReturn();
         String contentAsString = response.getResponse().getContentAsString();
-        ApiResponse<String> value = objectMapper.readValue(contentAsString, new TypeReference<ApiResponse<String>>() {});
+        ApiResponse<Void> value = objectMapper.readValue(contentAsString, new TypeReference<ApiResponse<Void>>() {});
 
         // then
-        assertThat(value.getMessage()).isEqualTo("임장 건물 추가 성공!");
-        assertThat(value.getCode()).isEqualTo("success");
+        assertThat(value.getMessage()).isEqualTo(ResponseMessage.SUCCESS_REGISTER.getMessage());
+        assertThat(value.getCode()).isEqualTo(ResponseCode.SUCCESS);
     }
 }
