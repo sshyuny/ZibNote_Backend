@@ -9,37 +9,49 @@ public class SearchStructureNoteFixture {
     public static final Long NOTE_ID_OF_MEMBER_A_1 = 6001L;
     public static final Long NOTE_ID_OF_MEMBER_A_2 = 6002L;
 
-    public static SearchStructureNote ofNote1WithMemberA() {
-        return SearchStructureNoteFixture.of(
+    public static SearchStructureNote validNote1OwnedByA() {
+        return SearchStructureNote.ofBasic(
             NOTE_ID_OF_MEMBER_A_1, 
-            SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
-            NoteFieldFixture.NOTE_FIELD_1_OF_MEMBER_A
+            SearchStructureFixture.validSearchStructure1OwnedByA(), 
+            NoteFieldFixture.validNoteField1OwnedByA(),
+            null,
+            null,
+            null
         );
     }
-    public static SearchStructureNote ofNote2WithMemberA() {
-        return SearchStructureNoteFixture.of(
+    public static SearchStructureNote validNote2OwnedByA() {
+        return SearchStructureNote.ofBasic(
             NOTE_ID_OF_MEMBER_A_2, 
-            SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
-            NoteFieldFixture.NOTE_FIELD_1_OF_MEMBER_A
-        );
-    }
-
-    public static SearchStructureNote ofValidNote() {
-        return SearchStructureNoteFixture.of(
-            null, 
-            SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
-            NoteFieldFixture.NOTE_FIELD_1_OF_MEMBER_A
-        );
-    }
-    public static SearchStructureNote ofInvalidNote() {
-        return SearchStructureNoteFixture.of(
-            null, 
-            SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A, 
+            SearchStructureFixture.validSearchStructure1OwnedByA(), 
+            NoteFieldFixture.validNoteField1OwnedByA(),
+            null,
+            null,
             null
         );
     }
 
-    public static SearchStructureNote of(final Long searchStructureNoteId, final Long searchStructureId, final Long noteFieldId) {
+    public static SearchStructureNote validNoteWithoutId() {
+        return SearchStructureNote.ofBasic(
+            null,
+            SearchStructureFixture.validSearchStructure1OwnedByA(), 
+            NoteFieldFixture.validNoteField1OwnedByA(),
+            null,
+            null,
+            null
+        );
+    }
+    public static SearchStructureNote invalidNote() {
+        return SearchStructureNote.ofBasic(
+            null,
+            SearchStructureFixture.validSearchStructure1OwnedByA(), 
+            NoteField.onlyId(null),
+            null,
+            null,
+            null
+        );
+    }
+
+    public static SearchStructureNote createNote(final Long searchStructureNoteId, final Long searchStructureId, final Long noteFieldId) {
         return SearchStructureNote.builder()
             .searchStructureNoteId(searchStructureNoteId)
             .searchStructure(SearchStructure.onlyId(searchStructureId))

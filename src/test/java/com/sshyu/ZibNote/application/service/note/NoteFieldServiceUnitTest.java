@@ -31,11 +31,11 @@ public class NoteFieldServiceUnitTest {
 
     final static Long MEMBER_ID_A = MemberFixture.MEMBER_A_ID;
     final static Long MEMBER_ID_B = MemberFixture.MEMBER_B_ID;
-    final static Long NOTE_FIELD_1_ID = NoteFieldFixture.NOTE_FIELD_1_OF_MEMBER_A;
+    final static Long NOTE_FIELD_1_ID = NoteFieldFixture.NOTE_FIELD_1_ID;
 
-    NoteField noteFieldBeforeSaving = NoteFieldFixture.of(null, MEMBER_ID_A, NoteFieldFixture.NAME_1);
-    NoteField noteField1WithMemberA = NoteFieldFixture.ofNoteField1WithMemberA();
-    NoteField noteField2WithMemberA = NoteFieldFixture.ofNoteField2WithMemberA();
+    NoteField noteFieldBeforeSaving = NoteField.ofBasic(null, MemberFixture.validMemberA(), NoteFieldFixture.NOTE_FIELD_1_NAME, null);
+    NoteField noteField1WithMemberA = NoteFieldFixture.validNoteField1OwnedByA();
+    NoteField noteField2WithMemberA = NoteFieldFixture.validNoteField2OwnedByA();
 
 
     @Test

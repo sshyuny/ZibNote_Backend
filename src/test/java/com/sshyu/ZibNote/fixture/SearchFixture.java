@@ -1,41 +1,31 @@
 package com.sshyu.zibnote.fixture;
 
-import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.search.model.Search;
 
 public class SearchFixture {
 
-    public static final Long SEARCH_ID_OF_MEMBER_A_1 = 4001L;
-    public static final Long SEARCH_ID_OF_MEMBER_A_2 = 4002L;
+    public static final Long SEARCH_1_ID = 4001L;
+    public static final Long SEARCH_2_ID = 4002L;
 
-    public static final String TITLE_1 = "산본역 2025 임장";
-    public static final String REGION_1 = "경기 군포시";
-    public static final String TITLE_2 = "병점역 2025 임장";
-    public static final String REGION_2 = "경기 화성시";
+    public static final String SEARCH_1_TITLE = "산본역 2025 임장";
+    public static final String SEARCH_1_REGION = "경기 군포시";
+    public static final String SEARCH_2_TITLE = "병점역 2025 임장";
+    public static final String SEARCH_2_REGION = "경기 화성시";
 
-    public static Search ofSearch1WithMemberA() {
+    public static Search validSearch1OwnedByA() {
         return Search.builder()
-            .searchId(SEARCH_ID_OF_MEMBER_A_1)
-            .member(MemberFixture.ofMemberA())
-            .title(TITLE_1)
-            .region(REGION_1)
+            .searchId(SEARCH_1_ID)
+            .member(MemberFixture.validMemberA())
+            .title(SEARCH_1_TITLE)
+            .region(SEARCH_1_REGION)
             .build();
     }
-    public static Search ofSearch2WithMemberA() {
+    public static Search validSearch2OwnedByA() {
         return Search.builder()
-            .searchId(SEARCH_ID_OF_MEMBER_A_2)
-            .member(MemberFixture.ofMemberA())
-            .title(TITLE_1)
-            .region(REGION_1)
-            .build();
-    }
-    
-    public static Search of(final Long searchId, final Long memberId, final String title, final String region) {
-        return Search.builder()
-            .searchId(searchId)
-            .member(Member.onlyId(memberId))
-            .title(title)
-            .region(region)
+            .searchId(SEARCH_2_ID)
+            .member(MemberFixture.validMemberA())
+            .title(SEARCH_1_TITLE)
+            .region(SEARCH_1_REGION)
             .build();
     }
 

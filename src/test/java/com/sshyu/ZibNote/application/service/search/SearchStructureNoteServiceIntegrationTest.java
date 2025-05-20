@@ -19,12 +19,16 @@ import com.sshyu.zibnote.adapter.out.persistence.search.SearchStructureNotePersi
 import com.sshyu.zibnote.adapter.out.persistence.search.SearchStructurePersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.structure.StructurePersistenceAdapter;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.member.model.Member;
+import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
+import com.sshyu.zibnote.domain.search.model.Search;
+import com.sshyu.zibnote.domain.search.model.SearchStructure;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
+import com.sshyu.zibnote.domain.structure.model.Structure;
 import com.sshyu.zibnote.fixture.MemberFixture;
 import com.sshyu.zibnote.fixture.NoteFieldFixture;
 import com.sshyu.zibnote.fixture.SearchFixture;
-import com.sshyu.zibnote.fixture.SearchStructureFixture;
 import com.sshyu.zibnote.fixture.SearchStructureNoteFixture;
 import com.sshyu.zibnote.fixture.StructureFixture;
 
@@ -68,23 +72,24 @@ public class SearchStructureNoteServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         
-        memberId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_A));
+        memberId = memberPersistenceAdapter.save(Member.ofBasic(null, MemberFixture.MEMBER_A_NAME));
 
-        searchId = searchPersistenceAdapter.save(SearchFixture.of(null, memberId, SearchFixture.TITLE_1, SearchFixture.REGION_1));
+        searchId = searchPersistenceAdapter.save(Search.ofBasic(null, Member.onlyId(memberId), SearchFixture.SEARCH_1_TITLE, SearchFixture.SEARCH_1_REGION, null));
 
-        structureId1 = structurePersistenceAdapter.save(StructureFixture.ofStructureAptSollWithoutId());
-        structureId2 = structurePersistenceAdapter.save(StructureFixture.ofStructureBaekduAptWithoutId());
+        structureId1 = structurePersistenceAdapter.save(StructureFixture.validStructure1WithoutId());
+        structureId2 = structurePersistenceAdapter.save(StructureFixture.validStructure2WithoutId());
         
-        searchStructureId1 = searchStructurePersistenceAdapter.save(SearchStructureFixture.of(null, searchId, structureId1));
-        searchStructureId2 = searchStructurePersistenceAdapter.save(SearchStructureFixture.of(null, searchId, structureId2));
+        searchStructureId1 = searchStructurePersistenceAdapter.save(SearchStructure.ofBasic(null, Search.onlyId(searchId), Structure.onlyId(structureId1), null));
+        searchStructureId2 = searchStructurePersistenceAdapter.save(SearchStructure.ofBasic(null, Search.onlyId(searchId), Structure.onlyId(structureId2), null));
 
-        noteFieldId1 = noteFieldPersistenceAdapter.save(NoteFieldFixture.of(null, memberId, NoteFieldFixture.NAME_1));
-        noteFieldId2 = noteFieldPersistenceAdapter.save(NoteFieldFixture.of(null, memberId, NoteFieldFixture.NAME_2));
+        noteFieldId1 = noteFieldPersistenceAdapter.save(NoteField.ofBasic(null, Member.onlyId(
+            memberId), NoteFieldFixture.NOTE_FIELD_1_NAME, null));
+        noteFieldId2 = noteFieldPersistenceAdapter.save(NoteField.ofBasic(null, Member.onlyId(memberId), NoteFieldFixture.NOTE_FILED_2_NAME, null));
 
-        noteWithSearchStructure1AndNoteField1 = SearchStructureNoteFixture.of(null, searchStructureId1, noteFieldId1);
-        noteWithSearchStructure1AndNoteField2 = SearchStructureNoteFixture.of(null, searchStructureId1, noteFieldId2);
-        noteWithSearchStructure2AndNoteField1 = SearchStructureNoteFixture.of(null, searchStructureId2, noteFieldId1);
-        noteWithSearchStructure2AndNoteField2 = SearchStructureNoteFixture.of(null, searchStructureId2, noteFieldId2);
+        noteWithSearchStructure1AndNoteField1 = SearchStructureNoteFixture.createNote(null, searchStructureId1, noteFieldId1);
+        noteWithSearchStructure1AndNoteField2 = SearchStructureNoteFixture.createNote(null, searchStructureId1, noteFieldId2);
+        noteWithSearchStructure2AndNoteField1 = SearchStructureNoteFixture.createNote(null, searchStructureId2, noteFieldId1);
+        noteWithSearchStructure2AndNoteField2 = SearchStructureNoteFixture.createNote(null, searchStructureId2, noteFieldId2);
     }
 
     @Test

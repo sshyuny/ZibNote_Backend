@@ -35,16 +35,16 @@ public class SearchStructureNoteServiceUnitTest {
 
     final Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
     final Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
-    final Long SEARCH_STRUCTURE_ID_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A;
+    final Long SEARCH_STRUCTURE_ID_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
     final Long SAVED_NOTE_ID_OF_A_1 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_1;
     final Long SAVED_NOTE_ID_OF_A_2 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_2;
     final Long NEW_NOTE_ID = 9L;
     final Long NOT_EXIST_NOTE_ID = 99999L;
 
-    SearchStructureNote validNoteOfMemberA = SearchStructureNoteFixture.ofValidNote();
-    SearchStructureNote invalidNote = SearchStructureNoteFixture.ofInvalidNote();
-    SearchStructureNote savedNote1 = SearchStructureNoteFixture.ofNote1WithMemberA();
-    SearchStructureNote savedNote2 = SearchStructureNoteFixture.ofNote2WithMemberA();
+    SearchStructureNote validNoteOfMemberA = SearchStructureNoteFixture.validNoteWithoutId();
+    SearchStructureNote invalidNote = SearchStructureNoteFixture.invalidNote();
+    SearchStructureNote savedNote1 = SearchStructureNoteFixture.validNote1OwnedByA();
+    SearchStructureNote savedNote2 = SearchStructureNoteFixture.validNote2OwnedByA();
 
 
     @Test

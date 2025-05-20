@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.search.exception.SearchNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.port.out.SearchRepository;
@@ -30,12 +31,12 @@ public class SearchServiceUnitTest {
 
     final static Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
     final static Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
-    final static Long SEARCH_ID_OF_MEMBER_A = SearchFixture.SEARCH_ID_OF_MEMBER_A_1;
+    final static Long SEARCH_ID_OF_MEMBER_A = SearchFixture.SEARCH_1_ID;
     final static Long INVALID_SEARCH_ID = 999L;
 
-    Search search1WithMemberA = SearchFixture.ofSearch1WithMemberA();
-    Search search2WithMemberA = SearchFixture.ofSearch2WithMemberA();
-    Search searchWithoutId = SearchFixture.of(null, MEMBER_A_ID, SearchFixture.TITLE_1, SearchFixture.REGION_1);
+    Search search1WithMemberA = SearchFixture.validSearch1OwnedByA();
+    Search search2WithMemberA = SearchFixture.validSearch2OwnedByA();
+    Search searchWithoutId = Search.ofBasic(null, Member.onlyId(MEMBER_A_ID), SearchFixture.SEARCH_1_TITLE, SearchFixture.SEARCH_1_REGION, null);
 
 
     @Test

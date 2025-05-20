@@ -14,12 +14,14 @@ import com.sshyu.zibnote.adapter.out.persistence.search.SearchPersistenceAdapter
 import com.sshyu.zibnote.adapter.out.persistence.search.SearchStructurePersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.structure.StructurePersistenceAdapter;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNotFoundException;
+import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.model.SearchStructure;
 import com.sshyu.zibnote.domain.structure.exception.StructureNotFoundException;
+import com.sshyu.zibnote.domain.structure.model.Structure;
 import com.sshyu.zibnote.fixture.MemberFixture;
 import com.sshyu.zibnote.fixture.SearchFixture;
-import com.sshyu.zibnote.fixture.SearchStructureFixture;
 import com.sshyu.zibnote.fixture.StructureFixture;
 
 import jakarta.persistence.EntityManager;
@@ -55,17 +57,17 @@ public class SearchStructureServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        memberAId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_A));
-        memberBId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_B));
+        memberAId = memberPersistenceAdapter.save(Member.ofBasic(null, MemberFixture.MEMBER_A_NAME));
+        memberBId = memberPersistenceAdapter.save(Member.ofBasic(null, MemberFixture.MEMBER_B_NAME));
 
-        searchId = searchPersistenceAdapter.save(SearchFixture.of(null, memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1));
+        searchId = searchPersistenceAdapter.save(Search.ofBasic(null, Member.onlyId(memberAId), SearchFixture.SEARCH_1_TITLE, SearchFixture.SEARCH_1_REGION, null));
 
-        structureId1 = structurePersistenceAdapter.save(StructureFixture.ofStructureAptSollWithoutId());
-        structureId2 = structurePersistenceAdapter.save(StructureFixture.ofStructureBaekduAptWithoutId());
+        structureId1 = structurePersistenceAdapter.save(StructureFixture.validStructure1WithoutId());
+        structureId2 = structurePersistenceAdapter.save(StructureFixture.validStructure2WithoutId());
 
-        validSearchStructure1 = SearchStructureFixture.of(null, searchId, structureId1);
-        validSearchStructure2 = SearchStructureFixture.of(null, searchId, structureId1);
-        invalidSearchStructure = SearchStructureFixture.of(null, searchId, structureId1+ 200);
+        validSearchStructure1 = SearchStructure.ofBasic(null, Search.onlyId(searchId), Structure.onlyId(structureId1), null);
+        validSearchStructure2 = SearchStructure.ofBasic(null, Search.onlyId(searchId), Structure.onlyId(structureId1), null);
+        invalidSearchStructure = SearchStructure.ofBasic(null, Search.onlyId(searchId), Structure.onlyId(structureId1 + 200), null);
     }
 
     @Test

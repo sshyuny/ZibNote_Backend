@@ -7,20 +7,13 @@ public class MemberFixture {
     public static final Long MEMBER_A_ID = 1001L;
     public static final Long MEMBER_B_ID = 1002L;
 
-    public static final String NAME_A = "sshyu";
-    public static final String NAME_B = "sasha";
+    public static final String MEMBER_A_NAME = "sshyu";
+    public static final String MEMBER_B_NAME = "sasha";
 
-    public static Member ofMemberA() {
+    public static Member validMemberA() {
         return Member.builder()
             .memberId(MEMBER_A_ID)
-            .name(NAME_A)
-            .build();
-    }
-
-    public static Member of(final Long memberId, final String name) {
-        return Member.builder()
-            .memberId(memberId)
-            .name(name)
+            .name(MEMBER_A_NAME)
             .build();
     }
 

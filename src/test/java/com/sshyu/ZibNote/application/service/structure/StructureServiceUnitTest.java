@@ -23,8 +23,8 @@ public class StructureServiceUnitTest {
     @Mock
     StructureRepository structureRepository;
 
-    Structure structure1 = StructureFixture.ofStructureSolApt();
-    Structure structure2 = StructureFixture.ofStructureBaekduApt();
+    Structure structure1 = StructureFixture.validStructure1();
+    Structure structure2 = StructureFixture.validStructure2();
 
     List<Structure> structuresOnly1 = List.of(structure1);
     List<Structure> structuresOnly2 = List.of(structure2);

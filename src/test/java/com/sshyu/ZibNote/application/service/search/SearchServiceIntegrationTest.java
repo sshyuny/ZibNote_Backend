@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import com.sshyu.zibnote.adapter.out.persistence.member.MemberPersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.search.SearchPersistenceAdapter;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.search.exception.SearchNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.fixture.MemberFixture;
@@ -45,11 +46,11 @@ public class SearchServiceIntegrationTest {
     
     @BeforeEach
     void setUp() {
-        memberAId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_A));
-        memberBId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_B));
+        memberAId = memberPersistenceAdapter.save(Member.ofBasic(null, MemberFixture.MEMBER_A_NAME));
+        memberBId = memberPersistenceAdapter.save(Member.ofBasic(null, MemberFixture.MEMBER_B_NAME));
         
-        Search search1 = SearchFixture.of(null, memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1);
-        Search search2 = SearchFixture.of(null, memberAId, SearchFixture.TITLE_2, SearchFixture.REGION_2);
+        Search search1 = Search.ofBasic(null, Member.onlyId(memberAId), SearchFixture.SEARCH_1_TITLE, SearchFixture.SEARCH_1_REGION, null);
+        Search search2 = Search.ofBasic(null, Member.onlyId(memberAId), SearchFixture.SEARCH_2_TITLE, SearchFixture.SEARCH_2_REGION, null);
         search1Id = searchPersistenceAdapter.save(search1);
         search2Id = searchPersistenceAdapter.save(search2);
     }
@@ -57,7 +58,7 @@ public class SearchServiceIntegrationTest {
     @Test
     void registerSearch_정상_등록() {
         //when
-        Search search = SearchFixture.of(null, memberAId, SearchFixture.TITLE_1, SearchFixture.REGION_1);
+        Search search = Search.ofBasic(null, Member.onlyId(memberAId), SearchFixture.SEARCH_1_TITLE, SearchFixture.SEARCH_1_REGION, null);
         Long searchId = sut.registerSearch(search);
 
         em.flush();
@@ -66,8 +67,8 @@ public class SearchServiceIntegrationTest {
         //then
         Search selectedSearch = searchPersistenceAdapter.findBySearchId(searchId);
         assertThat(selectedSearch.getMember().getMemberId()).isEqualTo(memberAId);
-        assertThat(selectedSearch.getTitle()).isEqualTo(SearchFixture.TITLE_1);
-        assertThat(selectedSearch.getRegion()).isEqualTo(SearchFixture.REGION_1);
+        assertThat(selectedSearch.getTitle()).isEqualTo(SearchFixture.SEARCH_1_TITLE);
+        assertThat(selectedSearch.getRegion()).isEqualTo(SearchFixture.SEARCH_1_REGION);
     }
 
     @Test
@@ -80,8 +81,8 @@ public class SearchServiceIntegrationTest {
 
         //then
         assertThat(selectedSearch1.getMember().getMemberId()).isEqualTo(memberAId);
-        assertThat(selectedSearch1.getTitle()).isEqualTo(SearchFixture.TITLE_1);
-        assertThat(selectedSearch1.getRegion()).isEqualTo(SearchFixture.REGION_1);
+        assertThat(selectedSearch1.getTitle()).isEqualTo(SearchFixture.SEARCH_1_TITLE);
+        assertThat(selectedSearch1.getRegion()).isEqualTo(SearchFixture.SEARCH_1_REGION);
     }
 
     @DisplayName("ID와 일치하는 Search 없는 경우 예외 발생")

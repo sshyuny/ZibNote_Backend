@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.sshyu.zibnote.adapter.out.persistence.member.MemberPersistenceAdapter;
 import com.sshyu.zibnote.adapter.out.persistence.note.NoteFieldPersistenceAdapter;
+import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.note.exception.NoteFieldNotFoundException;
 import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.fixture.MemberFixture;
@@ -40,11 +41,11 @@ public class NoteFieldServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        memberAId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_A));
-        memberBId = memberPersistenceAdapter.save(MemberFixture.of(null, MemberFixture.NAME_B));
+        memberAId = memberPersistenceAdapter.save(Member.ofBasic(null, MemberFixture.MEMBER_A_NAME));
+        memberBId = memberPersistenceAdapter.save(Member.ofBasic(null, MemberFixture.MEMBER_B_NAME));
 
-        NoteField noteField1 = NoteFieldFixture.of(null, memberAId, NoteFieldFixture.NAME_1);
-        NoteField noteField2 = NoteFieldFixture.of(null, memberAId, NoteFieldFixture.NAME_2);
+        NoteField noteField1 = NoteField.ofBasic(null, Member.onlyId(memberAId), NoteFieldFixture.NOTE_FIELD_1_NAME, null);
+        NoteField noteField2 = NoteField.ofBasic(null, Member.onlyId(memberAId), NoteFieldFixture.NOTE_FILED_2_NAME, null);
         noteField1Id = noteFieldPersistenceAdapter.save(noteField1);
         noteField2Id = noteFieldPersistenceAdapter.save(noteField2);
     }
@@ -52,7 +53,7 @@ public class NoteFieldServiceIntegrationTest {
     @Test
     void registerNoteField_정상_상황() {
         //given
-        NoteField noteField = NoteFieldFixture.of(null, memberAId, NoteFieldFixture.NAME_1);
+        NoteField noteField = NoteField.ofBasic(null, Member.onlyId(memberAId), NoteFieldFixture.NOTE_FIELD_1_NAME, null);
 
         //when
         Long newNoteFieldId = sut.registerNoteField(noteField);
@@ -63,7 +64,7 @@ public class NoteFieldServiceIntegrationTest {
         //then
         NoteField selectedNoteFiled = noteFieldPersistenceAdapter.findByNoteFieldId(newNoteFieldId);
         assertThat(selectedNoteFiled.getMember().getMemberId()).isEqualTo(memberAId);
-        assertThat(selectedNoteFiled.getName()).isEqualTo(NoteFieldFixture.NAME_1);
+        assertThat(selectedNoteFiled.getName()).isEqualTo(NoteFieldFixture.NOTE_FIELD_1_NAME);
     }
 
     @Test

@@ -42,18 +42,18 @@ public class SearchStructureServiceUnitTest {
 
     final Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
     final Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
-    final Long SEARCH_ID_OF_A = SearchFixture.SEARCH_ID_OF_MEMBER_A_1;
-    final Long STRUCTURE_ID = StructureFixture.STRUCTURE_ID_SOL;
-    final Long SEARCH_STRUCTURE_ID_1_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1_ID_OF_MEMBER_A;
-    final Long SEARCH_STRUCTURE_ID_2_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_2_ID_OF_MEMBER_A;
+    final Long SEARCH_ID_OF_A = SearchFixture.SEARCH_1_ID;
+    final Long STRUCTURE_ID = StructureFixture.STRUCTURE_1_ID;
+    final Long SEARCH_STRUCTURE_ID_1_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
+    final Long SEARCH_STRUCTURE_ID_2_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_2_ID;
 
-    Structure structure = StructureFixture.ofStructureSolApt();
-    Search searchOfMemberA = SearchFixture.ofSearch1WithMemberA();
-    SearchStructure searchStructure1WithMemberA = SearchStructureFixture.ofSearchStructure1WithMemberA();
-    SearchStructure searchStructure2WithMemberA = SearchStructureFixture.ofSearchStructure1WithMemberA();
-    SearchStructure invalidSearchStructure = SearchStructureFixture.of(null, null, null);
+    Structure structure = StructureFixture.validStructure1();
+    Search searchOfMemberA = SearchFixture.validSearch1OwnedByA();
+    SearchStructure searchStructure1WithMemberA = SearchStructureFixture.validSearchStructure1OwnedByA();
+    SearchStructure searchStructure2WithMemberA = SearchStructureFixture.validSearchStructure1OwnedByA();
+    SearchStructure invalidSearchStructure = SearchStructure.ofBasic(null, Search.onlyId(null), Structure.onlyId(null), null);
 
-        
+
     @Test
     void registerSearchStructure_정상_등록() {
         //given

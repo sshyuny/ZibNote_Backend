@@ -35,8 +35,8 @@ public class StructureServiceIntegrationTest {
     @BeforeEach
     void setUp() {
 
-        Structure structureSolApt = StructureFixture.ofStructureAptSollWithoutId();
-        Structure structureBaekduApt = StructureFixture.ofStructureBaekduAptWithoutId();
+        Structure structureSolApt = StructureFixture.validStructure1WithoutId();
+        Structure structureBaekduApt = StructureFixture.validStructure2WithoutId();
 
         structureIdOfSolApt = structurePersistenceAdapter.save(structureSolApt);
         structureIdOfBaekduApt = structurePersistenceAdapter.save(structureBaekduApt);
