@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.domain.structure.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
 
@@ -23,6 +24,36 @@ public class Structure extends BaseFields {
     private final BigDecimal longitude;
 
     private final Integer builtYear;
+
+    public static Structure ofFull(final Long structureId, final String name, final String numberAddress, final String roadAddress, 
+            final BigDecimal latitude, final BigDecimal longitude, final Integer builtYear, 
+            final LocalDateTime createdAt, final LocalDateTime updatedAt, final Integer isDeleted) {
+        return Structure.builder()
+            .structureId(structureId)
+            .name(name)
+            .numberAddress(numberAddress)
+            .roadAddress(numberAddress)
+            .latitude(latitude)
+            .longitude(longitude)
+            .builtYear(builtYear)
+            .createdAt(createdAt)
+            .updatedAt(updatedAt)
+            .isDeleted(isDeleted)
+            .build();
+    }
+
+    public static Structure ofBasic(final Long structureId, final String name, final String numberAddress, final String roadAddress, 
+            final BigDecimal latitude, final BigDecimal longitude, final Integer builtYear) {
+        return Structure.builder()
+            .structureId(structureId)
+            .name(name)
+            .numberAddress(numberAddress)
+            .roadAddress(numberAddress)
+            .latitude(latitude)
+            .longitude(longitude)
+            .builtYear(builtYear)
+            .build();
+    }
 
     public static Structure onlyId(final Long structureId) {
         return Structure.builder()

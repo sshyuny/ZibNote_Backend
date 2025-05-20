@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.domain.search.model;
 
+import java.time.LocalDateTime;
+
 import com.sshyu.zibnote.domain.common.BaseFields;
 import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureException;
 import com.sshyu.zibnote.domain.structure.model.Structure;
@@ -17,6 +19,28 @@ public class SearchStructure extends BaseFields {
     private final Structure structure;
 
     private final String description;
+
+    public static SearchStructure ofFull(final Long searchStructureId, final Search search, final Structure structure, final String description, 
+            final LocalDateTime createdAt, final LocalDateTime updatedAt, final Integer isDeleted) {
+        return SearchStructure.builder()
+            .searchStructureId(searchStructureId)
+            .search(search)
+            .structure(structure)
+            .description(description)
+            .createdAt(createdAt)
+            .updatedAt(updatedAt)
+            .isDeleted(isDeleted)
+            .build();
+    }
+
+    public static SearchStructure ofBasic(final Long searchStructureId, final Search search, final Structure structure, final String description) {
+        return SearchStructure.builder()
+            .searchStructureId(searchStructureId)
+            .search(search)
+            .structure(structure)
+            .description(description)
+            .build();
+    }
 
     public static SearchStructure onlyId(final Long searchStructureId) {
         return SearchStructure.builder()

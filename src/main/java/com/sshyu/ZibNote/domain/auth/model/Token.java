@@ -8,4 +8,10 @@ public class Token {
     
     private final String token;
 
+    public static Token of(final String token) {
+        return Token.builder()
+            .token(token)
+            .build();
+    }
+
 }
