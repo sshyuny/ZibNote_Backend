@@ -41,16 +41,7 @@ public class StructureController {
             );
         }
 
-        if (name != null && !name.isEmpty()) {
-            final List<StructureResDto> resDtos = structureUseCase.listStructuresByName(name).stream()
-                .map(domain -> StructureDtoMapper.toResDto(domain))
-                .collect(Collectors.toList());
-            return ResponseEntity.ok(
-                ApiResponse.of(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_GET.getMessage(), resDtos)
-            );
-        }
-
-        final List<StructureResDto> resDtos = structureUseCase.listStructuresByAddress(address).stream()
+        final List<StructureResDto> resDtos = structureUseCase.listStructuresByName(name).stream()
             .map(domain -> StructureDtoMapper.toResDto(domain))
             .collect(Collectors.toList());
         return ResponseEntity.ok(

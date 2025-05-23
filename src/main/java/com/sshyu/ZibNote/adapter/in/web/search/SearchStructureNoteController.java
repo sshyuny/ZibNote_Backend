@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NoteDeleteReqDto;
-import com.sshyu.zibnote.adapter.in.web.search.dto.NoteGetListReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NotePostReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NoteResDto;
 import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchStructureNoteDtoMapper;
@@ -55,10 +55,10 @@ public class SearchStructureNoteController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<NoteResDto>>> getList(@RequestBody NoteGetListReqDto reqDto) {
+    public ResponseEntity<ApiResponse<List<NoteResDto>>> getList(@RequestParam("searchStructureId") Long searchStructureId) {
 
         final Long memberId = authUseCase.getMemberId();
-        final List<NoteResDto> list = searchStructureNoteUseCase.listSearchStructureNotesBySearchStructure(reqDto.getSearchStructureId(), memberId)
+        final List<NoteResDto> list = searchStructureNoteUseCase.listSearchStructureNotesBySearchStructure(searchStructureId, memberId)
             .stream()
             .map(domain -> SearchStructureNoteDtoMapper.toResDto(domain))
             .collect(Collectors.toList());

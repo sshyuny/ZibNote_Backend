@@ -12,11 +12,23 @@ import com.sshyu.zibnote.domain.common.exception.ResourceNotFoundException;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.common.exception.ZibnoteRuntimeException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestControllerAdvice
 public class CommonControllerAdvice {
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Void>> handleException(Exception ex) {
+        log.error("Unhandled exception = ", ex);
+        return ResponseEntity.internalServerError().body(
+            ApiResponse.of(ResponseCode.ERROR, ResponseMessage.ERROR.getMessage(), null)
+        );
+    }
+
     @ExceptionHandler(ZibnoteRuntimeException.class)
     public ResponseEntity<ApiResponse<Void>> handleZibnote(ZibnoteRuntimeException ex) {
+        log.error("Unhandled ZibnoteRuntimeException = ", ex);
         return ResponseEntity.badRequest().body(
             ApiResponse.of(ResponseCode.ERROR, ResponseMessage.ERROR.getMessage(), null)
         );
