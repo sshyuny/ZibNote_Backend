@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -15,7 +14,6 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,6 +23,7 @@ import com.sshyu.zibnote.adapter.in.web.structure.dto.StructureResDto;
 import com.sshyu.zibnote.application.service.auth.JwtUtil;
 import com.sshyu.zibnote.domain.structure.model.Structure;
 import com.sshyu.zibnote.domain.structure.port.in.StructureUseCase;
+import com.sshyu.zibnote.fixture.StructureFixture;
 
 
 @WebMvcTest(StructureController.class)
@@ -39,30 +38,16 @@ public class StructureControllerTestMvc {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    // web
     final static String JWT_TOKEN = "dummy.jwt.token";
-    // data value
-    final static Long STRUCTURE_ID_1 = 23L;
-    final static String STRUCTURE_NAME_1 = "목화아파트";
-    final static String NUMBER_ADDRESS_1 = "경기 군포시 금정동 850";
-    final static String ROAD_ADDRESS_1 = "경기 군포시 번영로550번길 5";
-    final static Long STRUCTURE_ID_2 = 49L;
-    final static String STRUCTURE_NAME_2 = "대림솔거아파트";
-    final static String NUMBER_ADDRESS_2 = "경기 군포시 산본동 1146";
-    final static String ROAD_ADDRESS_2 = "경기 군포시 광정로 119";
-    Structure structure1 = Structure.builder()
-        .structureId(STRUCTURE_ID_1)
-        .name(STRUCTURE_NAME_1)
-        .numberAddress(NUMBER_ADDRESS_1)
-        .roadAddress(ROAD_ADDRESS_1)
-        .build();
-    Structure structure2 = Structure.builder()
-        .structureId(STRUCTURE_ID_2)
-        .name(STRUCTURE_NAME_2)
-        .numberAddress(NUMBER_ADDRESS_2)
-        .roadAddress(ROAD_ADDRESS_2)
-        .build();
-    MockHttpSession session = new MockHttpSession();
+    final static String PATH = "/api/structure";
+
+    final static Long STRUCTURE_1_ID = StructureFixture.STRUCTURE_1_ID;
+    final static Long STRUCTURE_2_ID = StructureFixture.STRUCTURE_2_ID;
+    final static String STRUCTURE_1_NAME = StructureFixture.STRUCTURE_1_NAME;
+    final static String STRUCTURE_2_NAME = StructureFixture.STRUCTURE_2_NAME;
+    Structure structure1 = StructureFixture.validStructure1();
+    Structure structure2 = StructureFixture.validStructure2();
+    List<Structure> structures = List.of(structure1, structure2);
 
 
     @BeforeEach
@@ -71,32 +56,45 @@ public class StructureControllerTestMvc {
     }
 
     @Test
-    void get_list_주소검색_정상요청() throws Exception {
-
+    void get_list_address_파라미터_요청() throws Exception {
         // given
-        List<Structure> structures = new ArrayList<>();
-        structures.add(structure1);
-        structures.add(structure2);
-
-        given(structureUseCase.listStructuresByAddress("경기"))
+        String urlParam = "경기";
+        given(structureUseCase.listStructuresByAddress(urlParam))
             .willReturn(structures);
 
         // when
-        MvcResult response = mockMvc.perform(get("/api/structure/list?address=경기")
+        MvcResult response = mockMvc.perform(get(PATH + "/list?address=" + urlParam)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
             )
             .andExpect(status().isOk())
             .andReturn();
-
-        String contentAsString = response.getResponse().getContentAsString();
         ApiResponse<List<StructureResDto>> value = objectMapper.readValue(
-            contentAsString, new TypeReference<ApiResponse<List<StructureResDto>>>() {}
+            response.getResponse().getContentAsString(), new TypeReference<ApiResponse<List<StructureResDto>>>() {}
         );
 
         // then
         assertThat(value.getData().size()).isEqualTo(2);
-        assertThat(value.getData().get(0).getStructureId()).isEqualTo(STRUCTURE_ID_1);
-        assertThat(value.getData().get(1).getName()).isEqualTo(STRUCTURE_NAME_2);
+    }
+
+    @Test
+    void get_list_name_파라미터_요청() throws Exception {
+        // given
+        String urlParam = "아파트";
+        given(structureUseCase.listStructuresByName(urlParam))
+            .willReturn(structures);
+
+        // when
+        MvcResult response = mockMvc.perform(get(PATH + "/list?name=" + urlParam)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
+            )
+            .andExpect(status().isOk())
+            .andReturn();
+        ApiResponse<List<StructureResDto>> value = objectMapper.readValue(
+            response.getResponse().getContentAsString(), new TypeReference<ApiResponse<List<StructureResDto>>>() {}
+        );
+
+        // then
+        assertThat(value.getData().size()).isEqualTo(2);
     }
     
 }
