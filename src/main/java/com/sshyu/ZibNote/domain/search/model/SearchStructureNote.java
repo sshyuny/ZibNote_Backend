@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.domain.search.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
 import com.sshyu.zibnote.domain.note.model.NoteField;
@@ -12,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder @Getter
 public class SearchStructureNote extends BaseFields {
     
-    private final Long searchStructureNoteId;
+    private final UUID searchStructureNoteId;
 
     private final SearchStructure searchStructure;
 
@@ -24,7 +25,7 @@ public class SearchStructureNote extends BaseFields {
 
     private final String note;
 
-    public static SearchStructureNote ofFull(final Long searchStructureNoteId, final SearchStructure searchStructure, 
+    public static SearchStructureNote ofFull(final UUID searchStructureNoteId, final SearchStructure searchStructure, 
             final NoteField noteField, final EvalType evalType, final String evalValue, final String note, 
             final LocalDateTime createdAt, final LocalDateTime updatedAt, final Integer isDeleted) {
         return SearchStructureNote.builder()
@@ -40,7 +41,7 @@ public class SearchStructureNote extends BaseFields {
             .build();
     }
 
-    public static SearchStructureNote ofBasic(final Long searchStructureNoteId, final SearchStructure searchStructure, 
+    public static SearchStructureNote ofBasic(final UUID searchStructureNoteId, final SearchStructure searchStructure, 
             final NoteField noteField, final EvalType evalType, final String evalValue, final String note) {
         return SearchStructureNote.builder()
             .searchStructureNoteId(searchStructureNoteId)

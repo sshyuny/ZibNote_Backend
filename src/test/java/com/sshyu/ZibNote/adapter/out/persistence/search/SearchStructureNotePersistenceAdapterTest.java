@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,6 +73,7 @@ public class SearchStructureNotePersistenceAdapterTest {
     Long searchStructureId;
     Long noteFieldId;
     Long searchStructureNoteid;
+    UUID searchStructureNoteIdUUID;
 
 
     @BeforeEach
@@ -119,7 +121,7 @@ public class SearchStructureNotePersistenceAdapterTest {
                 .build()
         );
 
-        searchStructureNoteid = searchStructureNotePersistenceAdapter.save(
+        searchStructureNoteIdUUID = searchStructureNotePersistenceAdapter.save(
             SearchStructureNote.builder()
                 .searchStructure(SearchStructure.onlyId(searchStructureId))
                 .noteField(NoteField.onlyId(noteFieldId))
@@ -135,7 +137,7 @@ public class SearchStructureNotePersistenceAdapterTest {
         em.flush();
         em.clear();
 
-        SearchStructureNote searchStructureNote = searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteid);
+        SearchStructureNote searchStructureNote = searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteIdUUID);
 
         assertThat(searchStructureNote.getSearchStructure().getSearchStructureId()).isEqualTo(searchStructureId);
         assertThat(searchStructureNote.getNoteField().getNoteFieldId()).isEqualTo(noteFieldId);
@@ -150,14 +152,14 @@ public class SearchStructureNotePersistenceAdapterTest {
     @Test
     void softDelete_정상요청() {
         // when
-        searchStructureNotePersistenceAdapter.softDeleteBySearchStructureNoteId(searchStructureNoteid);
+        searchStructureNotePersistenceAdapter.softDeleteBySearchStructureNoteId(searchStructureNoteIdUUID);
 
         em.flush();
         em.clear();
 
         // then
         assertThrows(SearchStructureNoteNotFoundException.class, () -> 
-            searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteid)
+            searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteIdUUID)
         );
     }
 

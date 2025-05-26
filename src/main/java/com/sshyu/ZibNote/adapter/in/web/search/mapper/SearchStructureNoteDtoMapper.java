@@ -20,7 +20,7 @@ public class SearchStructureNoteDtoMapper {
 
     public static NoteResDto toResDto(final SearchStructureNote domain) {
         return new NoteResDto(
-            domain.getSearchStructureNoteId(), 
+            String.valueOf(domain.getSearchStructureNoteId()), 
             domain.getSearchStructure().getSearchStructureId(), 
             domain.getNoteField().getNoteFieldId(), 
             domain.getEvalType().getName(), 

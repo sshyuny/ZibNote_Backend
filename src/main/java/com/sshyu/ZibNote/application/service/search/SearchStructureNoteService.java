@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.application.service.search;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
      */
     @Override
-    public Long registerSearchStructureNote(final SearchStructureNote searchStructureNote, final Long loginedMemberId) {
+    public UUID registerSearchStructureNote(final SearchStructureNote searchStructureNote, final Long loginedMemberId) {
 
         searchStructureNote.validateForRegister();
 
@@ -81,7 +82,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
      */
     @Override
-    public void softDeleteSearchStructureNote(final Long searchStructureNoteId, final Long loginedMemberId) {
+    public void softDeleteSearchStructureNote(final UUID searchStructureNoteId, final Long loginedMemberId) {
 
         final SearchStructureNote note = searchStructureNoteRepository.findBySearchStructureNoteId(searchStructureNoteId);
 

@@ -1,17 +1,18 @@
 package com.sshyu.zibnote.domain.search.port.out;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 
 public interface SearchStructureNoteRepository {
     
-    Long save(SearchStructureNote searchStructureNote);
+    UUID save(SearchStructureNote searchStructureNote);
 
-    SearchStructureNote findBySearchStructureNoteId(Long searchStructureNoteId);
+    SearchStructureNote findBySearchStructureNoteId(UUID searchStructureNoteId);
     
     List<SearchStructureNote> findAllBySearchStructureId(Long searchStructureId);
 
-    void softDeleteBySearchStructureNoteId(Long searchStructureNoteId);
+    void softDeleteBySearchStructureNoteId(UUID searchStructureNoteId);
     
 }

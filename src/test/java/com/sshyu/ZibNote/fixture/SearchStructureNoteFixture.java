@@ -1,13 +1,15 @@
 package com.sshyu.zibnote.fixture;
 
+import java.util.UUID;
+
 import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.search.model.SearchStructure;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 
 public class SearchStructureNoteFixture {
 
-    public static final Long NOTE_ID_OF_MEMBER_A_1 = 6001L;
-    public static final Long NOTE_ID_OF_MEMBER_A_2 = 6002L;
+    public static final UUID NOTE_ID_OF_MEMBER_A_1 = UUID.randomUUID();
+    public static final UUID NOTE_ID_OF_MEMBER_A_2 = UUID.randomUUID();
 
     public static SearchStructureNote validNote1OwnedByA() {
         return SearchStructureNote.ofBasic(
@@ -51,7 +53,7 @@ public class SearchStructureNoteFixture {
         );
     }
 
-    public static SearchStructureNote createNote(final Long searchStructureNoteId, final Long searchStructureId, final Long noteFieldId) {
+    public static SearchStructureNote createNote(final UUID searchStructureNoteId, final Long searchStructureId, final Long noteFieldId) {
         return SearchStructureNote.builder()
             .searchStructureNoteId(searchStructureNoteId)
             .searchStructure(SearchStructure.onlyId(searchStructureId))

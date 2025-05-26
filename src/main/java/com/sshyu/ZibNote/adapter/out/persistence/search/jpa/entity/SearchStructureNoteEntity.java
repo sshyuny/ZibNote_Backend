@@ -1,6 +1,9 @@
 package com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity;
 
+import java.util.UUID;
+
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UuidGenerator;
 
 import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 import com.sshyu.zibnote.adapter.out.persistence.note.jpa.entity.NoteFieldEntity;
@@ -10,8 +13,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
@@ -29,8 +30,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor @AllArgsConstructor
 public class SearchStructureNoteEntity extends BaseEntity {
     
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long searchStructureNoteId;
+    @Id @UuidGenerator
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID searchStructureNoteId;
 
     @ManyToOne
     @JoinColumn(name = "search_structure_id")

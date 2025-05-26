@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
-import com.sshyu.zibnote.adapter.in.web.search.dto.NoteDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NotePostReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NoteResDto;
 import com.sshyu.zibnote.application.service.auth.JwtUtil;
@@ -51,7 +51,7 @@ public class SearchStructureNoteControllerMvcTest {
     final static String JWT_TOKEN = "dummy.jwt.token";
     final static Long LOGINED_MEMBER_ID = 2345L;
     
-    final static Long SEARCH_STRUCTURE_NOTE_ID = 222L;
+    final static UUID SEARCH_STRUCTURE_NOTE_ID = UUID.randomUUID();
     final static Long SEARCH_STRUCTURE_ID = 222L;
     final static Long NOTE_FIELD_ID = 333L;
 
@@ -115,15 +115,8 @@ public class SearchStructureNoteControllerMvcTest {
 
     @Test
     void delete_정상_요청() throws Exception {
-        // given
-        String json = objectMapper.writeValueAsString(
-            new NoteDeleteReqDto(SEARCH_STRUCTURE_NOTE_ID)
-        );
-
         // when
-        MvcResult res = mockMvc.perform(delete(PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json)
+        MvcResult res = mockMvc.perform(delete(PATH + "/" + SEARCH_STRUCTURE_NOTE_ID)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
             )
             .andExpect(status().isOk())
@@ -140,17 +133,12 @@ public class SearchStructureNoteControllerMvcTest {
     @Test
     void delete_비인가_사용자_시도시_예외_발생() throws Exception {
         // given
-        String json = objectMapper.writeValueAsString(
-            new NoteDeleteReqDto(SEARCH_STRUCTURE_NOTE_ID)
-        );
         doThrow(new UnauthorizedAccessException())
             .when(searchStructureNoteUseCase)
             .softDeleteSearchStructureNote(SEARCH_STRUCTURE_NOTE_ID, LOGINED_MEMBER_ID);
 
         // when
-        MvcResult res = mockMvc.perform(delete(PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json)
+        MvcResult res = mockMvc.perform(delete(PATH + "/" + SEARCH_STRUCTURE_NOTE_ID)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
             )
             .andExpect(status().isBadRequest())

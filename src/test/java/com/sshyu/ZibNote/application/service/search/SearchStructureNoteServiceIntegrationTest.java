@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,7 +96,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Test
     void registerSearchStructureNote_정상_등록() {
 
-        Long noteId = searchStructureNoteService.registerSearchStructureNote(noteWithSearchStructure1AndNoteField1, memberId);
+        UUID noteId = searchStructureNoteService.registerSearchStructureNote(noteWithSearchStructure1AndNoteField1, memberId);
 
         SearchStructureNote selectedNote = searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(noteId);
 
@@ -114,7 +115,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Test
     void softDeleteSearchStructureNote_정상_삭제() {
 
-        Long savedNoteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
+        UUID savedNoteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
 
         searchStructureNoteService.softDeleteSearchStructureNote(savedNoteId, memberId);
 
@@ -129,7 +130,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     void softDeleteSearchStructureNote_잘못된_계정_접근시_예외_발생() {
 
         Long unauthMemberId = memberId + 1;
-        Long savedNoteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
+        UUID savedNoteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
 
         assertThrows(UnauthorizedAccessException.class, () -> 
             searchStructureNoteService.softDeleteSearchStructureNote(savedNoteId, unauthMemberId));
@@ -138,8 +139,8 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Test
     void listSearchStructureNotesBySearchStructure_정상_조회() {
 
-        Long savedNoteId1 = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
-        Long savedNoteId2 = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField2);
+        UUID savedNoteId1 = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
+        UUID savedNoteId2 = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField2);
         searchStructureNotePersistenceAdapter.save(noteWithSearchStructure2AndNoteField1);
         searchStructureNotePersistenceAdapter.save(noteWithSearchStructure2AndNoteField2);
 

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,10 +37,10 @@ public class SearchStructureNoteServiceUnitTest {
     final Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
     final Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
     final Long SEARCH_STRUCTURE_ID_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
-    final Long SAVED_NOTE_ID_OF_A_1 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_1;
-    final Long SAVED_NOTE_ID_OF_A_2 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_2;
-    final Long NEW_NOTE_ID = 9L;
-    final Long NOT_EXIST_NOTE_ID = 99999L;
+
+    final UUID SAVED_NOTE_ID_OF_A_1 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_1;
+    final UUID SAVED_NOTE_ID_OF_A_2 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_2;
+    final UUID SAMPLE_NOTE_ID = UUID.randomUUID();
 
     SearchStructureNote validNoteOfMemberA = SearchStructureNoteFixture.validNoteWithoutId();
     SearchStructureNote invalidNote = SearchStructureNoteFixture.invalidNote();
@@ -68,10 +69,10 @@ public class SearchStructureNoteServiceUnitTest {
     void registerSearchStructureNote_정상_등록시_ID반환() {
 
         given(searchStructureNoteRepository.save(validNoteOfMemberA))
-            .willReturn(NEW_NOTE_ID);
+            .willReturn(SAMPLE_NOTE_ID);
 
         assertThat(sut.registerSearchStructureNote(validNoteOfMemberA, MEMBER_A_ID))
-            .isEqualTo(NEW_NOTE_ID);
+            .isEqualTo(SAMPLE_NOTE_ID);
     }
 
     @Test
@@ -102,32 +103,32 @@ public class SearchStructureNoteServiceUnitTest {
     @Test
     void softDeleteSearchStructureNote_요청된_ID값의_엔티티_없을경우_예외_발생() {
 
-        given(searchStructureNoteRepository.findBySearchStructureNoteId(NOT_EXIST_NOTE_ID))
+        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAMPLE_NOTE_ID))
             .willThrow(SearchStructureNoteNotFoundException.class);
 
         assertThrows(SearchStructureNoteNotFoundException.class, () -> 
-            sut.softDeleteSearchStructureNote(NOT_EXIST_NOTE_ID, MEMBER_A_ID));
+            sut.softDeleteSearchStructureNote(SAMPLE_NOTE_ID, MEMBER_A_ID));
     }
 
     @Test
     void softDeleteSearchStructureNote_비인가_사용자_Search_접근시_예외_발생() {
 
-        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAVED_NOTE_ID_OF_A_1))
+        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAMPLE_NOTE_ID))
             .willReturn(savedNote1);
         given(searchStructureUseCase.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B_ID))
             .willThrow(UnauthorizedAccessException.class);
 
         assertThrows(UnauthorizedAccessException.class, () -> 
-            sut.softDeleteSearchStructureNote(SAVED_NOTE_ID_OF_A_1, MEMBER_B_ID));
+            sut.softDeleteSearchStructureNote(SAMPLE_NOTE_ID, MEMBER_B_ID));
     }
 
     @Test
     void softDeleteSearchStructureNote_정상_삭제() {
 
-        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAVED_NOTE_ID_OF_A_1))
+        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAMPLE_NOTE_ID))
             .willReturn(savedNote1);
         
-        assertDoesNotThrow(() -> sut.softDeleteSearchStructureNote(SAVED_NOTE_ID_OF_A_1, MEMBER_A_ID));
+        assertDoesNotThrow(() -> sut.softDeleteSearchStructureNote(SAMPLE_NOTE_ID, MEMBER_A_ID));
     }
 
 }
