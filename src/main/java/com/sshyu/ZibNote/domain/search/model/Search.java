@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.domain.search.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
@@ -12,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder @Getter
 public class Search extends BaseFields {
     
-    private final Long searchId;
+    private final UUID searchId;
 
     private final Member member;
 
@@ -22,7 +23,7 @@ public class Search extends BaseFields {
 
     private final String description;
 
-    public static Search ofFull(final Long searchId, final Member member, final String title, final String region, final String description, 
+    public static Search ofFull(final UUID searchId, final Member member, final String title, final String region, final String description, 
             final LocalDateTime createdAt, final LocalDateTime updatedAt, final Integer isDeleted) {
         return Search.builder()
             .searchId(searchId)
@@ -36,7 +37,7 @@ public class Search extends BaseFields {
             .build();
     }
 
-    public static Search ofBasic(final Long searchId, final Member member, final String title, final String region, final String description) {
+    public static Search ofBasic(final UUID searchId, final Member member, final String title, final String region, final String description) {
         return Search.builder()
             .searchId(searchId)
             .member(member)
@@ -46,7 +47,7 @@ public class Search extends BaseFields {
             .build();
     }
 
-    public static Search onlyId(final Long searchId) {
+    public static Search onlyId(final UUID searchId) {
         return Search.builder()
                     .searchId(searchId)
                     .build();

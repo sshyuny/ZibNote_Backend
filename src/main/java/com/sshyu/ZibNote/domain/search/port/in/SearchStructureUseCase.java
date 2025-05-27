@@ -9,7 +9,7 @@ public interface SearchStructureUseCase {
     
     UUID registerSearchStructure(SearchStructure searchStructure, Long loginedMemberId);
     
-    List<SearchStructure> listSearchStructuresBySearch(Long searchId, Long loginedMemberId);
+    List<SearchStructure> listSearchStructuresBySearch(UUID searchId, Long loginedMemberId);
 
     void softDeleteSearchStructure(UUID searchStructureId, Long loginedMemberId);
 

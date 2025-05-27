@@ -1,11 +1,13 @@
 package com.sshyu.zibnote.adapter.in.web.search;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
-import com.sshyu.zibnote.adapter.in.web.search.dto.SearchDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchResDto;
 import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchDtoMapper;
@@ -43,9 +44,9 @@ public class SearchController {
     }
 
     @DeleteMapping
-    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody SearchDeleteReqDto reqDto) {
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable("id") UUID id) {
 
-        searchUseCase.softDeleteSearch(reqDto.getSearchId(), authUseCase.getMemberId());
+        searchUseCase.softDeleteSearch(id, authUseCase.getMemberId());
 
         return ResponseEntity.ok(
             ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_DELETE.getMessage())

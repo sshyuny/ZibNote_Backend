@@ -1,17 +1,18 @@
 package com.sshyu.zibnote.domain.search.port.out;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.sshyu.zibnote.domain.search.model.Search;
 
 public interface SearchRepository {
     
-    Long save(Search search);
+    UUID save(Search search);
 
-    Search findBySearchId(Long searchId);
+    Search findBySearchId(UUID searchId);
 
     List<Search> findAllByMemberId(Long memberId);
 
-    void softDeleteBySearchId(Long searchId);
+    void softDeleteBySearchId(UUID searchId);
     
 }

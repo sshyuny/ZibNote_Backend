@@ -1,6 +1,9 @@
 package com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity;
 
+import java.util.UUID;
+
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UuidGenerator;
 
 import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
@@ -8,8 +11,6 @@ import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,8 +27,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor @AllArgsConstructor
 public class SearchEntity extends BaseEntity {
     
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long searchId;
+    @Id @UuidGenerator
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID searchId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -42,7 +44,7 @@ public class SearchEntity extends BaseEntity {
     @Column(length = 255)
     private String description;
 
-    public static SearchEntity ref(final Long searchId) {
+    public static SearchEntity ref(final UUID searchId) {
         return SearchEntity.builder()
                     .searchId(searchId)
                     .build();

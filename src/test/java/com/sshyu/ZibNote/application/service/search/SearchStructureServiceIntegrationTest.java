@@ -49,7 +49,7 @@ public class SearchStructureServiceIntegrationTest {
 
     Long memberAId;
     Long memberBId;
-    Long searchId;
+    UUID searchId;
     Long structureId1;
     Long structureId2;
     SearchStructure validSearchStructure1;

@@ -12,7 +12,7 @@ public class SearchStructureResDto {
     
     private String searchStructureId;
 
-    private Long searchId;
+    private String searchId;
 
     private String searchTitle;
 

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,8 +41,8 @@ public class SearchServiceIntegrationTest {
 
     Long memberAId;
     Long memberBId;
-    Long search1Id;
-    Long search2Id;
+    UUID search1Id;
+    UUID search2Id;
 
     
     @BeforeEach
@@ -59,7 +60,7 @@ public class SearchServiceIntegrationTest {
     void registerSearch_정상_등록() {
         //when
         Search search = Search.ofBasic(null, Member.onlyId(memberAId), SearchFixture.SEARCH_1_TITLE, SearchFixture.SEARCH_1_REGION, null);
-        Long searchId = sut.registerSearch(search);
+        UUID searchId = sut.registerSearch(search);
 
         em.flush();
         em.clear();
@@ -92,7 +93,7 @@ public class SearchServiceIntegrationTest {
         em.clear();
 
         assertThrows(SearchNotFoundException.class, () ->
-            sut.getSearch(888888L));
+            sut.getSearch(UUID.randomUUID()));
     }
 
     @Test

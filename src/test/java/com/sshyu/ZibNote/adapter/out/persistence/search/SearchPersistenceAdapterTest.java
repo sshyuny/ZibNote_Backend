@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ public class SearchPersistenceAdapterTest {
     final static LocalDateTime MINUS_TIME = TIME.minusMinutes(1);
 
     Long memberId;
-    Long searchId;
+    UUID searchId;
 
     @BeforeEach
     void 기초데이터_생성() {

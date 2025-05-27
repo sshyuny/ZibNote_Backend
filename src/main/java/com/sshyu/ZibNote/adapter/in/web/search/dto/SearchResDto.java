@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter @Setter
 public class SearchResDto {
     
-    private Long searchId;
+    private String searchId;
 
     private String title;
 

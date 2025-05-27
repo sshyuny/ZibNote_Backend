@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,8 +32,8 @@ public class SearchServiceUnitTest {
 
     final static Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
     final static Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
-    final static Long SEARCH_ID_OF_MEMBER_A = SearchFixture.SEARCH_1_ID;
-    final static Long INVALID_SEARCH_ID = 999L;
+    final static UUID SEARCH_ID_OF_MEMBER_A = SearchFixture.SEARCH_1_ID;
+    final static UUID INVALID_SEARCH_ID = UUID.randomUUID();
 
     Search search1WithMemberA = SearchFixture.validSearch1OwnedByA();
     Search search2WithMemberA = SearchFixture.validSearch2OwnedByA();

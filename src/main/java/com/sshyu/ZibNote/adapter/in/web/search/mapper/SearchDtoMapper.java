@@ -9,7 +9,7 @@ public class SearchDtoMapper {
     
     public static SearchResDto toResDto(final Search domain) {
         return new SearchResDto(
-            domain.getSearchId(),
+            domain.getSearchId().toString(),
             domain.getTitle(),
             domain.getRegion(),
             domain.getDescription()

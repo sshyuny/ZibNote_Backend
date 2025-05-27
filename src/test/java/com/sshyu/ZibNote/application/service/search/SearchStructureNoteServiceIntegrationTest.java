@@ -58,7 +58,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     MemberPersistenceAdapter memberPersistenceAdapter;
 
     Long memberId;
-    Long searchId;
+    UUID searchId;
     Long structureId1;
     Long structureId2;
     UUID searchStructureId1;

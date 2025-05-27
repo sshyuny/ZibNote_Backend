@@ -58,7 +58,7 @@ public class SearchStructureController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<SearchStructureResDto>>> getList(@RequestParam("searchId") Long searchId) {
+    public ResponseEntity<ApiResponse<List<SearchStructureResDto>>> getList(@RequestParam("searchId") UUID searchId) {
 
         final Long loginedMemberId = authUseCase.getMemberId();
         final List<SearchStructureResDto> searchStructureDtos = searchStructureUseCase.listSearchStructuresBySearch(searchId, loginedMemberId)

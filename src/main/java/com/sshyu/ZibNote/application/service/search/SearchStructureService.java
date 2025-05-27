@@ -70,7 +70,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public List<SearchStructure> listSearchStructuresBySearch(final Long searchId, final Long loginedMemberId) {
+    public List<SearchStructure> listSearchStructuresBySearch(final UUID searchId, final Long loginedMemberId) {
 
         final Search search = searchUseCase.getSearch(searchId);
         search.assureOwner(loginedMemberId);

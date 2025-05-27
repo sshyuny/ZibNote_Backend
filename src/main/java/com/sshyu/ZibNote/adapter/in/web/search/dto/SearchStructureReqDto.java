@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.adapter.in.web.search.dto;
 
+import java.util.UUID;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,7 +15,7 @@ import lombok.Setter;
 public class SearchStructureReqDto {
     
     @NotNull
-    private Long searchId;
+    private UUID searchId;
 
     @NotNull
     private Long structureId;

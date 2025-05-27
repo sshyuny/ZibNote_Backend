@@ -43,7 +43,7 @@ public class SearchStructureServiceUnitTest {
 
     final Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
     final Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
-    final Long SEARCH_ID_OF_A = SearchFixture.SEARCH_1_ID;
+    final UUID SEARCH_ID_OF_A = SearchFixture.SEARCH_1_ID;
     final Long STRUCTURE_ID = StructureFixture.STRUCTURE_1_ID;
     final UUID SEARCH_STRUCTURE_ID_1_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
     final UUID SEARCH_STRUCTURE_ID_2_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_2_ID;

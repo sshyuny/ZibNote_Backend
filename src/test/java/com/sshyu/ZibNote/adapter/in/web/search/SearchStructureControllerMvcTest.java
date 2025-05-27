@@ -65,7 +65,7 @@ public class SearchStructureControllerMvcTest {
     void post_정상요청() throws Exception {
         // given
         String json = objectMapper.writeValueAsString(
-            new SearchStructureReqDto(22L, 33L, null)
+            new SearchStructureReqDto(UUID.randomUUID(), 33L, null)
         );
         
         // when
@@ -127,7 +127,7 @@ public class SearchStructureControllerMvcTest {
     @Test
     void get_list_정상_요청() throws Exception {
         //given
-        Long searchId = 44554455L;
+        UUID searchId = UUID.randomUUID();
         given(searchStructureUseCase.listSearchStructuresBySearch(searchId, LOGINED_MEMBER_ID))
             .willReturn(List.of());
         

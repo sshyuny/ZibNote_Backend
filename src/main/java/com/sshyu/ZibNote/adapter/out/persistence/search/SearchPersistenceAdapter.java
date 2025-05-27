@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.adapter.out.persistence.search;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
     private final SearchJpaRepository searchJpaRepository;
 
     @Override
-    public Long save(final Search search) {
+    public UUID save(final Search search) {
 
         final MemberEntity memberRef = MemberEntity.ref(search.getMember().getMemberId());
 
@@ -40,7 +41,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
     }
 
     @Override
-    public Search findBySearchId(final Long searchId) {
+    public Search findBySearchId(final UUID searchId) {
 
         final SearchEntity searchEntity = searchJpaRepository.findById(searchId)
             .orElseThrow(() -> new SearchNotFoundException());
@@ -59,7 +60,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
     }
 
     @Override
-    public void softDeleteBySearchId(final Long searchId) {
+    public void softDeleteBySearchId(final UUID searchId) {
 
         final SearchEntity searchEntity = searchJpaRepository.findById(searchId)
             .orElseThrow(() -> new SearchNotFoundException());

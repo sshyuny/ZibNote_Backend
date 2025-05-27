@@ -54,7 +54,7 @@ public class SearchStructurePersistenceAdapterTest {
     final static LocalDateTime MINUS_TIME = TIME.minusMinutes(1);
 
     Long memberId;
-    Long searchId;
+    UUID searchId;
     Long structureId;
     UUID searchStructureId;
     

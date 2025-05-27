@@ -1,11 +1,13 @@
 package com.sshyu.zibnote.fixture;
 
+import java.util.UUID;
+
 import com.sshyu.zibnote.domain.search.model.Search;
 
 public class SearchFixture {
 
-    public static final Long SEARCH_1_ID = 4001L;
-    public static final Long SEARCH_2_ID = 4002L;
+    public static final UUID SEARCH_1_ID = UUID.randomUUID();
+    public static final UUID SEARCH_2_ID = UUID.randomUUID();
 
     public static final String SEARCH_1_TITLE = "산본역 2025 임장";
     public static final String SEARCH_1_REGION = "경기 군포시";

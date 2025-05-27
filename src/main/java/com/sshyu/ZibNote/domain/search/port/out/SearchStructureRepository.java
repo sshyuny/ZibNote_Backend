@@ -11,7 +11,7 @@ public interface SearchStructureRepository {
 
     SearchStructure findBySearchStructureId(UUID searchStructureId);
 
-    List<SearchStructure> findAllBySearchId(Long searchId);
+    List<SearchStructure> findAllBySearchId(UUID searchId);
 
     void softDeleteBySearchStructureId(UUID searchStructureId);
 

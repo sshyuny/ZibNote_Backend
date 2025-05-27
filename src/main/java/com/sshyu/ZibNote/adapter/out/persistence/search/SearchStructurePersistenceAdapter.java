@@ -61,7 +61,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     }
 
     @Override
-    public List<SearchStructure> findAllBySearchId(final Long searchId) {
+    public List<SearchStructure> findAllBySearchId(final UUID searchId) {
 
         final SearchEntity searchRef = SearchEntity.ref(searchId);
 
