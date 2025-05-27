@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.adapter.out.persistence.search;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     private final SearchStructureJpaRepository searchStructureJpaRepository;
 
     @Override
-    public Long save(final SearchStructure searchStructure) {
+    public UUID save(final SearchStructure searchStructure) {
 
         final SearchEntity searchRef = SearchEntity.ref(searchStructure.getSearch().getSearchId());
         final StructureEntity structureRef = StructureEntity.ref(searchStructure.getStructure().getStructureId());
@@ -43,7 +44,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     }
 
     @Override
-    public SearchStructure findBySearchStructureId(final Long searchStructureId) {
+    public SearchStructure findBySearchStructureId(final UUID searchStructureId) {
 
         final SearchStructureEntity searchStructureEntity = searchStructureJpaRepository.findById(searchStructureId)
             .orElseThrow(() -> new SearchStructureNotFoundException());
@@ -70,7 +71,7 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
     }
 
     @Override
-    public void softDeleteBySearchStructureId(final Long searchStructureId) {
+    public void softDeleteBySearchStructureId(final UUID searchStructureId) {
 
         final SearchStructureEntity searchStructureEntity = searchStructureJpaRepository.findById(searchStructureId)
             .orElseThrow(() -> new SearchStructureNotFoundException());

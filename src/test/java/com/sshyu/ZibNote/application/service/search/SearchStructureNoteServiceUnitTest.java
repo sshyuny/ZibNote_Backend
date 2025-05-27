@@ -36,7 +36,7 @@ public class SearchStructureNoteServiceUnitTest {
 
     final Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
     final Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
-    final Long SEARCH_STRUCTURE_ID_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
+    final UUID SEARCH_STRUCTURE_ID_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
 
     final UUID SAVED_NOTE_ID_OF_A_1 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_1;
     final UUID SAVED_NOTE_ID_OF_A_2 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_2;

@@ -52,7 +52,7 @@ public class SearchStructureNoteControllerMvcTest {
     final static Long LOGINED_MEMBER_ID = 2345L;
     
     final static UUID SEARCH_STRUCTURE_NOTE_ID = UUID.randomUUID();
-    final static Long SEARCH_STRUCTURE_ID = 222L;
+    final static UUID SEARCH_STRUCTURE_ID = UUID.randomUUID();
     final static Long NOTE_FIELD_ID = 333L;
 
 

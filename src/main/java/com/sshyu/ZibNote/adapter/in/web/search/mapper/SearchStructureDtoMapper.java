@@ -10,7 +10,7 @@ public class SearchStructureDtoMapper {
     
     public static SearchStructureResDto toResDto(final SearchStructure domain) {
         return new SearchStructureResDto(
-            domain.getSearchStructureId(),
+            domain.getSearchStructureId().toString(),
             domain.getSearch().getSearchId(),
             domain.getSearch().getTitle(),
             domain.getStructure().getStructureId(),

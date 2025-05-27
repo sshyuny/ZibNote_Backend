@@ -1,6 +1,9 @@
 package com.sshyu.zibnote.adapter.out.persistence.search.jpa.entity;
 
+import java.util.UUID;
+
 import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.UuidGenerator;
 
 import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureEntity;
@@ -8,8 +11,6 @@ import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureE
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
@@ -27,8 +28,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor @AllArgsConstructor
 public class SearchStructureEntity extends BaseEntity {
     
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long searchStructureId;
+    @Id @UuidGenerator
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID searchStructureId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "search_id", nullable = false)
@@ -42,7 +44,7 @@ public class SearchStructureEntity extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    public static SearchStructureEntity ref(final Long searchStructureId) {
+    public static SearchStructureEntity ref(final UUID searchStructureId) {
         return SearchStructureEntity.builder()
                     .searchStructureId(searchStructureId)
                     .build();

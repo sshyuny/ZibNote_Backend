@@ -61,7 +61,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      */
     @Override
     public List<SearchStructureNote> listSearchStructureNotesBySearchStructure(
-            final Long searchStructureId, final Long loginedMemberId) {
+            final UUID searchStructureId, final Long loginedMemberId) {
 
         searchStructureUseCase.assertSearchStructureOwner(searchStructureId, loginedMemberId);
 

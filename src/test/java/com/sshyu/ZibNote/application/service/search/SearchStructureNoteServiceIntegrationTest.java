@@ -61,8 +61,8 @@ public class SearchStructureNoteServiceIntegrationTest {
     Long searchId;
     Long structureId1;
     Long structureId2;
-    Long searchStructureId1;
-    Long searchStructureId2;
+    UUID searchStructureId1;
+    UUID searchStructureId2;
     Long noteFieldId1;
     Long noteFieldId2;
     SearchStructureNote noteWithSearchStructure1AndNoteField1;

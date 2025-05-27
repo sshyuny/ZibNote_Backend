@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.adapter.in.web.search.dto;
 
+import java.util.UUID;
+
 import com.sshyu.zibnote.domain.search.model.EvalType;
 
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +16,7 @@ import lombok.Setter;
 public class NotePostReqDto {
     
     @NotNull
-    private Long searchStructureId;
+    private UUID searchStructureId;
 
     @NotNull
     private Long noteFieldId;

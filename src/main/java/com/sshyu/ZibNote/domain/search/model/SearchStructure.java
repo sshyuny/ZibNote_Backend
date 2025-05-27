@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.domain.search.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
 import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureException;
@@ -12,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder @Getter
 public class SearchStructure extends BaseFields {
     
-    private final Long searchStructureId;
+    private final UUID searchStructureId;
 
     private final Search search;
 
@@ -20,7 +21,7 @@ public class SearchStructure extends BaseFields {
 
     private final String description;
 
-    public static SearchStructure ofFull(final Long searchStructureId, final Search search, final Structure structure, final String description, 
+    public static SearchStructure ofFull(final UUID searchStructureId, final Search search, final Structure structure, final String description, 
             final LocalDateTime createdAt, final LocalDateTime updatedAt, final Integer isDeleted) {
         return SearchStructure.builder()
             .searchStructureId(searchStructureId)
@@ -33,7 +34,7 @@ public class SearchStructure extends BaseFields {
             .build();
     }
 
-    public static SearchStructure ofBasic(final Long searchStructureId, final Search search, final Structure structure, final String description) {
+    public static SearchStructure ofBasic(final UUID searchStructureId, final Search search, final Structure structure, final String description) {
         return SearchStructure.builder()
             .searchStructureId(searchStructureId)
             .search(search)
@@ -42,7 +43,7 @@ public class SearchStructure extends BaseFields {
             .build();
     }
 
-    public static SearchStructure onlyId(final Long searchStructureId) {
+    public static SearchStructure onlyId(final UUID searchStructureId) {
         return SearchStructure.builder()
                     .searchStructureId(searchStructureId)
                     .build();

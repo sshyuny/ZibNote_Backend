@@ -1,11 +1,13 @@
 package com.sshyu.zibnote.adapter.in.web.search;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
-import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureResDto;
 import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchStructureDtoMapper;
@@ -45,11 +46,11 @@ public class SearchStructureController {
         );
     }
 
-    @DeleteMapping
-    public ResponseEntity<ApiResponse<Void>> delete(@RequestBody SearchStructureDeleteReqDto reqDto) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable("id") UUID id) {
 
         final Long loginedMemberId = authUseCase.getMemberId();
-        searchStructureUseCase.softDeleteSearchStructure(reqDto.getSearchStructureId(), loginedMemberId);
+        searchStructureUseCase.softDeleteSearchStructure(id, loginedMemberId);
 
         return ResponseEntity.ok(
             ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_DELETE.getMessage())

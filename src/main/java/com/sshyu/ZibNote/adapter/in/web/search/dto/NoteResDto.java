@@ -12,7 +12,7 @@ public class NoteResDto {
     
     private String searchStructureNoteId;
 
-    private Long searchStructureId;
+    private String searchStructureId;
 
     private Long noteFieldId;
 

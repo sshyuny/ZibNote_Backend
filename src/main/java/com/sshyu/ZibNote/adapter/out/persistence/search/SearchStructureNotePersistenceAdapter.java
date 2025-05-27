@@ -43,7 +43,7 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
     }
 
     @Override
-    public List<SearchStructureNote> findAllBySearchStructureId(final Long searchStructureId) {
+    public List<SearchStructureNote> findAllBySearchStructureId(final UUID searchStructureId) {
 
         final SearchStructureEntity searchStructureRef = SearchStructureEntity.ref(searchStructureId);
 

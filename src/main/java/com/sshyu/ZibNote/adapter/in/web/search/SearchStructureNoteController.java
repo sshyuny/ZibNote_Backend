@@ -56,7 +56,7 @@ public class SearchStructureNoteController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<NoteResDto>>> getList(@RequestParam("searchStructureId") Long searchStructureId) {
+    public ResponseEntity<ApiResponse<List<NoteResDto>>> getList(@RequestParam("searchStructureId") UUID searchStructureId) {
 
         final Long memberId = authUseCase.getMemberId();
         final List<NoteResDto> list = searchStructureNoteUseCase.listSearchStructureNotesBySearchStructure(searchStructureId, memberId)

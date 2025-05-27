@@ -3,6 +3,8 @@ package com.sshyu.zibnote.application.service.search;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +75,7 @@ public class SearchStructureServiceIntegrationTest {
     @Test
     void registerSearchStructure_정상_등록() {
         //when
-        Long searchStructureId = sut.registerSearchStructure(validSearchStructure1, memberAId);
+        UUID searchStructureId = sut.registerSearchStructure(validSearchStructure1, memberAId);
 
         em.flush();
         em.clear();;
@@ -118,7 +120,7 @@ public class SearchStructureServiceIntegrationTest {
     @Test
     void softDeleteSearchStructure_정상_삭제() {
         //given
-        Long searchStructureId = searchStructurePersistenceAdapter.save(validSearchStructure1);
+        UUID searchStructureId = searchStructurePersistenceAdapter.save(validSearchStructure1);
 
         //when
         sut.softDeleteSearchStructure(searchStructureId, memberAId);
@@ -134,7 +136,7 @@ public class SearchStructureServiceIntegrationTest {
     @Test
     void softDeleteSearchStructure_존재하지_않는_SearchStructure_삭제_시도시_예외_발생() {
 
-        Long notExistSearchStructureId = 555L;
+        UUID notExistSearchStructureId = UUID.randomUUID();
 
         assertThrows(SearchStructureNotFoundException.class, () ->
             sut.softDeleteSearchStructure(notExistSearchStructureId, memberAId));
@@ -143,7 +145,7 @@ public class SearchStructureServiceIntegrationTest {
     @Test
     void assertSearchStructureOwner_정상_사용자_접근() {
 
-        Long searchStructureId = searchStructurePersistenceAdapter.save(validSearchStructure1);
+        UUID searchStructureId = searchStructurePersistenceAdapter.save(validSearchStructure1);
 
         sut.assertSearchStructureOwner(searchStructureId, memberAId);
     }
@@ -151,7 +153,7 @@ public class SearchStructureServiceIntegrationTest {
     @Test
     void assertSearchStructureOwner_비인가_사용자_접근시_예외_발생() {
 
-        Long searchStructureId = searchStructurePersistenceAdapter.save(validSearchStructure1);
+        UUID searchStructureId = searchStructurePersistenceAdapter.save(validSearchStructure1);
 
         assertThrows(UnauthorizedAccessException.class, () ->
             sut.assertSearchStructureOwner(searchStructureId, memberBId));

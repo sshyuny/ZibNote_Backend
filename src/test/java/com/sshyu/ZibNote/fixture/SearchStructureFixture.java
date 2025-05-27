@@ -1,11 +1,13 @@
 package com.sshyu.zibnote.fixture;
 
+import java.util.UUID;
+
 import com.sshyu.zibnote.domain.search.model.SearchStructure;
 
 public class SearchStructureFixture {
 
-    public static final Long SEARCH_STRUCTURE_1 = 5001L;
-    public static final Long SEARCH_STRUCTURE_2_ID = 5002L;
+    public static final UUID SEARCH_STRUCTURE_1 = UUID.randomUUID();
+    public static final UUID SEARCH_STRUCTURE_2_ID = UUID.randomUUID();
 
     public static SearchStructure validSearchStructure1OwnedByA() {
         return SearchStructure.builder()

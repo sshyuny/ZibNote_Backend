@@ -53,7 +53,7 @@ public class SearchStructureNoteFixture {
         );
     }
 
-    public static SearchStructureNote createNote(final UUID searchStructureNoteId, final Long searchStructureId, final Long noteFieldId) {
+    public static SearchStructureNote createNote(final UUID searchStructureNoteId, final UUID searchStructureId, final Long noteFieldId) {
         return SearchStructureNote.builder()
             .searchStructureNoteId(searchStructureNoteId)
             .searchStructure(SearchStructure.onlyId(searchStructureId))

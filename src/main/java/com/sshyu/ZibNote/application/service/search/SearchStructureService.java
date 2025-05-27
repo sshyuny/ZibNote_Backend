@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.application.service.search;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws StructureNotFoundException Structure가 존재하지 않을 경우
      */
     @Override
-    public Long registerSearchStructure(final SearchStructure searchStructure, final Long loginedMemberId) {
+    public UUID registerSearchStructure(final SearchStructure searchStructure, final Long loginedMemberId) {
 
         searchStructure.validate();
 
@@ -90,7 +91,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public void softDeleteSearchStructure(final Long searchStructureId, final Long loginedMemberId) {
+    public void softDeleteSearchStructure(final UUID searchStructureId, final Long loginedMemberId) {
 
         assertSearchStructureOwner(searchStructureId, loginedMemberId);
 
@@ -111,7 +112,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public SearchStructure assertSearchStructureOwner(final Long searchStructureId, final Long loginedMemberId) {
+    public SearchStructure assertSearchStructureOwner(final UUID searchStructureId, final Long loginedMemberId) {
 
         final SearchStructure searchStructure = searchStructureRepository.findBySearchStructureId(searchStructureId);
         searchUseCase.assertSearchOwner(searchStructure.getSearch().getSearchId(), loginedMemberId);

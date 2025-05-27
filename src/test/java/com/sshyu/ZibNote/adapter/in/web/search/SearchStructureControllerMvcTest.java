@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
-import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureDeleteReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureResDto;
 import com.sshyu.zibnote.application.service.auth.JwtUtil;
@@ -48,6 +48,8 @@ public class SearchStructureControllerMvcTest {
     final static String PATH = "/api/search-structure";
     final static String JWT_TOKEN = "dummy.jwt.token";
     final static Long LOGINED_MEMBER_ID = 2345L;
+
+    final static UUID SEARCH_STRUCTURE_ID = UUID.randomUUID();
 
 
     @BeforeEach
@@ -85,16 +87,8 @@ public class SearchStructureControllerMvcTest {
 
     @Test
     void delete_정상_삭제() throws Exception {
-        //given
-        Long searchStructureId = 222L;
-        String reqBody = objectMapper.writeValueAsString(
-            new SearchStructureDeleteReqDto(searchStructureId)
-        );
-
         //when
-        MvcResult res = mockMvc.perform(delete(PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(reqBody)
+        MvcResult res = mockMvc.perform(delete(PATH + "/" + SEARCH_STRUCTURE_ID)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
             )
             .andExpect(status().isOk())
@@ -111,18 +105,12 @@ public class SearchStructureControllerMvcTest {
     @Test
     void delete_비인가_사용자_시도시_예외_발생() throws Exception {
         //given
-        Long searchStructureId = 22L;
-        String reqBody = objectMapper.writeValueAsString(
-            new SearchStructureDeleteReqDto(searchStructureId)
-        );
         doThrow(new UnauthorizedAccessException())
             .when(searchStructureUseCase)
-            .softDeleteSearchStructure(searchStructureId, LOGINED_MEMBER_ID);
+            .softDeleteSearchStructure(SEARCH_STRUCTURE_ID, LOGINED_MEMBER_ID);
 
         //when
-        MvcResult res = mockMvc.perform(delete(PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(reqBody)
+        MvcResult res = mockMvc.perform(delete(PATH + "/" + SEARCH_STRUCTURE_ID)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
             )
             .andExpect(status().isBadRequest())

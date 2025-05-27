@@ -70,10 +70,9 @@ public class SearchStructureNotePersistenceAdapterTest {
     Long memberId;
     Long searchId;
     Long structureId;
-    Long searchStructureId;
+    UUID searchStructureId;
     Long noteFieldId;
-    Long searchStructureNoteid;
-    UUID searchStructureNoteIdUUID;
+    UUID searchStructureNoteId;
 
 
     @BeforeEach
@@ -121,7 +120,7 @@ public class SearchStructureNotePersistenceAdapterTest {
                 .build()
         );
 
-        searchStructureNoteIdUUID = searchStructureNotePersistenceAdapter.save(
+        searchStructureNoteId = searchStructureNotePersistenceAdapter.save(
             SearchStructureNote.builder()
                 .searchStructure(SearchStructure.onlyId(searchStructureId))
                 .noteField(NoteField.onlyId(noteFieldId))
@@ -137,7 +136,7 @@ public class SearchStructureNotePersistenceAdapterTest {
         em.flush();
         em.clear();
 
-        SearchStructureNote searchStructureNote = searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteIdUUID);
+        SearchStructureNote searchStructureNote = searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteId);
 
         assertThat(searchStructureNote.getSearchStructure().getSearchStructureId()).isEqualTo(searchStructureId);
         assertThat(searchStructureNote.getNoteField().getNoteFieldId()).isEqualTo(noteFieldId);
@@ -152,14 +151,14 @@ public class SearchStructureNotePersistenceAdapterTest {
     @Test
     void softDelete_정상요청() {
         // when
-        searchStructureNotePersistenceAdapter.softDeleteBySearchStructureNoteId(searchStructureNoteIdUUID);
+        searchStructureNotePersistenceAdapter.softDeleteBySearchStructureNoteId(searchStructureNoteId);
 
         em.flush();
         em.clear();
 
         // then
         assertThrows(SearchStructureNoteNotFoundException.class, () -> 
-            searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteIdUUID)
+            searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteId)
         );
     }
 

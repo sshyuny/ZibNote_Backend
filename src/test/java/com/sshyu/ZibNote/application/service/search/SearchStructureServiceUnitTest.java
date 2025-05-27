@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,8 +45,8 @@ public class SearchStructureServiceUnitTest {
     final Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
     final Long SEARCH_ID_OF_A = SearchFixture.SEARCH_1_ID;
     final Long STRUCTURE_ID = StructureFixture.STRUCTURE_1_ID;
-    final Long SEARCH_STRUCTURE_ID_1_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
-    final Long SEARCH_STRUCTURE_ID_2_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_2_ID;
+    final UUID SEARCH_STRUCTURE_ID_1_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
+    final UUID SEARCH_STRUCTURE_ID_2_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_2_ID;
 
     Structure structure = StructureFixture.validStructure1();
     Search searchOfMemberA = SearchFixture.validSearch1OwnedByA();
@@ -57,14 +58,15 @@ public class SearchStructureServiceUnitTest {
     @Test
     void registerSearchStructure_정상_등록() {
         //given
+        final UUID searchStructureId = UUID.randomUUID();
         given(searchUseCase.getSearch(SEARCH_ID_OF_A))
             .willReturn(searchOfMemberA);
         given(searchStructureRepository.save(searchStructure1WithMemberA))
-            .willReturn(33L);
+            .willReturn(searchStructureId);
 
         //when/then
         assertThat(sut.registerSearchStructure(searchStructure1WithMemberA, MEMBER_A_ID))
-            .isEqualTo(33L);
+            .isEqualTo(searchStructureId);
     }
 
     @Test

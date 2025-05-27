@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +56,7 @@ public class SearchStructurePersistenceAdapterTest {
     Long memberId;
     Long searchId;
     Long structureId;
-    Long searchStructureId;
+    UUID searchStructureId;
     
     @BeforeEach
     void 기초데이터생성() {

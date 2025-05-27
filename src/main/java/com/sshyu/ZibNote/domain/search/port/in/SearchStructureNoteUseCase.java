@@ -9,7 +9,7 @@ public interface SearchStructureNoteUseCase {
     
     UUID registerSearchStructureNote(SearchStructureNote searchStructureNote, Long loginedMemberId);
 
-    List<SearchStructureNote> listSearchStructureNotesBySearchStructure(Long searchStructureId, Long loginedMemberId);
+    List<SearchStructureNote> listSearchStructureNotesBySearchStructure(UUID searchStructureId, Long loginedMemberId);
 
     void softDeleteSearchStructureNote(UUID searchStructureNoteId, Long loginedMemberId);
 
