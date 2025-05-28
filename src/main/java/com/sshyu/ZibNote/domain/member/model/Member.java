@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.domain.member.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
 
@@ -10,11 +11,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder @Getter
 public class Member extends BaseFields {
     
-    private final Long memberId;
+    private final UUID memberId;
 
     private final String name;
 
-    public static Member ofFull(final Long memberId, final String name, 
+    public static Member ofFull(final UUID memberId, final String name, 
             final LocalDateTime createdAt, final LocalDateTime updatedAt, final Integer isDeleted) {
         return Member.builder()
             .memberId(memberId)
@@ -25,14 +26,14 @@ public class Member extends BaseFields {
             .build();
     }
 
-    public static Member ofBasic(final Long memberId, final String name) {
+    public static Member ofBasic(final UUID memberId, final String name) {
         return Member.builder()
             .memberId(memberId)
             .name(name)
             .build();
     }
 
-    public static Member onlyId(final Long memberId) {
+    public static Member onlyId(final UUID memberId) {
         return Member.builder()
             .memberId(memberId)
             .build();

@@ -47,7 +47,7 @@ public class SearchStructureControllerMvcTest {
 
     final static String PATH = "/api/search-structure";
     final static String JWT_TOKEN = "dummy.jwt.token";
-    final static Long LOGINED_MEMBER_ID = 2345L;
+    final static UUID LOGINED_MEMBER_ID = UUID.randomUUID();
 
     final static UUID SEARCH_STRUCTURE_ID = UUID.randomUUID();
 

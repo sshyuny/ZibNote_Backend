@@ -3,6 +3,7 @@ package com.sshyu.zibnote.adapter.out.persistence.member;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class MemberPersistenceAdapterTest {
     final static LocalDateTime PLUS_TIME = TIME.plusMinutes(1);
     final static LocalDateTime MINUS_TIME = TIME.minusMinutes(1);
 
-    Long memberId;
+    UUID memberId;
 
     @BeforeEach
     void 기초데이터생성() {

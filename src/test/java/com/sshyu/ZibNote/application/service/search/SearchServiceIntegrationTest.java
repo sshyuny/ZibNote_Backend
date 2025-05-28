@@ -39,8 +39,8 @@ public class SearchServiceIntegrationTest {
     @Autowired
     MemberPersistenceAdapter memberPersistenceAdapter;
 
-    Long memberAId;
-    Long memberBId;
+    UUID memberAId;
+    UUID memberBId;
     UUID search1Id;
     UUID search2Id;
 

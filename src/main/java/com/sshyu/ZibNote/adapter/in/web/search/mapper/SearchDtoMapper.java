@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.adapter.in.web.search.mapper;
 
+import java.util.UUID;
+
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchResDto;
 import com.sshyu.zibnote.domain.member.model.Member;
@@ -16,7 +18,7 @@ public class SearchDtoMapper {
         );
     }
 
-    public static Search toDomain(final SearchReqDto reqDto, final Long memberId) {
+    public static Search toDomain(final SearchReqDto reqDto, final UUID memberId) {
         return Search.builder()
             .member(Member.onlyId(memberId))
             .title(reqDto.getTitle())

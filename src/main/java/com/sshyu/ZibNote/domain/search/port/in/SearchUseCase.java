@@ -11,10 +11,10 @@ public interface SearchUseCase {
 
     Search getSearch(UUID searchId);
 
-    List<Search> listSearchesByMember(Long memberId);
+    List<Search> listSearchesByMember(UUID memberId);
 
-    void softDeleteSearch(UUID searchId, Long memberId);
+    void softDeleteSearch(UUID searchId, UUID memberId);
 
-    Search assertSearchOwner(UUID searchId, Long memberId);
+    Search assertSearchOwner(UUID searchId, UUID memberId);
 
 }

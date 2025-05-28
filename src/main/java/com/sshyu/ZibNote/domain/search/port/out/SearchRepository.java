@@ -11,7 +11,7 @@ public interface SearchRepository {
 
     Search findBySearchId(UUID searchId);
 
-    List<Search> findAllByMemberId(Long memberId);
+    List<Search> findAllByMemberId(UUID memberId);
 
     void softDeleteBySearchId(UUID searchId);
     

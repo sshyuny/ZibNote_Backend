@@ -3,6 +3,8 @@ package com.sshyu.zibnote.application.service.note;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,8 @@ public class NoteFieldServiceIntegrationTest {
     @Autowired
     MemberPersistenceAdapter memberPersistenceAdapter;
 
-    Long memberAId;
-    Long memberBId;
+    UUID memberAId;
+    UUID memberBId;
     Long noteField1Id;
     Long noteField2Id;
 

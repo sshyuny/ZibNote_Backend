@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.domain.auth.port.in;
 
+import java.util.UUID;
+
 import com.sshyu.zibnote.domain.auth.model.Token;
 
 public interface AuthUseCase {
@@ -8,6 +10,6 @@ public interface AuthUseCase {
 
     void logout();
 
-    Long getMemberId();
+    UUID getMemberId();
 
 }

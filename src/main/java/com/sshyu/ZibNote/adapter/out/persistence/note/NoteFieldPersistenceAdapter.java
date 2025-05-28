@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.adapter.out.persistence.note;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -50,7 +51,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     }
 
     @Override
-    public NoteField findByMemberAndName(final Long memberId, final String name) {
+    public NoteField findByMemberAndName(final UUID memberId, final String name) {
 
         final NoteFieldEntity noteFieldEntity = noteFieldJpaRepository.findByMemberEntityAndName(
                 MemberEntity.ref(memberId), name)
@@ -68,7 +69,7 @@ public class NoteFieldPersistenceAdapter implements NoteFieldRepository {
     }
 
     @Override
-    public List<NoteField> findAllByMemberId(final Long memberId) {
+    public List<NoteField> findAllByMemberId(final UUID memberId) {
 
         return noteFieldJpaRepository.findAllByMemberEntity(MemberEntity.ref(memberId))
             .stream()

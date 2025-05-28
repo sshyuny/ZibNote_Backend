@@ -53,7 +53,7 @@ public class Search extends BaseFields {
                     .build();
     }
 
-    public void assureOwner(final Long memberId) {
+    public void assureOwner(final UUID memberId) {
         if (!this.member.getMemberId().equals(memberId)) {
             throw new UnauthorizedAccessException("존재하지 않거나 접근할 수 없는 데이터입니다.");
         }

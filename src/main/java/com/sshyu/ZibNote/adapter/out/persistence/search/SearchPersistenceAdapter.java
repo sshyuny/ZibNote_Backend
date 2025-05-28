@@ -50,7 +50,7 @@ public class SearchPersistenceAdapter implements SearchRepository {
     }
 
     @Override
-    public List<Search> findAllByMemberId(final Long memberId) {
+    public List<Search> findAllByMemberId(final UUID memberId) {
 
         final MemberEntity memberRef = MemberEntity.ref(memberId);
 

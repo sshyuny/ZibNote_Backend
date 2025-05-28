@@ -42,7 +42,7 @@ public class SearchPersistenceAdapterTest {
     final static LocalDateTime PLUS_TIME = TIME.plusMinutes(1);
     final static LocalDateTime MINUS_TIME = TIME.minusMinutes(1);
 
-    Long memberId;
+    UUID memberId;
     UUID searchId;
 
     @BeforeEach

@@ -7,12 +7,12 @@ import com.sshyu.zibnote.domain.search.model.SearchStructure;
 
 public interface SearchStructureUseCase {
     
-    UUID registerSearchStructure(SearchStructure searchStructure, Long loginedMemberId);
+    UUID registerSearchStructure(SearchStructure searchStructure, UUID loginedMemberId);
     
-    List<SearchStructure> listSearchStructuresBySearch(UUID searchId, Long loginedMemberId);
+    List<SearchStructure> listSearchStructuresBySearch(UUID searchId, UUID loginedMemberId);
 
-    void softDeleteSearchStructure(UUID searchStructureId, Long loginedMemberId);
+    void softDeleteSearchStructure(UUID searchStructureId, UUID loginedMemberId);
 
-    SearchStructure assertSearchStructureOwner(UUID searchStructureId, Long loginedMemberId);
+    SearchStructure assertSearchStructureOwner(UUID searchStructureId, UUID loginedMemberId);
 
 }

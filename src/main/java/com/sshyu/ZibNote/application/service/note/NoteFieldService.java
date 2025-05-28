@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.application.service.note;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class NoteFieldService implements NoteFieldUseCase {
      * @return 로그인한 사용자가 등록한 NoteField 목록
      */
     @Override
-    public List<NoteField> listNoteFieldsByMember(final Long memberId) {
+    public List<NoteField> listNoteFieldsByMember(final UUID memberId) {
 
         return noteFieldRepository.findAllByMemberId(memberId);
     }
@@ -53,7 +54,7 @@ public class NoteFieldService implements NoteFieldUseCase {
      * @throws NoteFieldNotFoundException 일치하는 NoteField가 없을 경우
      */
     @Override
-    public void softDeleteNoteField(final Long noteFieldId, final Long memberId) {
+    public void softDeleteNoteField(final Long noteFieldId, final UUID memberId) {
 
         final NoteField selectedNoteField = noteFieldRepository.findByNoteFieldId(noteFieldId);
         

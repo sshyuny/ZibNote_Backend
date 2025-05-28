@@ -44,7 +44,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws StructureNotFoundException Structure가 존재하지 않을 경우
      */
     @Override
-    public UUID registerSearchStructure(final SearchStructure searchStructure, final Long loginedMemberId) {
+    public UUID registerSearchStructure(final SearchStructure searchStructure, final UUID loginedMemberId) {
 
         searchStructure.validate();
 
@@ -70,7 +70,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public List<SearchStructure> listSearchStructuresBySearch(final UUID searchId, final Long loginedMemberId) {
+    public List<SearchStructure> listSearchStructuresBySearch(final UUID searchId, final UUID loginedMemberId) {
 
         final Search search = searchUseCase.getSearch(searchId);
         search.assureOwner(loginedMemberId);
@@ -91,7 +91,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public void softDeleteSearchStructure(final UUID searchStructureId, final Long loginedMemberId) {
+    public void softDeleteSearchStructure(final UUID searchStructureId, final UUID loginedMemberId) {
 
         assertSearchStructureOwner(searchStructureId, loginedMemberId);
 
@@ -112,7 +112,7 @@ public class SearchStructureService implements SearchStructureUseCase {
      * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
      */
     @Override
-    public SearchStructure assertSearchStructureOwner(final UUID searchStructureId, final Long loginedMemberId) {
+    public SearchStructure assertSearchStructureOwner(final UUID searchStructureId, final UUID loginedMemberId) {
 
         final SearchStructure searchStructure = searchStructureRepository.findBySearchStructureId(searchStructureId);
         searchUseCase.assertSearchOwner(searchStructure.getSearch().getSearchId(), loginedMemberId);

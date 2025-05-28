@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,8 +30,8 @@ public class NoteFieldServiceUnitTest {
     @Mock
     NoteFieldRepository noteFieldRepository;
 
-    final static Long MEMBER_ID_A = MemberFixture.MEMBER_A_ID;
-    final static Long MEMBER_ID_B = MemberFixture.MEMBER_B_ID;
+    final static UUID MEMBER_ID_A = MemberFixture.MEMBER_A_ID;
+    final static UUID MEMBER_ID_B = MemberFixture.MEMBER_B_ID;
     final static Long NOTE_FIELD_1_ID = NoteFieldFixture.NOTE_FIELD_1_ID;
 
     NoteField noteFieldBeforeSaving = NoteField.ofBasic(null, MemberFixture.validMemberA(), NoteFieldFixture.NOTE_FIELD_1_NAME, null);

@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.adapter.out.persistence.member;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +22,7 @@ public class MemberPersistenceAdapter implements MemberRepository {
     private final MemberJpaRepository memberJpaRepository;
 
     @Override
-    public Long save(final Member member) {
+    public UUID save(final Member member) {
         
         final MemberEntity memberEntity = MemberEntity.builder()
             .name(member.getName())
@@ -32,7 +34,7 @@ public class MemberPersistenceAdapter implements MemberRepository {
     }
 
     @Override
-    public Member findByMemberId(final Long memberId) {
+    public Member findByMemberId(final UUID memberId) {
 
         final MemberEntity memberEntity = memberJpaRepository.findById(memberId)
             .orElseThrow(() -> new MemberNotFoundException());

@@ -36,7 +36,7 @@ public class SearchStructureNoteController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody NotePostReqDto reqDto) {
 
-        final Long memberId = authUseCase.getMemberId();
+        final UUID memberId = authUseCase.getMemberId();
         searchStructureNoteUseCase.registerSearchStructureNote(SearchStructureNoteDtoMapper.toDomain(reqDto), memberId);
 
         return ResponseEntity.ok(
@@ -47,7 +47,7 @@ public class SearchStructureNoteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable("id") UUID id) {
 
-        final Long memberId = authUseCase.getMemberId();
+        final UUID memberId = authUseCase.getMemberId();
         searchStructureNoteUseCase.softDeleteSearchStructureNote(id, memberId);
 
         return ResponseEntity.ok(
@@ -58,7 +58,7 @@ public class SearchStructureNoteController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<NoteResDto>>> getList(@RequestParam("searchStructureId") UUID searchStructureId) {
 
-        final Long memberId = authUseCase.getMemberId();
+        final UUID memberId = authUseCase.getMemberId();
         final List<NoteResDto> list = searchStructureNoteUseCase.listSearchStructureNotesBySearchStructure(searchStructureId, memberId)
             .stream()
             .map(domain -> SearchStructureNoteDtoMapper.toResDto(domain))

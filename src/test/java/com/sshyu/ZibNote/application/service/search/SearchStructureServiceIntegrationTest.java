@@ -47,8 +47,8 @@ public class SearchStructureServiceIntegrationTest {
     @Autowired
     MemberPersistenceAdapter memberPersistenceAdapter;
 
-    Long memberAId;
-    Long memberBId;
+    UUID memberAId;
+    UUID memberBId;
     UUID searchId;
     Long structureId1;
     Long structureId2;

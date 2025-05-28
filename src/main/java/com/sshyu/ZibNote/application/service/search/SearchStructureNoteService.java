@@ -36,7 +36,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
      */
     @Override
-    public UUID registerSearchStructureNote(final SearchStructureNote searchStructureNote, final Long loginedMemberId) {
+    public UUID registerSearchStructureNote(final SearchStructureNote searchStructureNote, final UUID loginedMemberId) {
 
         searchStructureNote.validateForRegister();
 
@@ -61,7 +61,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      */
     @Override
     public List<SearchStructureNote> listSearchStructureNotesBySearchStructure(
-            final UUID searchStructureId, final Long loginedMemberId) {
+            final UUID searchStructureId, final UUID loginedMemberId) {
 
         searchStructureUseCase.assertSearchStructureOwner(searchStructureId, loginedMemberId);
 
@@ -82,7 +82,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
      * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
      */
     @Override
-    public void softDeleteSearchStructureNote(final UUID searchStructureNoteId, final Long loginedMemberId) {
+    public void softDeleteSearchStructureNote(final UUID searchStructureNoteId, final UUID loginedMemberId) {
 
         final SearchStructureNote note = searchStructureNoteRepository.findBySearchStructureNoteId(searchStructureNoteId);
 

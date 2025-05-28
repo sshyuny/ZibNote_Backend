@@ -24,12 +24,12 @@ public class JwtUtil {
      * @param memberId 로그인할 ID
      * @return 발급된 JWT 토큰
      */
-    public String generateToken(final Long memberId) {
+    public String generateToken(final String memberId) {
         final Date now = new Date();
         final Date expiry = new Date(now.getTime() + validityInMs);
         
         return Jwts.builder()
-            .subject(String.valueOf(memberId))
+            .subject(memberId)
             .expiration(expiry)
             .signWith(randomKey)
             .compact();

@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.domain.note.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
@@ -48,7 +49,7 @@ public class NoteField extends BaseFields {
             .build();
     }
 
-    public void assureOwner(final Long memberId) {
+    public void assureOwner(final UUID memberId) {
         if (!this.member.getMemberId().equals(memberId)) {
             throw new UnauthorizedAccessException();
         }

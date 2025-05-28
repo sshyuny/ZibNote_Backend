@@ -7,10 +7,10 @@ import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 
 public interface SearchStructureNoteUseCase {
     
-    UUID registerSearchStructureNote(SearchStructureNote searchStructureNote, Long loginedMemberId);
+    UUID registerSearchStructureNote(SearchStructureNote searchStructureNote, UUID loginedMemberId);
 
-    List<SearchStructureNote> listSearchStructureNotesBySearchStructure(UUID searchStructureId, Long loginedMemberId);
+    List<SearchStructureNote> listSearchStructureNotesBySearchStructure(UUID searchStructureId, UUID loginedMemberId);
 
-    void softDeleteSearchStructureNote(UUID searchStructureNoteId, Long loginedMemberId);
+    void softDeleteSearchStructureNote(UUID searchStructureNoteId, UUID loginedMemberId);
 
 }

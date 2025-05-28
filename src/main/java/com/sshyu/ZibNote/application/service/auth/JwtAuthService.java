@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.application.service.auth;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,7 @@ public class JwtAuthService implements AuthUseCase {
 
         final Member member = memberUseCase.findByName(name);
         
-        final String token = jwtUtil.generateToken(member.getMemberId());
+        final String token = jwtUtil.generateToken(member.getMemberId().toString());
         
         return Token.builder().token(token).build();
     }
@@ -54,10 +56,10 @@ public class JwtAuthService implements AuthUseCase {
      * @return 로그인한 사용자의 ID
      */
     @Override
-    public Long getMemberId() {
+    public UUID getMemberId() {
 
         HttpServletRequest request = requestProvider.getObject();
-        return (Long) request.getAttribute("memberId");
+        return (UUID) request.getAttribute("memberId");
     }
 
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class NoteFieldPersistenceAdapterTest {
     final static LocalDateTime PLUS_TIME = TIME.plusMinutes(1);
     final static LocalDateTime MINUS_TIME = TIME.minusMinutes(1);
 
-    Long memberId;
+    UUID memberId;
     Long noteFieldId;
 
     @BeforeEach

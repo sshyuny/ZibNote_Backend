@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.application.service.auth;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
@@ -41,14 +43,12 @@ public class SessionAuthService implements AuthUseCase {
     }
 
     @Override
-    public Long getMemberId() {
+    public UUID getMemberId() {
 
         HttpSession httpSession = httpSessionProvider.getObject();
         final SessionMember sessionMember = (SessionMember) httpSession.getAttribute(SessionConst.LOGIN_MEMBER);
 
         return sessionMember.getMemberId();
     }
-
-    
 
 }

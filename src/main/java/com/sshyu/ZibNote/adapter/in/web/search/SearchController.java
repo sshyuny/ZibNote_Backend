@@ -35,7 +35,7 @@ public class SearchController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody SearchReqDto reqDto) {
 
-        final Long memberId = authUseCase.getMemberId();
+        final UUID memberId = authUseCase.getMemberId();
         searchUseCase.registerSearch(SearchDtoMapper.toDomain(reqDto, memberId));
 
         return ResponseEntity.ok(

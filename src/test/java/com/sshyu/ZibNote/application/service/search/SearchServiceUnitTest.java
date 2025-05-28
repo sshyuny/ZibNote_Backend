@@ -30,8 +30,8 @@ public class SearchServiceUnitTest {
     @Mock
     SearchRepository searchRepository;
 
-    final static Long MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
-    final static Long MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
+    final static UUID MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
+    final static UUID MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
     final static UUID SEARCH_ID_OF_MEMBER_A = SearchFixture.SEARCH_1_ID;
     final static UUID INVALID_SEARCH_ID = UUID.randomUUID();
 

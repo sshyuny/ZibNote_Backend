@@ -36,7 +36,7 @@ public class SearchStructureController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody SearchStructureReqDto searchStructureReqDto) {
 
-        final Long loginedMemberId = authUseCase.getMemberId();
+        final UUID loginedMemberId = authUseCase.getMemberId();
         searchStructureUseCase.registerSearchStructure(
             SearchStructureDtoMapper.toDomain(searchStructureReqDto), loginedMemberId
         );
@@ -49,7 +49,7 @@ public class SearchStructureController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable("id") UUID id) {
 
-        final Long loginedMemberId = authUseCase.getMemberId();
+        final UUID loginedMemberId = authUseCase.getMemberId();
         searchStructureUseCase.softDeleteSearchStructure(id, loginedMemberId);
 
         return ResponseEntity.ok(
@@ -60,7 +60,7 @@ public class SearchStructureController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<SearchStructureResDto>>> getList(@RequestParam("searchId") UUID searchId) {
 
-        final Long loginedMemberId = authUseCase.getMemberId();
+        final UUID loginedMemberId = authUseCase.getMemberId();
         final List<SearchStructureResDto> searchStructureDtos = searchStructureUseCase.listSearchStructuresBySearch(searchId, loginedMemberId)
             .stream()
             .map(domain -> SearchStructureDtoMapper.toResDto(domain))

@@ -1,5 +1,7 @@
 package com.sshyu.zibnote.application.service.member;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import com.sshyu.zibnote.domain.member.model.Member;
@@ -20,7 +22,7 @@ public class MemberService implements MemberUseCase {
      * @param member 등록할 사용자
      */
     @Override
-    public Long register(final Member member) {
+    public UUID register(final Member member) {
 
         return memberRepository.save(member);        
     }
@@ -44,7 +46,7 @@ public class MemberService implements MemberUseCase {
      * @return ID에 일치하는 Member
      */
     @Override
-    public Member getMember(final Long memberId) {
+    public Member getMember(final UUID memberId) {
         
         return memberRepository.findByMemberId(memberId);
     }

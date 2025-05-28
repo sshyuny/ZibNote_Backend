@@ -1,12 +1,14 @@
 package com.sshyu.zibnote.domain.member.port.out;
 
+import java.util.UUID;
+
 import com.sshyu.zibnote.domain.member.model.Member;
 
 public interface MemberRepository {
     
-    Long save(Member member);
+    UUID save(Member member);
 
-    Member findByMemberId(Long memberId);
+    Member findByMemberId(UUID memberId);
 
     Member findByName(String loginId);
     

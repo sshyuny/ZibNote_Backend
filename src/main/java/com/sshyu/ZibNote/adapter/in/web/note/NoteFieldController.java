@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.adapter.in.web.note;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class NoteFieldController {
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody NoteFieldReqDto reqDto) {
 
-        final Long loginedMemberId = authUseCase.getMemberId();
+        final UUID loginedMemberId = authUseCase.getMemberId();
         noteFieldUseCase.registerNoteField(NoteFieldDtoMapper.toDomain(reqDto, loginedMemberId));
 
         return ResponseEntity.ok(

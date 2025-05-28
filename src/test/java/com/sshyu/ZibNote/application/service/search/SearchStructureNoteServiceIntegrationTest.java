@@ -57,7 +57,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Autowired
     MemberPersistenceAdapter memberPersistenceAdapter;
 
-    Long memberId;
+    UUID memberId;
     UUID searchId;
     Long structureId1;
     Long structureId2;
@@ -106,7 +106,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Test
     void registerSearchStructureNote_잘못된_계정_접근시_예외_발생() {
 
-        Long unauthMemberId = memberId + 1;
+        UUID unauthMemberId = UUID.randomUUID();
 
         assertThrows(UnauthorizedAccessException.class, () ->
             searchStructureNoteService.registerSearchStructureNote(noteWithSearchStructure1AndNoteField1, unauthMemberId));
@@ -129,7 +129,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Test
     void softDeleteSearchStructureNote_잘못된_계정_접근시_예외_발생() {
 
-        Long unauthMemberId = memberId + 1;
+        UUID unauthMemberId = UUID.randomUUID();
         UUID savedNoteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
 
         assertThrows(UnauthorizedAccessException.class, () -> 
@@ -154,7 +154,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Test
     void listSearchStructureNotesBySearchStructure_잘못된_계정_접근시_예외_발생() {
 
-        Long unauthMemberId = memberId + 1;
+        UUID unauthMemberId = UUID.randomUUID();
         searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
         searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField2);
 
