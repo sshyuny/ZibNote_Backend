@@ -12,7 +12,6 @@ public enum ResponseMessage {
 
     ERROR("오류가 발생했습니다"),
     ERROR_NOT_FOUND("존재하지 않거나 접근할 수 없는 데이터입니다."),
-    ERROR_UNAUTHORIZED("존재하지 않거나 접근할 수 없는 데이터입니다."),
     ERROR_INVALID("유효하지 않는 값입니다."),
     ERROR_ALREADY_DELETED("삭제된 데이터입니다.");
 

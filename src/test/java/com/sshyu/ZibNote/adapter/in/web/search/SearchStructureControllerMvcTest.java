@@ -113,7 +113,7 @@ public class SearchStructureControllerMvcTest {
         MvcResult res = mockMvc.perform(delete(PATH + "/" + SEARCH_STRUCTURE_ID)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
             )
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isNotFound())
             .andReturn();
         ApiResponse<Void> resBody = objectMapper.readValue(res.getResponse().getContentAsString(), 
             new TypeReference<ApiResponse<Void>>() {}
@@ -121,7 +121,7 @@ public class SearchStructureControllerMvcTest {
 
         //then
         assertThat(resBody.getCode()).isEqualTo(ResponseCode.ERROR);
-        assertThat(resBody.getMessage()).isEqualTo(ResponseMessage.ERROR_UNAUTHORIZED.getMessage());
+        assertThat(resBody.getMessage()).isEqualTo(ResponseMessage.ERROR_NOT_FOUND.getMessage());
     }
 
     @Test

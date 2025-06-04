@@ -1,5 +1,6 @@
 package com.sshyu.zibnote.adapter.in.web.common.advice;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,8 +38,8 @@ public class CommonControllerAdvice {
     
     @ExceptionHandler(UnauthorizedAccessException.class)
     public ResponseEntity<ApiResponse<Void>> handleUnauthorized(UnauthorizedAccessException ex) {
-        return ResponseEntity.badRequest().body(
-            ApiResponse.of(ResponseCode.ERROR, ResponseMessage.ERROR_UNAUTHORIZED.getMessage(), null)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+            ApiResponse.of(ResponseCode.ERROR, ResponseMessage.ERROR_NOT_FOUND.getMessage(), null)
         );
     }
 
@@ -51,7 +52,7 @@ public class CommonControllerAdvice {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleResourceNotFound(ResourceNotFoundException ex) {
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
             ApiResponse.of(ResponseCode.ERROR, ResponseMessage.ERROR_NOT_FOUND.getMessage(), null)
         );
     }
