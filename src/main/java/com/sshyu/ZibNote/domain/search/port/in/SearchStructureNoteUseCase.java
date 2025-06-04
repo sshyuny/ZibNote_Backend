@@ -15,4 +15,6 @@ public interface SearchStructureNoteUseCase {
 
     void updateSearchStructureNote(SearchStructureNote searchStructureNote, UUID loginedMemberId);
 
+    void assertSearchStructureNoteOwner(SearchStructureNote searchStructureNote, UUID loginedMemberId);
+
 }

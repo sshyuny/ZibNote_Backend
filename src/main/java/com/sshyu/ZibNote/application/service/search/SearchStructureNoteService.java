@@ -42,8 +42,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
 
         searchStructureNote.validateForRegister();
 
-        searchStructureUseCase.assertSearchStructureOwner(
-            searchStructureNote.getSearchStructure().getSearchStructureId(), loginedMemberId);
+        assertSearchStructureNoteOwner(searchStructureNote, loginedMemberId);
 
         return searchStructureNoteRepository.save(searchStructureNote);
     }
@@ -88,8 +87,7 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
 
         final SearchStructureNote note = searchStructureNoteRepository.findBySearchStructureNoteId(searchStructureNoteId);
 
-        searchStructureUseCase.assertSearchStructureOwner(
-            note.getSearchStructure().getSearchStructureId(),loginedMemberId);
+        assertSearchStructureNoteOwner(note, loginedMemberId);
 
         searchStructureNoteRepository.softDeleteBySearchStructureNoteId(searchStructureNoteId);
     }
@@ -118,10 +116,16 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
 
         note.validateForUpdate();
 
-        searchStructureUseCase.assertSearchStructureOwner(
-            note.getSearchStructure().getSearchStructureId(),loginedMemberId);
+        assertSearchStructureNoteOwner(note, loginedMemberId);
 
         searchStructureNoteRepository.updateBySearchStructureNoteId(searchStructureNote);
+    }
+
+    @Override
+    public void assertSearchStructureNoteOwner(final SearchStructureNote searchStructureNote, final UUID loginedMemberId) {
+
+        searchStructureUseCase.assertSearchStructureOwner(
+            searchStructureNote.getSearchStructure().getSearchStructureId(),loginedMemberId);
     }
 
 }

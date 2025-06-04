@@ -20,3 +20,62 @@
 - 초반부 테스트를 간편하게 하기 위해 DTO에도 `@Builder`를 사용하였으나, 명확한 DTO 사용을 위해 이를 제거하고 사용할 어노테이션을 정리한다.
     - `@Getter`, `@Setter`, `@NoArgsConstructor`, `@AllArgsConstructor` 사용
     - `@Builder` 사용 하지 않음!
+
+### 3. 서비스 객체 책임 분리
+#### 3.1. 배경
+- `SearchStructureNote` 도메인은 `SearchStructure` 도메인을 참조하고 있으며, 이 `SearchStructureNote` 도메인의 소유자는 참조 도메인인 `SearchStructure`의 소유자와 동일하다.
+- 때문에 `SearchStructureNoteService`에서 소유자를 검증할 때에는, 참조 도메인의 검증 로직인 `searchStructureUseCase.assertSearchStructureOwner`를 그대로 사용해왔다.
+- 예시
+```java
+public class SearchStructureNoteService implements SearchStructureNoteUseCase {
+
+    @Override
+    public void updateSearchStructureNote(final SearchStructureNote searchStructureNote, final UUID loginedMemberId) {
+
+        // searchStructureUseCase 메서드를 그대로 사용!
+        searchStructureUseCase.assertSearchStructureOwner(
+            note.getSearchStructure().getSearchStructureId(),loginedMemberId);
+
+    }
+}
+```
+
+### 3.2. 변경 후
+- 그러나 여러 고민을 해보고 아래 이유로 소유자 검증 로직을 `SearchStructureNote`에 별도로 만들기로 결정했다.
+    - 책임 분리: 도메인 책임을 `SearchStructureNoteService`로 분리해줌
+    - 직관적인 이름: `SearchStructureNoteService`의 코드에서 갑자기 `SearchStructure`의 검증 로직이 나오는 것이 뜬금없을 수 있음
+    - 반복 사용: 새로 만든 검증 로직은 softDelete, update 등 여러 곳에서 사용됨
+    - 로직 변경 또는 확장 가능성: 이후 `SearchStructureNote`의 소유자 검증 로직에 변화가 생길 수 있음
+- 변경 후 코드
+```java
+public class SearchStructureNoteService implements SearchStructureNoteUseCase {
+    @Override
+    public void softDeleteSearchStructureNote(final UUID searchStructureNoteId, final UUID loginedMemberId) {
+
+        final SearchStructureNote note = searchStructureNoteRepository.findBySearchStructureNoteId(searchStructureNoteId);
+
+        // [변경 전] searchStructureUseCase 메서드를 그대로 사용!
+        //searchStructureUseCase.assertSearchStructureOwner(note.getSearchStructure().getSearchStructureId(),loginedMemberId);
+        // [변경 후] 자체 메서드 사용!
+        note.validateForUpdate();
+
+        searchStructureNoteRepository.softDeleteBySearchStructureNoteId(searchStructureNoteId);
+    }
+
+    @Override
+    public void updateSearchStructureNote(final SearchStructureNote searchStructureNote, final UUID loginedMemberId) {
+
+        final SearchStructureNote note = searchStructureNoteRepository.findBySearchStructureNoteId(
+            searchStructureNote.getSearchStructureNoteId());
+
+        note.validateForUpdate();
+
+        // [변경 전] searchStructureUseCase 메서드를 그대로 사용!
+        //searchStructureUseCase.assertSearchStructureOwner(note.getSearchStructure().getSearchStructureId(),loginedMemberId);
+        // [변경 후] 자체 메서드 사용!
+        note.validateForUpdate();
+
+        searchStructureNoteRepository.updateBySearchStructureNoteId(searchStructureNote);
+    }
+}
+```
