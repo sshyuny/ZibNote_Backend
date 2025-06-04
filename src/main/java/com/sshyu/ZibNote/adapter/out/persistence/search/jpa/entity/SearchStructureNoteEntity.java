@@ -8,6 +8,7 @@ import org.hibernate.annotations.UuidGenerator;
 import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 import com.sshyu.zibnote.adapter.out.persistence.note.jpa.entity.NoteFieldEntity;
 import com.sshyu.zibnote.domain.search.model.EvalType;
+import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,5 +53,12 @@ public class SearchStructureNoteEntity extends BaseEntity {
     @Lob
     @Column(columnDefinition = "TEXT")
     private String note;
+
+    public void update(SearchStructureNote domain) {
+        this.noteFieldEntity = NoteFieldEntity.ref(domain.getNoteField().getNoteFieldId());
+        this.evalType = domain.getEvalType();
+        this.evalValue = domain.getEvalValue();
+        this.note = domain.getNote();
+    }
 
 }

@@ -162,4 +162,29 @@ public class SearchStructureNotePersistenceAdapterTest {
         );
     }
 
+    @Test
+    void update_정상요청() {
+        // given
+        EvalType newEvalType = EvalType.SCORE;
+        String newEvalValue = "87";
+        String newNote = "note";
+        SearchStructureNote note = SearchStructureNote.ofBasic(
+            searchStructureNoteId, null, NoteField.onlyId(noteFieldId), newEvalType, newEvalValue, newNote
+        );
+
+        // when
+        searchStructureNotePersistenceAdapter.updateBySearchStructureNoteId(note);
+
+        em.flush();
+        em.clear();
+
+        // then
+        SearchStructureNote findedNote = searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(searchStructureNoteId);
+        assertThat(findedNote.getUpdatedAt()).isAfter(findedNote.getCreatedAt());
+        assertThat(findedNote.getEvalType()).isEqualTo(findedNote.getEvalType());
+        assertThat(findedNote.getEvalValue()).isEqualTo(newEvalValue);
+        assertThat(findedNote.getNote()).isEqualTo(newNote);
+        assertThat(findedNote.getIsDeleted()).isEqualTo(0);
+    }
+
 }

@@ -39,4 +39,10 @@ public class NoteFieldEntity extends BaseEntity {
     @Column(length = 255)
     private String description;
 
+    public static NoteFieldEntity ref(final Long noteFieldId) {
+        return NoteFieldEntity.builder()
+            .noteFieldId(noteFieldId)
+            .build();
+    }
+
 }

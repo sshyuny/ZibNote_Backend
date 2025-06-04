@@ -43,7 +43,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Autowired
     EntityManager em;
     @Autowired
-    SearchStructureNoteService searchStructureNoteService;
+    SearchStructureNoteService sut;
     @Autowired
     SearchStructureNotePersistenceAdapter searchStructureNotePersistenceAdapter;
     @Autowired
@@ -96,7 +96,7 @@ public class SearchStructureNoteServiceIntegrationTest {
     @Test
     void registerSearchStructureNote_정상_등록() {
 
-        UUID noteId = searchStructureNoteService.registerSearchStructureNote(noteWithSearchStructure1AndNoteField1, memberId);
+        UUID noteId = sut.registerSearchStructureNote(noteWithSearchStructure1AndNoteField1, memberId);
 
         SearchStructureNote selectedNote = searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(noteId);
 
@@ -109,7 +109,7 @@ public class SearchStructureNoteServiceIntegrationTest {
         UUID unauthMemberId = UUID.randomUUID();
 
         assertThrows(UnauthorizedAccessException.class, () ->
-            searchStructureNoteService.registerSearchStructureNote(noteWithSearchStructure1AndNoteField1, unauthMemberId));
+            sut.registerSearchStructureNote(noteWithSearchStructure1AndNoteField1, unauthMemberId));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class SearchStructureNoteServiceIntegrationTest {
 
         UUID savedNoteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
 
-        searchStructureNoteService.softDeleteSearchStructureNote(savedNoteId, memberId);
+        sut.softDeleteSearchStructureNote(savedNoteId, memberId);
 
         em.flush();
         em.clear();
@@ -133,7 +133,7 @@ public class SearchStructureNoteServiceIntegrationTest {
         UUID savedNoteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
 
         assertThrows(UnauthorizedAccessException.class, () -> 
-            searchStructureNoteService.softDeleteSearchStructureNote(savedNoteId, unauthMemberId));
+            sut.softDeleteSearchStructureNote(savedNoteId, unauthMemberId));
     }
 
     @Test
@@ -144,7 +144,7 @@ public class SearchStructureNoteServiceIntegrationTest {
         searchStructureNotePersistenceAdapter.save(noteWithSearchStructure2AndNoteField1);
         searchStructureNotePersistenceAdapter.save(noteWithSearchStructure2AndNoteField2);
 
-        List<SearchStructureNote> list = searchStructureNoteService.listSearchStructureNotesBySearchStructure(searchStructureId1, memberId);
+        List<SearchStructureNote> list = sut.listSearchStructureNotesBySearchStructure(searchStructureId1, memberId);
 
         assertThat(list).hasSize(2)
             .extracting("searchStructureNoteId")
@@ -159,7 +159,33 @@ public class SearchStructureNoteServiceIntegrationTest {
         searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField2);
 
         assertThrows(UnauthorizedAccessException.class, () ->
-            searchStructureNoteService.listSearchStructureNotesBySearchStructure(searchStructureId1, unauthMemberId));
+            sut.listSearchStructureNotesBySearchStructure(searchStructureId1, unauthMemberId));
+    }
+
+    @Test
+    void updateSearchStructureNote_정상_수정() {
+        // given
+        UUID noteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
+        SearchStructureNote newNote = SearchStructureNoteFixture.createNote(noteId, null, noteFieldId2);
+
+        // when
+        sut.updateSearchStructureNote(newNote, memberId);
+        SearchStructureNote selectedNote = searchStructureNotePersistenceAdapter.findBySearchStructureNoteId(noteId);
+
+        // then
+        assertThat(selectedNote.getNoteField().getNoteFieldId()).isEqualTo(noteFieldId2);
+    }
+
+    @Test
+    void updateSearchStructureNote_비인가_사용자_접근시_예외_발생() {
+        // given
+        UUID unauthMemberId = UUID.randomUUID();
+        UUID noteId = searchStructureNotePersistenceAdapter.save(noteWithSearchStructure1AndNoteField1);
+        SearchStructureNote newNote = SearchStructureNoteFixture.createNote(noteId, null, noteFieldId2);
+
+        // when/then
+        assertThrows(UnauthorizedAccessException.class, () ->
+            sut.updateSearchStructureNote(newNote, unauthMemberId));
     }
 
 }

@@ -1,11 +1,13 @@
 package com.sshyu.zibnote.adapter.in.web.search;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
@@ -27,9 +29,11 @@ import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NotePostReqDto;
+import com.sshyu.zibnote.adapter.in.web.search.dto.NotePutReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NoteResDto;
 import com.sshyu.zibnote.application.service.auth.JwtUtil;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
+import com.sshyu.zibnote.domain.common.exception.AlreadyDeletedException;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureNoteUseCase;
 
@@ -152,6 +156,55 @@ public class SearchStructureNoteControllerMvcTest {
         assertThat(resBody.getMessage()).isEqualTo(ResponseMessage.ERROR_UNAUTHORIZED.getMessage());
     }
 
+    @Test
+    void put_정상_요청() throws Exception {
+        // given
+        String json = objectMapper.writeValueAsString(
+            new NotePutReqDto(SEARCH_STRUCTURE_NOTE_ID, NOTE_FIELD_ID, null, null, null)
+        );
+
+        // when
+        MvcResult res = mockMvc.perform(put(PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
+            )
+            .andExpect(status().isOk())
+            .andReturn();
+        ApiResponse<Void> resBody = objectMapper.readValue(
+            res.getResponse().getContentAsString(), new TypeReference<ApiResponse<Void>>() {}
+        );
+
+        // then
+        assertThat(resBody.getCode()).isEqualTo(ResponseCode.SUCCESS);
+    }
+
+    @Test
+    void put_이미_삭제된_데이터_요청() throws Exception {
+        // given
+        String json = objectMapper.writeValueAsString(
+            new NotePutReqDto(SEARCH_STRUCTURE_NOTE_ID, NOTE_FIELD_ID, null, null, null)
+            );
+        doThrow(new AlreadyDeletedException())
+            .when(searchStructureNoteUseCase)
+            .updateSearchStructureNote(any(), any());
+
+        // when
+        MvcResult res = mockMvc.perform(put(PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
+            )
+            .andExpect(status().isBadRequest())
+            .andReturn();
+        ApiResponse<Void> resBody = objectMapper.readValue(
+            res.getResponse().getContentAsString(), new TypeReference<ApiResponse<Void>>() {}
+        );
+
+        assertThat(resBody.getCode()).isEqualTo(ResponseCode.ERROR);
+        assertThat(resBody.getMessage()).isEqualTo(ResponseMessage.ERROR_ALREADY_DELETED.getMessage());
+    }
+    
     @Test
     void get_리스트_정상_조회() throws Exception {
         //given

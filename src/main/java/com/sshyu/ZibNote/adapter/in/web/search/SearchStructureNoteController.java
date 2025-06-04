@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,11 +19,14 @@ import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NotePostReqDto;
+import com.sshyu.zibnote.adapter.in.web.search.dto.NotePutReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.NoteResDto;
 import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchStructureNoteDtoMapper;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureNoteUseCase;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/search-structure-note")
@@ -52,6 +56,25 @@ public class SearchStructureNoteController {
 
         return ResponseEntity.ok(
             ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_DELETE.getMessage())
+        );
+    }
+
+    @Operation(
+        summary = "SearchStructureNote 수정",
+        description = "SearchStructureNote 전체 필드를 수정합니다."
+    )
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "수정 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청"),
+    })
+    @PutMapping
+    public ResponseEntity<ApiResponse<Void>> put(@RequestBody NotePutReqDto reqDto) {
+
+        final UUID memberId = authUseCase.getMemberId();
+        searchStructureNoteUseCase.updateSearchStructureNote(SearchStructureNoteDtoMapper.toDomain(reqDto), memberId);
+
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_UPDATE.getMessage())
         );
     }
 

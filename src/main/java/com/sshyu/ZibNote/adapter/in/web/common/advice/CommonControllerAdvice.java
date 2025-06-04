@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
+import com.sshyu.zibnote.domain.common.exception.AlreadyDeletedException;
 import com.sshyu.zibnote.domain.common.exception.InvalidRequestException;
 import com.sshyu.zibnote.domain.common.exception.ResourceNotFoundException;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
@@ -52,6 +53,13 @@ public class CommonControllerAdvice {
     public ResponseEntity<ApiResponse<Void>> handleResourceNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.badRequest().body(
             ApiResponse.of(ResponseCode.ERROR, ResponseMessage.ERROR_NOT_FOUND.getMessage(), null)
+        );
+    }
+
+    @ExceptionHandler(AlreadyDeletedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAlreadyDeletedData(AlreadyDeletedException ex) {
+        return ResponseEntity.badRequest().body(
+            ApiResponse.of(ResponseCode.ERROR, ResponseMessage.ERROR_ALREADY_DELETED.getMessage(), null)
         );
     }
 

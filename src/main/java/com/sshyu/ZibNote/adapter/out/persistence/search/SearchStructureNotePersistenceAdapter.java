@@ -62,4 +62,14 @@ public class SearchStructureNotePersistenceAdapter implements SearchStructureNot
         searchStructureNoteJpaRepository.save(entity);
     }
 
+    @Override
+    public void updateBySearchStructureNoteId(final SearchStructureNote searchStructureNote) {
+        
+        final SearchStructureNoteEntity entity = searchStructureNoteJpaRepository.findById(searchStructureNote.getSearchStructureNoteId())
+            .orElseThrow(() -> new SearchStructureNoteNotFoundException());
+
+        entity.update(searchStructureNote);
+        searchStructureNoteJpaRepository.save(entity);
+    }
+
 }

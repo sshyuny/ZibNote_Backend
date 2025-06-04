@@ -5,8 +5,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.sshyu.zibnote.domain.common.exception.AlreadyDeletedException;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureNoteException;
+import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureNoteUseCase;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
@@ -91,5 +93,35 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
 
         searchStructureNoteRepository.softDeleteBySearchStructureNoteId(searchStructureNoteId);
     }
-    
+
+    /**
+     * SearchStructureNote를 수정한다.
+     * 
+     * <ol>
+     *   <li>수정 유효성 검사</li>
+     *   <li>로그인 계정이 SearchStructureNote(내부 Search)에 접근이 가능한지 확인</li>
+     *   <li>SearchStructureNote 수정</li>
+     * </ol>
+     * 
+     * @param searchStructureNote 수정할 내용
+     * @param loginedMemberId 로그인한 사용자 ID
+     * @throws SearchStructureNoteNotFoundException SearchStructureNote가 존재하지 않는 경우
+     * @throws AlreadyDeletedException 이미 삭제된 SearchStructureNote인 경우
+     * @throws InvalidSearchStructureNoteException 유효성 검사 실패시
+     * @throws UnauthorizedAccessException 로그인 계정이 Search를 참조할 권한이 없는 경우
+     */
+    @Override
+    public void updateSearchStructureNote(final SearchStructureNote searchStructureNote, final UUID loginedMemberId) {
+
+        final SearchStructureNote note = searchStructureNoteRepository.findBySearchStructureNoteId(
+            searchStructureNote.getSearchStructureNoteId());
+
+        note.validateForUpdate();
+
+        searchStructureUseCase.assertSearchStructureOwner(
+            note.getSearchStructure().getSearchStructureId(),loginedMemberId);
+
+        searchStructureNoteRepository.updateBySearchStructureNoteId(searchStructureNote);
+    }
+
 }

@@ -13,4 +13,6 @@ public interface SearchStructureNoteUseCase {
 
     void softDeleteSearchStructureNote(UUID searchStructureNoteId, UUID loginedMemberId);
 
+    void updateSearchStructureNote(SearchStructureNote searchStructureNote, UUID loginedMemberId);
+
 }

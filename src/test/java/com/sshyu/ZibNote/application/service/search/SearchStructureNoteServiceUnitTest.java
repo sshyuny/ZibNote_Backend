@@ -21,6 +21,7 @@ import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
 import com.sshyu.zibnote.domain.search.port.out.SearchStructureNoteRepository;
 import com.sshyu.zibnote.fixture.MemberFixture;
+import com.sshyu.zibnote.fixture.NoteFieldFixture;
 import com.sshyu.zibnote.fixture.SearchStructureFixture;
 import com.sshyu.zibnote.fixture.SearchStructureNoteFixture;
 
@@ -34,16 +35,22 @@ public class SearchStructureNoteServiceUnitTest {
     @Mock
     SearchStructureNoteRepository searchStructureNoteRepository;
 
-    final UUID MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
-    final UUID MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
-    final UUID SEARCH_STRUCTURE_ID_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
+    final static UUID MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
+    final static UUID MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
+    final static UUID SEARCH_STRUCTURE_ID_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
+    final static Long NOTE_FIELD_ID_OF_A = NoteFieldFixture.NOTE_FIELD_1_ID;
 
-    final UUID SAVED_NOTE_ID_OF_A_1 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_1;
-    final UUID SAVED_NOTE_ID_OF_A_2 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_2;
-    final UUID SAMPLE_NOTE_ID = UUID.randomUUID();
+    final static UUID SAVED_NOTE_ID_OF_A_1 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_1;
+    final static UUID SAVED_NOTE_ID_OF_A_2 = SearchStructureNoteFixture.NOTE_ID_OF_MEMBER_A_2;
+    final static UUID SAMPLE_NOTE_ID = UUID.randomUUID();
 
-    SearchStructureNote validNoteOfMemberA = SearchStructureNoteFixture.validNoteWithoutId();
-    SearchStructureNote invalidNote = SearchStructureNoteFixture.invalidNote();
+    SearchStructureNote validNote = SearchStructureNoteFixture.createNote(
+        null, SEARCH_STRUCTURE_ID_OF_A, NOTE_FIELD_ID_OF_A);
+    SearchStructureNote invalidNote1 = SearchStructureNoteFixture.createNote(
+        null, SEARCH_STRUCTURE_ID_OF_A, null);
+    SearchStructureNote invalidNote2 = SearchStructureNoteFixture.createNote(
+        SAMPLE_NOTE_ID, SEARCH_STRUCTURE_ID_OF_A, null);
+
     SearchStructureNote savedNote1 = SearchStructureNoteFixture.validNote1OwnedByA();
     SearchStructureNote savedNote2 = SearchStructureNoteFixture.validNote2OwnedByA();
 
@@ -52,7 +59,7 @@ public class SearchStructureNoteServiceUnitTest {
     void registerSearchStructureNote_도메인_검증_실패시_예외_발생() {
 
         assertThrows(InvalidSearchStructureNoteException.class, () -> 
-            sut.registerSearchStructureNote(invalidNote, MEMBER_A_ID));
+            sut.registerSearchStructureNote(invalidNote1, MEMBER_A_ID));
     }
 
     @Test
@@ -62,16 +69,16 @@ public class SearchStructureNoteServiceUnitTest {
             .willThrow(UnauthorizedAccessException.class);
         
         assertThrows(UnauthorizedAccessException.class, () -> 
-            sut.registerSearchStructureNote(validNoteOfMemberA, MEMBER_B_ID));
+            sut.registerSearchStructureNote(validNote, MEMBER_B_ID));
     }
 
     @Test
     void registerSearchStructureNote_정상_등록시_ID반환() {
 
-        given(searchStructureNoteRepository.save(validNoteOfMemberA))
+        given(searchStructureNoteRepository.save(validNote))
             .willReturn(SAMPLE_NOTE_ID);
 
-        assertThat(sut.registerSearchStructureNote(validNoteOfMemberA, MEMBER_A_ID))
+        assertThat(sut.registerSearchStructureNote(validNote, MEMBER_A_ID))
             .isEqualTo(SAMPLE_NOTE_ID);
     }
 
@@ -129,6 +136,37 @@ public class SearchStructureNoteServiceUnitTest {
             .willReturn(savedNote1);
         
         assertDoesNotThrow(() -> sut.softDeleteSearchStructureNote(SAMPLE_NOTE_ID, MEMBER_A_ID));
+    }
+
+    @Test
+    void updateSearchStructureNote_정상_수정() {
+
+        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAVED_NOTE_ID_OF_A_1))
+            .willReturn(savedNote1);
+
+        assertDoesNotThrow(() -> sut.updateSearchStructureNote(savedNote1, MEMBER_A_ID));
+    }
+
+    @Test
+    void updateSearchStructureNote_유효성검사_실패시_예외_발생() {
+
+        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAMPLE_NOTE_ID))
+            .willReturn(invalidNote2);
+
+        assertThrows(InvalidSearchStructureNoteException.class, () -> 
+            sut.updateSearchStructureNote(invalidNote2, MEMBER_A_ID));
+    }
+
+    @Test
+    void updateSearchStructureNote_비인가_사용자_접근시_예외_발생() {
+
+        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAVED_NOTE_ID_OF_A_1))
+            .willReturn(savedNote1);
+        given(searchStructureUseCase.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_OF_A, MEMBER_B_ID))
+            .willThrow(UnauthorizedAccessException.class);
+        
+        assertThrows(UnauthorizedAccessException.class, () -> 
+            sut.updateSearchStructureNote(savedNote1, MEMBER_B_ID));
     }
 
 }

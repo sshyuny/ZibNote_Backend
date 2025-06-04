@@ -14,5 +14,7 @@ public interface SearchStructureNoteRepository {
     List<SearchStructureNote> findAllBySearchStructureId(UUID searchStructureId);
 
     void softDeleteBySearchStructureNoteId(UUID searchStructureNoteId);
+
+    void updateBySearchStructureNoteId(SearchStructureNote searchStructureNote);
     
 }
