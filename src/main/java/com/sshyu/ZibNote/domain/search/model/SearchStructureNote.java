@@ -55,6 +55,9 @@ public class SearchStructureNote extends BaseFields {
             .build();
     }
 
+    /**
+     * SearchStructureNote 등록 전 유효성 검사
+     */
     public void validateForRegister() {
         if (searchStructure == null || searchStructure.getSearchStructureId() == null) {
             throw new InvalidSearchStructureNoteException();
@@ -62,8 +65,12 @@ public class SearchStructureNote extends BaseFields {
         if (noteField == null || noteField.getNoteFieldId() == null) {
             throw new InvalidSearchStructureNoteException();
         }
+        ensureEvalTypeAndValueMatch();
     }
 
+    /**
+     * SearchStructureNote 수정 전 유효성 검사
+     */
     public void validateForUpdate() {
         if (searchStructureNoteId == null) {
             throw new SearchStructureNotFoundException("ID에 NULL 값");
@@ -76,6 +83,24 @@ public class SearchStructureNote extends BaseFields {
         }
         if (noteField == null || noteField.getNoteFieldId() == null) {
             throw new InvalidSearchStructureNoteException("필수 항목인 NoteField 값 누락");
+        }
+        ensureEvalTypeAndValueMatch();
+    }
+
+    /**
+     * EvalType에 적절한 EvalValue 값이 들어있는지 검증
+     */
+    public void ensureEvalTypeAndValueMatch() {
+        try {
+            if (evalType == null) {
+                if (evalValue != null) throw new InvalidSearchStructureNoteException("EvalType 없는데 EvalValue 값 있음");
+            } else {
+                if (!evalType.hasProperValue(evalValue)) {
+                    throw new InvalidSearchStructureNoteException("EvalType에 부적절한 EvalValue 값");
+                }
+            }
+        } catch (NumberFormatException ex) {
+            throw new InvalidSearchStructureNoteException("EvalValue 형식 오류");
         }
     }
 

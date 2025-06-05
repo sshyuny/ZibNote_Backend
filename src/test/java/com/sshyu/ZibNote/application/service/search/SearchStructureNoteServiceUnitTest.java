@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureNoteException;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
+import com.sshyu.zibnote.domain.search.model.EvalType;
 import com.sshyu.zibnote.domain.search.model.SearchStructureNote;
 import com.sshyu.zibnote.domain.search.port.in.SearchStructureUseCase;
 import com.sshyu.zibnote.domain.search.port.out.SearchStructureNoteRepository;
@@ -70,6 +71,16 @@ public class SearchStructureNoteServiceUnitTest {
         
         assertThrows(UnauthorizedAccessException.class, () -> 
             sut.registerSearchStructureNote(validNote, MEMBER_B_ID));
+    }
+
+    @Test
+    void registerSearchStructureNote_EvalType과_EvalValue_언매치로_예외_발생() {
+
+        SearchStructureNote note = SearchStructureNote.ofBasic(
+            SAMPLE_NOTE_ID, SearchStructureFixture.validSearchStructure1OwnedByA(), NoteFieldFixture.validNoteField1OwnedByA(), EvalType.STAR, "7", null);
+
+        assertThrows(InvalidSearchStructureNoteException.class, () ->
+            sut.registerSearchStructureNote(note, MEMBER_A_ID));
     }
 
     @Test
@@ -167,6 +178,18 @@ public class SearchStructureNoteServiceUnitTest {
         
         assertThrows(UnauthorizedAccessException.class, () -> 
             sut.updateSearchStructureNote(savedNote1, MEMBER_B_ID));
+    }
+
+    @Test
+    void updateSearchStructureNote_EvalType과_EvalValue_언매치로_예외_발생() {
+
+        SearchStructureNote note = SearchStructureNote.ofBasic(
+            SAVED_NOTE_ID_OF_A_1, SearchStructureFixture.validSearchStructure1OwnedByA(), NoteFieldFixture.validNoteField1OwnedByA(), EvalType.STAR, "7", null);
+        given(searchStructureNoteRepository.findBySearchStructureNoteId(SAVED_NOTE_ID_OF_A_1))
+            .willReturn(savedNote1);
+
+        assertThrows(InvalidSearchStructureNoteException.class, () -> 
+            sut.updateSearchStructureNote(note, MEMBER_A_ID));
     }
 
 }
