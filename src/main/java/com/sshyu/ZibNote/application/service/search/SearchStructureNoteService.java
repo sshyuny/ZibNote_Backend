@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.sshyu.zibnote.domain.common.exception.AlreadyDeletedException;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureNoteException;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNoteNotFoundException;
@@ -111,12 +110,12 @@ public class SearchStructureNoteService implements SearchStructureNoteUseCase {
     @Override
     public void updateSearchStructureNote(final SearchStructureNote searchStructureNote, final UUID loginedMemberId) {
 
-        final SearchStructureNote note = searchStructureNoteRepository.findBySearchStructureNoteId(
+        final SearchStructureNote selectedNote = searchStructureNoteRepository.findBySearchStructureNoteId(
             searchStructureNote.getSearchStructureNoteId());
 
-        note.validateForUpdate();
+        assertSearchStructureNoteOwner(selectedNote, loginedMemberId);
 
-        assertSearchStructureNoteOwner(note, loginedMemberId);
+        searchStructureNote.validateForUpdate(selectedNote);
 
         searchStructureNoteRepository.updateBySearchStructureNoteId(searchStructureNote);
     }

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.sshyu.zibnote.domain.common.BaseFields;
-import com.sshyu.zibnote.domain.common.exception.AlreadyDeletedException;
 import com.sshyu.zibnote.domain.note.model.NoteField;
 import com.sshyu.zibnote.domain.search.exception.InvalidSearchStructureNoteException;
 import com.sshyu.zibnote.domain.search.exception.SearchStructureNotFoundException;
@@ -71,17 +70,17 @@ public class SearchStructureNote extends BaseFields {
     /**
      * SearchStructureNote 수정 전 유효성 검사
      */
-    public void validateForUpdate() {
-        if (searchStructureNoteId == null) {
-            throw new SearchStructureNotFoundException("ID에 NULL 값");
+    public void validateForUpdate(SearchStructureNote selectedNote) {
+        if (this.searchStructureNoteId == null) {
+            throw new SearchStructureNotFoundException("ID에 NULL 값 불가");
         }
-        if (isDeleted == 1) {
-            throw new AlreadyDeletedException("이미 삭제된 데이터");
+        if (!this.searchStructureNoteId.equals(selectedNote.getSearchStructureNoteId())) {
+            throw new InvalidSearchStructureNoteException("ID는 변경 불가");
         }
-        if (searchStructure == null || searchStructure.getSearchStructureId() == null) {
-            throw new InvalidSearchStructureNoteException("필수 항목인 SearchStructure 값 누락");
+        if (!selectedNote.getSearchStructure().getSearchStructureId().equals(selectedNote.getSearchStructure().getSearchStructureId())) {
+            throw new InvalidSearchStructureNoteException("SearchStructure는 변경 불가");
         }
-        if (noteField == null || noteField.getNoteFieldId() == null) {
+        if (this.noteField == null || this.noteField.getNoteFieldId() == null) {
             throw new InvalidSearchStructureNoteException("필수 항목인 NoteField 값 누락");
         }
         ensureEvalTypeAndValueMatch();
