@@ -19,7 +19,7 @@ mysql -u zibnote_admin -p
 -- 회원
 DROP TABLE IF EXISTS MEMBER;
 CREATE TABLE MEMBER (
-    member_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BINARY(16) NOT NULL PRIMARY KEY, 
     name VARCHAR(50) NOT NULL COMMENT '사용자 이름',
     created_at DATETIME NOT NULL COMMENT '데이터 생성 시각',
     updated_at DATETIME NOT NULL COMMENT '데이터 수정 시각',
@@ -47,7 +47,7 @@ CREATE TABLE STRUCTURE (
 -- 조사(임장 또는 인터넷 조사도 포함)
 DROP TABLE IF EXISTS SEARCH;
 CREATE TABLE SEARCH (
-    search_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    search_id BINARY(16) NOT NULL PRIMARY KEY, 
     member_id BIGINT,
     title VARCHAR(100) NOT NULL COMMENT '조사 제목',   -- 예: 산본역 아파트 2025 임장
     region VARCHAR(255) COMMENT '조사(임장) 지역',  -- 예: 산본역
@@ -74,7 +74,7 @@ CREATE TABLE NOTE_FIELD (
 
 DROP TABLE IF EXISTS SEARCH_STRUCTURE;
 CREATE TABLE SEARCH_STRUCTURE (
-    search_structure_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    search_structure_id BINARY(16) NOT NULL PRIMARY KEY,
     search_id BIGINT,
     structure_id BIGINT,
     description TEXT,
@@ -87,7 +87,7 @@ CREATE TABLE SEARCH_STRUCTURE (
 
 DROP TABLE IF EXISTS SEARCH_STRUCTURE_NOTE;
 CREATE TABLE SEARCH_STRUCTURE_NOTE (
-    search_structure_note_id BIGINT AUTO_INCREMENT PRIMARY KEY, 
+    search_structure_note_id BINARY(16) NOT NULL PRIMARY KEY, 
     search_structure_id BIGINT,
     note_field_id BIGINT,
     eval_type VARCHAR(100) COMMENT '평가타입',

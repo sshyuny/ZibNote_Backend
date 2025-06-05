@@ -14,12 +14,14 @@
 - MEMBER: 회원
 - STRUCTURE: 건물
 - SEARCH: 임장
-- SEARCH_STRUCTURE: 임장한 건물
-- SEARCH_STRUCTURE_NOTE: 임장한 건물별 기록
-- NOTE_FIELD: 기록 기준
+- SEARCH_STRUCTURE(임장 건물): 임장한 건물
+- SEARCH_STRUCTURE_NOTE(임장 건물 기록): 임장한 건물별 기록
+- NOTE_FIELD(기록 기준): 임장 건물별로 기록할 때 사용되는 기준
 
 ## 주요 기능
-- 임장 내용 CRD
+- 회원가입 및 로그인, 로그아웃
+- 임장 기록 내용 생성/삭제/수정
+- 임장 기록의 기준 직접 커스텀
 
 ## 아키텍처 구조
 Hexagonal Architecture를 참고하여 외부 변경에 유연하게 대처할 수 있는 것을 목표로 구성했습니다.
@@ -80,3 +82,4 @@ Hexagonal Architecture를 참고하여 외부 변경에 유연하게 대처할 �
 - [05. CORS를 처리하는 다양한 방법](docs/develop/05_CORS.md)
 - [06. 예외 클래스 구조 정리](docs/develop/06_Exception_Class.md)
 - [07. API 응답 코드 스타일 지정 및 리팩토링](docs/develop/07_API_Response_Body.md)
+- [08. 엔티티 PK 데이터 타입을 Long에서 UUID로 전환](docs/develop/08_Change_PK_to_UUID.md)

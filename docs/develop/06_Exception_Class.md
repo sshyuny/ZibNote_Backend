@@ -19,6 +19,7 @@
         - InValidRequestException (abstract class)
             - NotValidSearchStructureException
             - NotValidSearchStructureNoteException
+        - AlreadyDeletedException
 ```
 
 ### 예외 클래스 위치
@@ -30,6 +31,7 @@
             - UnauthorizedAccessException
             - ResourceNotFoundException (abstract class)
             - InValidRequestException (abstract class)
+            - AlreadyDeletedException
     - search/
         - exeption/
             - SearchNotFoundException
