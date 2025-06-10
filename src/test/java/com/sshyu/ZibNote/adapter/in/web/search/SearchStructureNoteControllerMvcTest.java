@@ -160,7 +160,7 @@ public class SearchStructureNoteControllerMvcTest {
     void put_정상_요청() throws Exception {
         // given
         String json = objectMapper.writeValueAsString(
-            new NotePutReqDto(SEARCH_STRUCTURE_NOTE_ID, NOTE_FIELD_ID, null, null, null)
+            new NotePutReqDto(SEARCH_STRUCTURE_NOTE_ID, SEARCH_STRUCTURE_ID, NOTE_FIELD_ID, null, null, null)
         );
 
         // when
@@ -183,7 +183,7 @@ public class SearchStructureNoteControllerMvcTest {
     void put_이미_삭제된_데이터_요청() throws Exception {
         // given
         String json = objectMapper.writeValueAsString(
-            new NotePutReqDto(SEARCH_STRUCTURE_NOTE_ID, NOTE_FIELD_ID, null, null, null)
+            new NotePutReqDto(SEARCH_STRUCTURE_NOTE_ID, SEARCH_STRUCTURE_ID, NOTE_FIELD_ID, null, null, null)
             );
         doThrow(new AlreadyDeletedException())
             .when(searchStructureNoteUseCase)

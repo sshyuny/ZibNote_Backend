@@ -1,5 +1,6 @@
 package com.sshyu.zibnote.adapter.in.web.search.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,12 +12,15 @@ import lombok.Setter;
 @Getter @Setter
 public class SearchReqDto {
     
+    @Schema(description = "제목", example = "산본역 임장")
     @NotBlank
     private String title;
 
+    @Schema(description = "지역", example = "경기 군포시")
     @NotBlank
     private String region;
 
+    @Schema(description = "설명", example = "4호선. 개인 임장.")
     private String description;
 
 }

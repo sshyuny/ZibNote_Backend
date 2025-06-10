@@ -22,6 +22,10 @@ import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchDtoMapper;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
 import com.sshyu.zibnote.domain.search.port.in.SearchUseCase;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -32,6 +36,14 @@ public class SearchController {
     private final SearchUseCase searchUseCase;
     private final AuthUseCase authUseCase;
     
+    @Operation(
+        summary = "Search 생성",
+        description = "Search를 생성합니다."
+    )
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "생성 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
+    })
     @PostMapping
     public ResponseEntity<ApiResponse<Void>> post(@RequestBody SearchReqDto reqDto) {
 
@@ -43,8 +55,19 @@ public class SearchController {
         );
     }
 
+    @Operation(
+        summary = "Search 삭제",
+        description = "Search를 삭제합니다."
+    )
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "삭제 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않거나 권한이 없는 리소스", content = @Content),
+    })
     @DeleteMapping
-    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable("id") UUID id) {
+    public ResponseEntity<ApiResponse<Void>> delete(
+        @Parameter(description = "삭제하려는 Search ID", example = "123e4567-e89b-12d3-a456-426614174000")
+        @PathVariable("id") UUID id
+    ) {
 
         searchUseCase.softDeleteSearch(id, authUseCase.getMemberId());
 
@@ -53,6 +76,13 @@ public class SearchController {
         );
     }
 
+    @Operation(
+        summary = "로그인한 사용자가 등록한 Search 리스트 조회",
+        description = "로그인한 사용자가 등록한 Search  리스트를 조회합니다."
+    )
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공"),
+    })
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<SearchResDto>>> getList() {
 

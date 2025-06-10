@@ -21,6 +21,7 @@ public class SearchStructureNoteDtoMapper {
 
     public static SearchStructureNote toDomain(final NotePutReqDto reqDto) {
         return SearchStructureNote.builder()
+                    .searchStructureNoteId(reqDto.getSearchStructureNoteId())
                     .searchStructure(SearchStructure.onlyId(reqDto.getSearchStructureId()))
                     .noteField(NoteField.onlyId(reqDto.getNoteFieldId()))
                     .evalType(reqDto.getEvalType())
