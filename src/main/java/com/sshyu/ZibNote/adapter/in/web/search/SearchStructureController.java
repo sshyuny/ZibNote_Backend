@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
+import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructurePutReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureResDto;
 import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchStructureDtoMapper;
@@ -77,6 +80,26 @@ public class SearchStructureController {
 
         return ResponseEntity.ok(
             ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_DELETE.getMessage())
+        );
+    }
+
+    @Operation(
+        summary = "SearchStructure 수정",
+        description = "SearchStructure 필드를 수정합니다."
+    )
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "수정 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않거나 권한이 없는 리소스", content = @Content),
+    })
+    @PutMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<ApiResponse<Void>> put(@RequestBody SearchStructurePutReqDto reqDto) {
+
+        final UUID loginedMemberId = authUseCase.getMemberId();
+        searchStructureUseCase.updateSearchStructure(SearchStructureDtoMapper.fromPutReqDtoToDomain(reqDto), loginedMemberId);
+
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_UPDATE.getMessage())
         );
     }
 

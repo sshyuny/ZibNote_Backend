@@ -1,5 +1,6 @@
 package com.sshyu.zibnote.adapter.in.web.search.mapper;
 
+import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructurePutReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureResDto;
 import com.sshyu.zibnote.domain.search.model.Search;
@@ -25,6 +26,15 @@ public class SearchStructureDtoMapper {
                     .structure(Structure.onlyId(reqDto.getStructureId()))
                     .description(reqDto.getDescription())
                     .build();
+    }
+
+    public static SearchStructure fromPutReqDtoToDomain(final SearchStructurePutReqDto reqDto) {
+        return SearchStructure.ofBasic(
+            reqDto.getSearchStructureId(),
+            null,
+            Structure.onlyId(reqDto.getStructureId()),
+            reqDto.getDescription()
+        );
     }
 
 }

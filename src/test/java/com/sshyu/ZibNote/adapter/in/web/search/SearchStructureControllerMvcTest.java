@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.adapter.in.web.search;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -19,11 +20,13 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
+import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructurePutReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchStructureResDto;
 import com.sshyu.zibnote.application.service.auth.JwtUtil;
@@ -50,6 +53,7 @@ public class SearchStructureControllerMvcTest {
     final static UUID LOGINED_MEMBER_ID = UUID.randomUUID();
 
     final static UUID SEARCH_STRUCTURE_ID = UUID.randomUUID();
+    final static Long STRUCTURE_ID = 123L;
 
 
     @BeforeEach
@@ -123,6 +127,60 @@ public class SearchStructureControllerMvcTest {
         assertThat(resBody.getCode()).isEqualTo(ResponseCode.ERROR);
         assertThat(resBody.getMessage()).isEqualTo(ResponseMessage.ERROR_NOT_FOUND.getMessage());
     }
+
+
+    @Test
+    void update_정상_요청() throws Exception {
+        //given
+        String json = objectMapper.writeValueAsString(
+            new SearchStructurePutReqDto(SEARCH_STRUCTURE_ID, STRUCTURE_ID, "test")
+        );
+
+        // when
+        MvcResult res = mockMvc.perform(put(PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
+            )
+            .andExpect(status().isOk())
+            .andReturn();
+        ApiResponse<Void> resBody = objectMapper.readValue(
+            res.getResponse().getContentAsString(), new TypeReference<ApiResponse<Void>>() {}
+        );
+
+        // then
+        assertThat(resBody.getCode()).isEqualTo(ResponseCode.SUCCESS);
+    }
+
+    @Test
+    void update_비인가_사용자_시도시_예외_발생() throws Exception {
+        //given
+        String json = objectMapper.writeValueAsString(
+            new SearchStructurePutReqDto(SEARCH_STRUCTURE_ID, STRUCTURE_ID, "test")
+        );
+        given(authUseCase.getMemberId())
+            .willReturn(LOGINED_MEMBER_ID);
+        doThrow(new UnauthorizedAccessException())
+            .when(searchStructureUseCase)
+            .updateSearchStructure(any(), any());
+
+        // when
+        MvcResult res = mockMvc.perform(put(PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + JWT_TOKEN)
+            )
+            .andExpect(status().isNotFound())
+            .andReturn();
+        ApiResponse<Void> resBody = objectMapper.readValue(
+            res.getResponse().getContentAsString(), new TypeReference<ApiResponse<Void>>() {}
+        );
+
+        // then
+        assertThat(resBody.getCode()).isEqualTo(ResponseCode.ERROR);
+        assertThat(resBody.getMessage()).isEqualTo(ResponseMessage.ERROR_NOT_FOUND.getMessage());
+    }
+
 
     @Test
     void get_list_정상_요청() throws Exception {
