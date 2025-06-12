@@ -12,6 +12,8 @@ public interface SearchStructureUseCase {
     List<SearchStructure> listSearchStructuresBySearch(UUID searchId, UUID loginedMemberId);
 
     void softDeleteSearchStructure(UUID searchStructureId, UUID loginedMemberId);
+    
+    void updateSearchStructure(SearchStructure searchStructure, UUID loginedMemberId);
 
     SearchStructure assertSearchStructureOwner(UUID searchStructureId, UUID loginedMemberId);
 

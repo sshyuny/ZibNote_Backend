@@ -80,4 +80,14 @@ public class SearchStructurePersistenceAdapter implements SearchStructureReposit
         searchStructureJpaRepository.save(searchStructureEntity);
     }
 
+    @Override
+    public void updateBySearchStructure(SearchStructure searchStructure) {
+        
+        final SearchStructureEntity entity = searchStructureJpaRepository.findById(searchStructure.getSearchStructureId())
+            .orElseThrow(() -> new SearchStructureNotFoundException());
+
+        entity.update(searchStructure);
+        searchStructureJpaRepository.save(entity);
+    }
+
 }

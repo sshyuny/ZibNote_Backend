@@ -20,6 +20,7 @@ import com.sshyu.zibnote.domain.search.exception.SearchStructureNotFoundExceptio
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.model.SearchStructure;
 import com.sshyu.zibnote.domain.structure.model.Structure;
+import com.sshyu.zibnote.fixture.StructureFixture;
 
 import jakarta.persistence.EntityManager;
 
@@ -56,6 +57,7 @@ public class SearchStructurePersistenceAdapterTest {
     UUID memberId;
     UUID searchId;
     Long structureId;
+    Long structure2Id;
     UUID searchStructureId;
     
     @BeforeEach
@@ -85,6 +87,10 @@ public class SearchStructurePersistenceAdapterTest {
                 .updatedAt(TIME)
                 .isDeleted(0)
                 .build()
+        );
+
+        structure2Id = structurePersistenceAdapter.save(
+            StructureFixture.validStructure2WithoutId()
         );
 
         searchStructureId = searchStructurePersistenceAdapter.save(
@@ -122,5 +128,44 @@ public class SearchStructurePersistenceAdapterTest {
             searchStructurePersistenceAdapter.findBySearchStructureId(searchStructureId)
         );
     }
-    
+
+    @Test
+    void update_정상요청() {
+        // given
+        UUID newSearchId = UUID.randomUUID();
+        String newDescription = "새로운 설명";
+        SearchStructure searchStructure = SearchStructure.ofBasic(
+            searchStructureId, Search.onlyId(newSearchId), Structure.onlyId(structure2Id), newDescription
+        );
+
+        // when
+        searchStructurePersistenceAdapter.updateBySearchStructure(searchStructure);
+        
+        em.flush();
+        em.clear();
+
+        SearchStructure updatedSearchStructure = searchStructurePersistenceAdapter.findBySearchStructureId(searchStructureId);
+
+        // then
+        assertThat(updatedSearchStructure.getSearch().getSearchId()).isEqualTo(searchId); // 변경되지 않는 항목
+        assertThat(updatedSearchStructure.getStructure().getStructureId()).isEqualTo(structure2Id);  // 변경되는 항목
+        assertThat(updatedSearchStructure.getDescription()).isEqualTo(newDescription);  // 변경되는 항목
+        assertThat(updatedSearchStructure.getUpdatedAt()).isAfter(updatedSearchStructure.getCreatedAt());
+        assertThat(updatedSearchStructure.getIsDeleted()).isEqualTo(0);
+    }
+
+    @Test
+    void update_존재하지_않는_데이터_수정_시도시_예외_발생() {
+        // given
+        UUID randomId = UUID.randomUUID();
+        SearchStructure searchStructure = SearchStructure.ofBasic(
+            randomId, Search.onlyId(searchId), Structure.onlyId(structure2Id), "test"
+        );
+
+        // when/then
+        assertThrows(SearchStructureNotFoundException.class, () -> 
+            searchStructurePersistenceAdapter.updateBySearchStructure(searchStructure)
+        );
+    }
+
 }

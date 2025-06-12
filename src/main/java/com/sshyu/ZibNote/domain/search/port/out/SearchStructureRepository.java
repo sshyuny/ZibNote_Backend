@@ -15,4 +15,6 @@ public interface SearchStructureRepository {
 
     void softDeleteBySearchStructureId(UUID searchStructureId);
 
+    void updateBySearchStructure(SearchStructure searchStructure);
+
 }

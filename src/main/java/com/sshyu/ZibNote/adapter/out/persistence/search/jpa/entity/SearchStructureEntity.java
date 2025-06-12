@@ -7,6 +7,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 import com.sshyu.zibnote.adapter.out.persistence.structure.jpa.entity.StructureEntity;
+import com.sshyu.zibnote.domain.search.model.SearchStructure;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,6 +49,15 @@ public class SearchStructureEntity extends BaseEntity {
         return SearchStructureEntity.builder()
                     .searchStructureId(searchStructureId)
                     .build();
+    }
+
+    /**
+     * SearchStructureEntity 필드 내용을 변경합니다.
+     * searchStructureId, searchEntity 필드는 변경되지 않습니다.
+     */
+    public void update(final SearchStructure domain) {
+        this.structureEntity = StructureEntity.ref(domain.getStructure().getStructureId());
+        this.description = domain.getDescription();
     }
 
 }

@@ -159,4 +159,45 @@ public class SearchStructureServiceIntegrationTest {
             sut.assertSearchStructureOwner(searchStructureId, memberBId));
     }
 
+    @Test
+    void updateSearchStructure_정상_요청() {
+        //given
+        UUID searchStructureId = searchStructurePersistenceAdapter.save(validSearchStructure1);
+
+        String newDescription = "test";
+        SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
+            searchStructureId, Search.onlyId(searchId), Structure.onlyId(structureId2), newDescription
+        );
+
+        //when
+        sut.updateSearchStructure(searchStructureForUpdate, memberAId);
+
+        em.flush();
+        em.clear();
+
+        SearchStructure findedSearchStructure = searchStructurePersistenceAdapter.findBySearchStructureId(searchStructureId);
+
+        //then
+        assertThat(findedSearchStructure.getStructure().getStructureId()).isEqualTo(structureId2);
+        assertThat(findedSearchStructure.getDescription()).isEqualTo(newDescription);
+    }
+
+    @Test
+    void updateSearchStructure_존재하지_않는_Structure_요청시_예외_발생() {
+        //given
+        UUID searchStructureId = searchStructurePersistenceAdapter.save(validSearchStructure1);
+
+        em.flush();
+        em.clear();
+
+        Long randomStructureId = 3344556677L;
+        SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
+            searchStructureId, Search.onlyId(searchId), Structure.onlyId(randomStructureId), "test"
+        );
+
+        //when/then
+        assertThrows(StructureNotFoundException.class, () ->
+            sut.updateSearchStructure(searchStructureForUpdate, memberAId));
+    }
+
 }

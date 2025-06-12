@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.application.service.search;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
@@ -43,8 +44,10 @@ public class SearchStructureServiceUnitTest {
 
     final UUID MEMBER_A_ID = MemberFixture.MEMBER_A_ID;
     final UUID MEMBER_B_ID = MemberFixture.MEMBER_B_ID;
-    final UUID SEARCH_ID_OF_A = SearchFixture.SEARCH_1_ID;
-    final Long STRUCTURE_ID = StructureFixture.STRUCTURE_1_ID;
+    final UUID SEARCH_1_ID_OF_A = SearchFixture.SEARCH_1_ID;
+    final UUID SEARCH_2_ID_OF_A = SearchFixture.SEARCH_2_ID;
+    final Long STRUCTURE_1_ID = StructureFixture.STRUCTURE_1_ID;
+    final Long STRUCTURE_2_ID = StructureFixture.STRUCTURE_2_ID;
     final UUID SEARCH_STRUCTURE_ID_1_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_1;
     final UUID SEARCH_STRUCTURE_ID_2_OF_A = SearchStructureFixture.SEARCH_STRUCTURE_2_ID;
 
@@ -59,7 +62,7 @@ public class SearchStructureServiceUnitTest {
     void registerSearchStructure_정상_등록() {
         //given
         final UUID searchStructureId = UUID.randomUUID();
-        given(searchUseCase.getSearch(SEARCH_ID_OF_A))
+        given(searchUseCase.getSearch(SEARCH_1_ID_OF_A))
             .willReturn(searchOfMemberA);
         given(searchStructureRepository.save(searchStructure1WithMemberA))
             .willReturn(searchStructureId);
@@ -72,7 +75,7 @@ public class SearchStructureServiceUnitTest {
     @Test
     void registerSearchStructure_비인가_사용자_Search_접근시_예외_발생() {
 
-        given(searchUseCase.getSearch(SEARCH_ID_OF_A))
+        given(searchUseCase.getSearch(SEARCH_1_ID_OF_A))
             .willReturn(searchOfMemberA);
 
         assertThrows(UnauthorizedAccessException.class, () -> 
@@ -92,7 +95,7 @@ public class SearchStructureServiceUnitTest {
     @Test
     void registerSearchStructure_Search_존재하지_않을시_예외_발생() {
 
-        given(searchUseCase.getSearch(SEARCH_ID_OF_A))
+        given(searchUseCase.getSearch(SEARCH_1_ID_OF_A))
             .willThrow(SearchNotFoundException.class);
 
         assertThrows(SearchNotFoundException.class, () -> 
@@ -102,9 +105,9 @@ public class SearchStructureServiceUnitTest {
     @Test
     void registerSearchStructure_Structure_존재하지_않을시_예외_발생() {
         //given
-        given(searchUseCase.getSearch(SEARCH_ID_OF_A))
+        given(searchUseCase.getSearch(SEARCH_1_ID_OF_A))
             .willReturn(searchOfMemberA);
-        given(structureUseCase.getStructure(STRUCTURE_ID))
+        given(structureUseCase.getStructure(STRUCTURE_1_ID))
             .willThrow(StructureNotFoundException.class);
 
         //when/then
@@ -115,13 +118,13 @@ public class SearchStructureServiceUnitTest {
     @Test
     void listSearchStructuresBySearch_리스트_반환() {
         //given
-        given(searchUseCase.getSearch(SEARCH_ID_OF_A))
+        given(searchUseCase.getSearch(SEARCH_1_ID_OF_A))
             .willReturn(searchOfMemberA);
-        given(searchStructureRepository.findAllBySearchId(SEARCH_ID_OF_A))
+        given(searchStructureRepository.findAllBySearchId(SEARCH_1_ID_OF_A))
             .willReturn(List.of(searchStructure1WithMemberA, searchStructure2WithMemberA));
 
         //when/then
-        assertThat(sut.listSearchStructuresBySearch(SEARCH_ID_OF_A, MEMBER_A_ID))
+        assertThat(sut.listSearchStructuresBySearch(SEARCH_1_ID_OF_A, MEMBER_A_ID))
             .hasSize(2)
             .contains(searchStructure1WithMemberA, searchStructure2WithMemberA);
     }
@@ -129,24 +132,24 @@ public class SearchStructureServiceUnitTest {
     @Test
     void listSearchStructuresBySearch_비어있는_리스트_반환() {
         //given
-        given(searchUseCase.getSearch(SEARCH_ID_OF_A))
+        given(searchUseCase.getSearch(SEARCH_1_ID_OF_A))
             .willReturn(searchOfMemberA);
-        given(searchStructureRepository.findAllBySearchId(SEARCH_ID_OF_A))
+        given(searchStructureRepository.findAllBySearchId(SEARCH_1_ID_OF_A))
             .willReturn(List.of());
 
         //when/then
-        assertThat(sut.listSearchStructuresBySearch(SEARCH_ID_OF_A, MEMBER_A_ID))
+        assertThat(sut.listSearchStructuresBySearch(SEARCH_1_ID_OF_A, MEMBER_A_ID))
             .hasSize(0);
     }
 
     @Test
     void listSearchStructuresBySearch_비인가_사용자_Search_접근시_예외_발생() {
 
-        given(searchUseCase.getSearch(SEARCH_ID_OF_A))
+        given(searchUseCase.getSearch(SEARCH_1_ID_OF_A))
             .willReturn(searchOfMemberA);
 
         assertThrows(UnauthorizedAccessException.class, () -> 
-            sut.listSearchStructuresBySearch(SEARCH_ID_OF_A, MEMBER_B_ID)
+            sut.listSearchStructuresBySearch(SEARCH_1_ID_OF_A, MEMBER_B_ID)
         );
     }
 
@@ -164,7 +167,7 @@ public class SearchStructureServiceUnitTest {
         //given
         given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
             .willReturn(searchStructure1WithMemberA);
-        given(searchUseCase.assertSearchOwner(SEARCH_ID_OF_A, MEMBER_B_ID))
+        given(searchUseCase.assertSearchOwner(SEARCH_1_ID_OF_A, MEMBER_B_ID))
             .willThrow(UnauthorizedAccessException.class);
 
         //when/then
@@ -191,12 +194,81 @@ public class SearchStructureServiceUnitTest {
         //given
         given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
             .willReturn(searchStructure1WithMemberA);
-        given(searchUseCase.assertSearchOwner(SEARCH_ID_OF_A, MEMBER_B_ID))
+        given(searchUseCase.assertSearchOwner(SEARCH_1_ID_OF_A, MEMBER_B_ID))
             .willThrow(UnauthorizedAccessException.class);
 
         //when/then
         assertThrows(UnauthorizedAccessException.class, () ->
             sut.assertSearchStructureOwner(SEARCH_STRUCTURE_ID_1_OF_A, MEMBER_B_ID));
+    }
+
+    @Test
+    void updateSearchStructure_정상_요청() {
+        //given
+        given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
+            .willReturn(searchStructure1WithMemberA);
+        SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
+            SEARCH_STRUCTURE_ID_1_OF_A, Search.onlyId(SEARCH_1_ID_OF_A), Structure.onlyId(STRUCTURE_2_ID), "test"
+        );
+
+        //when/then
+        assertDoesNotThrow(() -> 
+            sut.updateSearchStructure(searchStructureForUpdate, MEMBER_A_ID));
+    }
+
+    @Test
+    void updateSearchStructure_비인가_사용자_요청시_예외_발생() {
+        //given
+        given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
+            .willReturn(searchStructure1WithMemberA);
+        given(searchUseCase.assertSearchOwner(SEARCH_1_ID_OF_A, MEMBER_B_ID))
+            .willThrow(UnauthorizedAccessException.class);
+
+        //when/then
+        assertThrows(UnauthorizedAccessException.class, () ->
+            sut.updateSearchStructure(searchStructure1WithMemberA, MEMBER_B_ID));
+    }
+
+    @Test
+    void updateSearchStructure_유효하지_않은_도메인_요청시_예외_발생() {
+        //given
+        given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
+            .willReturn(searchStructure1WithMemberA);
+        SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
+            SEARCH_STRUCTURE_ID_1_OF_A, null, Structure.onlyId(STRUCTURE_2_ID), "test"
+        );
+
+        //when/then
+        assertThrows(InvalidSearchStructureException.class, () -> 
+            sut.updateSearchStructure(searchStructureForUpdate, MEMBER_A_ID));
+    }
+    
+    @DisplayName("기존 도메인과 요청된 도메인의 Search ID가 동일해야 함")
+    @Test
+    void updateSearchStructure_DB조회_도메인과_비교시_적절하지_않아_예외_발생() {
+        //given
+        given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
+            .willReturn(searchStructure1WithMemberA);
+        SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
+            SEARCH_STRUCTURE_ID_1_OF_A, Search.onlyId(SEARCH_2_ID_OF_A), Structure.onlyId(STRUCTURE_2_ID), "test"
+        );
+
+        //when/then
+        assertThrows(InvalidSearchStructureException.class, () -> 
+            sut.updateSearchStructure(searchStructureForUpdate, MEMBER_A_ID));
+    }
+
+    @Test
+    void updateSearchStructure_존재하지_않는_Structure_요청시_예외_발생() {
+        //given
+        given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
+            .willReturn(searchStructure1WithMemberA);
+        given(structureUseCase.getStructure(STRUCTURE_1_ID))
+            .willThrow(StructureNotFoundException.class);
+
+        //when/then
+        assertThrows(StructureNotFoundException.class, () -> 
+            sut.updateSearchStructure(searchStructure1WithMemberA, MEMBER_A_ID));
     }
 
 }

@@ -99,6 +99,40 @@ public class SearchStructureService implements SearchStructureUseCase {
     }
 
     /**
+     * SearchStructure을 수정합니다.
+     * 
+     * <ol>
+     *   <li>로그인한 사용자가 SearchStructure에 접근 가능한지 확인</li>
+     *   <li>SearchStructure 유효성 확인</li>
+     *   <li>DB에서 조회된 SearchStructure과 요청된 SearchStructure 비교하여 수정하기에 적합한지 확인</li>
+     *   <li>Structure 엔티티 존재하는지 확인</li>
+     *   <li>SearchStructure 수정</li>
+     * </ol>
+     * 
+     * @throws UnauthorizedAccessException Search 주인이 로그인된 Member와 다를 경우
+     * @throws InvalidSearchStructureException 유효하지 않은 SearchStructure인 경우
+     * @throws StructureNotFoundException Structure가 존재하지 않을 경우
+     */
+    @Override
+    public void updateSearchStructure(final SearchStructure searchStructure, final UUID loginedMemberId) {
+
+        UUID searchStructureId = searchStructure.getSearchStructureId();
+        
+        assertSearchStructureOwner(searchStructureId, loginedMemberId);
+
+        searchStructure.validate();
+
+        final SearchStructure dbDomain = searchStructureRepository.findBySearchStructureId(searchStructureId);
+        if (!searchStructure.isUpdatableComparedTo(dbDomain)) {
+            throw new InvalidSearchStructureException();
+        }
+
+        structureUseCase.getStructure(searchStructure.getStructure().getStructureId());
+
+        searchStructureRepository.updateBySearchStructure(searchStructure);
+    }
+
+    /**
      * 로그인한 계정이 SearchStructure에 접근 가능한지 확인한다.
      * 
      * <ol>
