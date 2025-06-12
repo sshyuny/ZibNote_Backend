@@ -166,7 +166,7 @@ public class SearchStructureServiceIntegrationTest {
 
         String newDescription = "test";
         SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
-            searchStructureId, Search.onlyId(searchId), Structure.onlyId(structureId2), newDescription
+            searchStructureId, null, Structure.onlyId(structureId2), newDescription
         );
 
         //when
@@ -192,7 +192,7 @@ public class SearchStructureServiceIntegrationTest {
 
         Long randomStructureId = 3344556677L;
         SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
-            searchStructureId, Search.onlyId(searchId), Structure.onlyId(randomStructureId), "test"
+            searchStructureId, null, Structure.onlyId(randomStructureId), "test"
         );
 
         //when/then

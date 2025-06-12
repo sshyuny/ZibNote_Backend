@@ -59,18 +59,18 @@ public class SearchStructure extends BaseFields {
     }
 
     /**
-     * DB에서 조회된 SearchStructre과 비교하여, 수정하기에 적절한 필드로 구성되어있는지 확인합니다.
+     * 수정 전 유효성을 검사합니다.
      * 
-     * ID와 Search가 동일해야 합니다.
-     * 
-     * @param dbDomain DB에서 조회된 SearchStructure
-     * @return 확인 결과
+     * Search는 수정 대상이 아니기 때문에 null이 들어가야 합니다.
+     * Structure은 비어있어서는 안됩니다.
      */
-    public boolean isUpdatableComparedTo(SearchStructure dbDomain) {
-        if (!this.searchStructureId.equals(dbDomain.getSearchStructureId())) {return false;}
-        if (!this.search.getSearchId().equals(dbDomain.getSearch().getSearchId())) {return false;}
-
-        return true;
+    public void validateForUpdate() {
+        if  (this.search != null) {
+            throw new InvalidSearchStructureException();
+        }
+        if  (this.structure == null || this.structure.getStructureId() == null) {
+            throw new InvalidSearchStructureException();
+        }
     }
 
 }

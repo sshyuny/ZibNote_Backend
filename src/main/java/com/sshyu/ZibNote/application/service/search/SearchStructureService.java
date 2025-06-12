@@ -120,12 +120,7 @@ public class SearchStructureService implements SearchStructureUseCase {
         
         assertSearchStructureOwner(searchStructureId, loginedMemberId);
 
-        searchStructure.validate();
-
-        final SearchStructure dbDomain = searchStructureRepository.findBySearchStructureId(searchStructureId);
-        if (!searchStructure.isUpdatableComparedTo(dbDomain)) {
-            throw new InvalidSearchStructureException();
-        }
+        searchStructure.validateForUpdate();
 
         structureUseCase.getStructure(searchStructure.getStructure().getStructureId());
 

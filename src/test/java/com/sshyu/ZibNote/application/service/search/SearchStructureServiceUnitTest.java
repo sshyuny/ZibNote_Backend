@@ -208,7 +208,7 @@ public class SearchStructureServiceUnitTest {
         given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
             .willReturn(searchStructure1WithMemberA);
         SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
-            SEARCH_STRUCTURE_ID_1_OF_A, Search.onlyId(SEARCH_1_ID_OF_A), Structure.onlyId(STRUCTURE_2_ID), "test"
+            SEARCH_STRUCTURE_ID_1_OF_A, null, Structure.onlyId(STRUCTURE_2_ID), "test"
         );
 
         //when/then
@@ -235,22 +235,7 @@ public class SearchStructureServiceUnitTest {
         given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
             .willReturn(searchStructure1WithMemberA);
         SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
-            SEARCH_STRUCTURE_ID_1_OF_A, null, Structure.onlyId(STRUCTURE_2_ID), "test"
-        );
-
-        //when/then
-        assertThrows(InvalidSearchStructureException.class, () -> 
-            sut.updateSearchStructure(searchStructureForUpdate, MEMBER_A_ID));
-    }
-    
-    @DisplayName("기존 도메인과 요청된 도메인의 Search ID가 동일해야 함")
-    @Test
-    void updateSearchStructure_DB조회_도메인과_비교시_적절하지_않아_예외_발생() {
-        //given
-        given(searchStructureRepository.findBySearchStructureId(SEARCH_STRUCTURE_ID_1_OF_A))
-            .willReturn(searchStructure1WithMemberA);
-        SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
-            SEARCH_STRUCTURE_ID_1_OF_A, Search.onlyId(SEARCH_2_ID_OF_A), Structure.onlyId(STRUCTURE_2_ID), "test"
+            SEARCH_STRUCTURE_ID_1_OF_A, Search.onlyId(SEARCH_1_ID_OF_A), Structure.onlyId(STRUCTURE_2_ID), "test"
         );
 
         //when/then
@@ -265,10 +250,13 @@ public class SearchStructureServiceUnitTest {
             .willReturn(searchStructure1WithMemberA);
         given(structureUseCase.getStructure(STRUCTURE_1_ID))
             .willThrow(StructureNotFoundException.class);
+        SearchStructure searchStructureForUpdate = SearchStructure.ofBasic(
+            SEARCH_STRUCTURE_ID_1_OF_A, null, Structure.onlyId(STRUCTURE_1_ID), "test"
+        );
 
         //when/then
         assertThrows(StructureNotFoundException.class, () -> 
-            sut.updateSearchStructure(searchStructure1WithMemberA, MEMBER_A_ID));
+            sut.updateSearchStructure(searchStructureForUpdate, MEMBER_A_ID));
     }
 
 }
