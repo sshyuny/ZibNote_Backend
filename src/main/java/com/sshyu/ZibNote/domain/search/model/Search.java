@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.sshyu.zibnote.domain.common.BaseFields;
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.member.model.Member;
+import com.sshyu.zibnote.domain.search.exception.InvalidSearchException;
 
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
@@ -57,6 +58,20 @@ public class Search extends BaseFields {
         if (!this.member.getMemberId().equals(memberId)) {
             throw new UnauthorizedAccessException("존재하지 않거나 접근할 수 없는 데이터입니다.");
         }
+    }
+
+    /**
+     * 수정 가능한 상태인지 검증합니다.
+     * 
+     * <ul>
+     *   <li>Member는 불변해야 하기 때문에 null이 들어가있어야 합니다.</li>
+     *   <li>title과 region이 비어있지 않은지 확인합니다.</li>
+     * </ul>
+     */
+    public void validateForUpdate() {
+        if (this.searchId == null) { throw new InvalidSearchException(); }
+        if (this.member != null) { throw new InvalidSearchException(); }
+        if (this.title.isBlank() || this.region.isBlank()) { throw new InvalidSearchException(); }
     }
 
 }

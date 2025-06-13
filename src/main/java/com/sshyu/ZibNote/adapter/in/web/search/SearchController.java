@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseCode;
 import com.sshyu.zibnote.adapter.in.web.common.res.ApiResponse;
 import com.sshyu.zibnote.adapter.in.web.common.res.ResponseMessage;
+import com.sshyu.zibnote.adapter.in.web.search.dto.SearchPutReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchReqDto;
 import com.sshyu.zibnote.adapter.in.web.search.dto.SearchResDto;
 import com.sshyu.zibnote.adapter.in.web.search.mapper.SearchDtoMapper;
@@ -73,6 +75,28 @@ public class SearchController {
 
         return ResponseEntity.ok(
             ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_DELETE.getMessage())
+        );
+    }
+
+    @Operation(
+        summary = "Search 수정",
+        description = "Search 필드를 수정합니다."
+    )
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "수정 성공"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "존재하지 않거나 권한이 없는 리소스", content = @Content),
+    })
+    @PutMapping
+    public ResponseEntity<ApiResponse<Void>> put(@RequestBody SearchPutReqDto reqDto) {
+
+        searchUseCase.updateSearch(
+            SearchDtoMapper.fromPutReqDtoToDomain(reqDto), 
+            authUseCase.getMemberId()
+        );
+
+        return ResponseEntity.ok(
+            ApiResponse.withoutData(ResponseCode.SUCCESS, ResponseMessage.SUCCESS_UPDATE.getMessage())
         );
     }
 

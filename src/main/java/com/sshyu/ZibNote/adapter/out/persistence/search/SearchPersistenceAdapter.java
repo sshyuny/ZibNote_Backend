@@ -69,4 +69,14 @@ public class SearchPersistenceAdapter implements SearchRepository {
         searchJpaRepository.save(searchEntity);
     }
 
+    @Override
+    public void update(Search search) {
+        
+        final SearchEntity searchEntity = searchJpaRepository.findById(search.getSearchId())
+            .orElseThrow(() -> new SearchNotFoundException());
+
+        searchEntity.update(search);
+        searchJpaRepository.save(searchEntity);
+    }
+
 }

@@ -13,6 +13,8 @@ public interface SearchUseCase {
 
     List<Search> listSearchesByMember(UUID memberId);
 
+    void updateSearch(Search search, UUID memberId);
+
     void softDeleteSearch(UUID searchId, UUID memberId);
 
     Search assertSearchOwner(UUID searchId, UUID memberId);

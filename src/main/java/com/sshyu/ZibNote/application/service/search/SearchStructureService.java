@@ -99,7 +99,7 @@ public class SearchStructureService implements SearchStructureUseCase {
     }
 
     /**
-     * SearchStructure을 수정합니다.
+     * SearchStructure을 수정한다.
      * 
      * <ol>
      *   <li>로그인한 사용자가 SearchStructure에 접근 가능한지 확인</li>

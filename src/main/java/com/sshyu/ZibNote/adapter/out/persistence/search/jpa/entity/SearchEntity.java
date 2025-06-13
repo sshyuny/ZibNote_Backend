@@ -7,6 +7,7 @@ import org.hibernate.annotations.UuidGenerator;
 
 import com.sshyu.zibnote.adapter.out.persistence.common.BaseEntity;
 import com.sshyu.zibnote.adapter.out.persistence.member.jpa.entity.MemberEntity;
+import com.sshyu.zibnote.domain.search.model.Search;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,6 +49,19 @@ public class SearchEntity extends BaseEntity {
         return SearchEntity.builder()
                     .searchId(searchId)
                     .build();
+    }
+
+    /**
+     * 요청된 도메인 값으로 엔티티 필드를 수정합니다.
+     * 
+     * <p> ID, Member는 변경되지 않습니다.
+     * 
+     * @param domain 요청된 도메인
+     */
+    public void update(Search domain) {
+        this.title = domain.getTitle();
+        this.region = domain.getRegion();
+        this.description = domain.getDescription();
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
+import com.sshyu.zibnote.domain.search.exception.InvalidSearchException;
 import com.sshyu.zibnote.domain.search.exception.SearchNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.port.in.SearchUseCase;
@@ -53,6 +54,25 @@ public class SearchService implements SearchUseCase {
     public List<Search> listSearchesByMember(final UUID memberId) {
         
         return searchRepository.findAllByMemberId(memberId);
+    }
+
+    /**
+     * Search를 수정합니다.
+     * 
+     * <P> 수정 전, 사용자가 Search에 접근 가능한지와 데이터가 유효한지 검사합니다.
+     * 
+     * @param search 수정하려는 내용이 담긴 Search
+     * @param memberId 로그인한 사용자 ID
+     * @throws InvalidSearchException 유효하지 않은 Search
+     */
+    @Override
+    public void updateSearch(Search search, UUID memberId) {
+        
+        assertSearchOwner(search.getSearchId(), memberId);
+
+        search.validateForUpdate();
+
+        searchRepository.update(search);
     }
 
     /**
