@@ -117,6 +117,43 @@ public class SearchServiceIntegrationTest {
     }
 
     @Test
+    void update_정상_요청() {
+        em.flush();
+        em.clear();
+
+        //given
+        String newTitle = "new title";
+        String newRegion = "new region";
+        Search newSearch = Search.ofBasic(search1Id, null, newTitle, newRegion, null);
+
+        //when
+        sut.updateSearch(newSearch, memberAId);
+
+        em.flush();
+        em.clear();
+        
+        //then
+        Search selectedSearch = searchPersistenceAdapter.findBySearchId(search1Id);
+        assertThat(selectedSearch.getTitle()).isEqualTo(newTitle);
+        assertThat(selectedSearch.getRegion()).isEqualTo(newRegion);
+    }
+
+    @Test
+    void update_비인가_사용자_시도시_예외_발생() {
+        em.flush();
+        em.clear();
+
+        //given
+        String newTitle = "new title";
+        String newRegion = "new region";
+        Search newSearch = Search.ofBasic(search1Id, null, newTitle, newRegion, null);
+
+        //when/then
+        assertThrows(UnauthorizedAccessException.class, () ->
+            sut.updateSearch(newSearch, memberBId));
+    }
+
+    @Test
     void softDeleteSearch_정상_삭제() {
         //when
         sut.softDeleteSearch(search1Id, memberAId);

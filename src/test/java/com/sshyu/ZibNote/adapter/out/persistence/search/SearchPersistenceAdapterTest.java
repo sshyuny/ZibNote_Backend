@@ -90,4 +90,48 @@ public class SearchPersistenceAdapterTest {
         );
     }
 
+    @Test
+    void update_정상_요청() {
+        em.flush();
+        em.clear();
+
+        //given
+        String newTitle = "new title";
+        String newResion = "new region";
+        String newDescription = "new description";
+        Search newSearch = Search.ofBasic(searchId, null, newTitle, newResion, newDescription);
+
+        //when
+        searchPersistenceAdapter.update(newSearch);
+
+        em.flush();
+        em.clear();
+
+        //then
+        Search selectedSearch = searchPersistenceAdapter.findBySearchId(searchId);
+        assertThat(selectedSearch.getUpdatedAt()).isAfter(selectedSearch.getCreatedAt());
+        assertThat(selectedSearch.getIsDeleted()).isEqualTo(0);
+        assertThat(selectedSearch.getMember().getMemberId()).isEqualTo(memberId);
+        assertThat(selectedSearch.getTitle()).isEqualTo(newTitle);
+        assertThat(selectedSearch.getRegion()).isEqualTo(newResion);
+        assertThat(selectedSearch.getDescription()).isEqualTo(newDescription);
+    }
+
+    @Test
+    void update_삭제된_데이터_요청() {
+        //given
+        searchPersistenceAdapter.softDeleteBySearchId(searchId);
+        String newTitle = "new title";
+        String newResion = "new region";
+        String newDescription = "new description";
+        Search newSearch = Search.ofBasic(searchId, null, newTitle, newResion, newDescription);
+
+        em.flush();
+        em.clear();
+
+        //when/then
+        assertThrows(SearchNotFoundException.class, () -> 
+            searchPersistenceAdapter.update(newSearch));
+    }
+
 }

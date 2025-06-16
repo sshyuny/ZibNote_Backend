@@ -71,7 +71,8 @@ public class Search extends BaseFields {
     public void validateForUpdate() {
         if (this.searchId == null) { throw new InvalidSearchException(); }
         if (this.member != null) { throw new InvalidSearchException(); }
-        if (this.title.isBlank() || this.region.isBlank()) { throw new InvalidSearchException(); }
+        if (this.title == null || this.title.isBlank()) { throw new InvalidSearchException(); }
+        if (this.region == null || this.region.isBlank()) { throw new InvalidSearchException(); }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.sshyu.zibnote.application.service.search;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
@@ -16,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sshyu.zibnote.domain.common.exception.UnauthorizedAccessException;
 import com.sshyu.zibnote.domain.member.model.Member;
+import com.sshyu.zibnote.domain.search.exception.InvalidSearchException;
 import com.sshyu.zibnote.domain.search.exception.SearchNotFoundException;
 import com.sshyu.zibnote.domain.search.model.Search;
 import com.sshyu.zibnote.domain.search.port.out.SearchRepository;
@@ -92,6 +94,44 @@ public class SearchServiceUnitTest {
         assertThat(sut.listSearchesByMember(MEMBER_A_ID))
             .hasSize(2)
             .contains(search1WithMemberA, search2WithMemberA);
+    }
+
+    @Test
+    void update_정상_요청() {
+        //given
+        given(searchRepository.findBySearchId(SEARCH_ID_OF_MEMBER_A))
+            .willReturn(search1WithMemberA);
+
+        Search newSearch = Search.ofBasic(SEARCH_ID_OF_MEMBER_A, null, "new title", "new region", "new description");
+
+        //when/then
+        assertDoesNotThrow(() -> sut.updateSearch(newSearch, MEMBER_A_ID));
+    }
+
+    @Test
+    void update_비인가_사용자_시도시_예외_발생() {
+        //given
+        given(searchRepository.findBySearchId(SEARCH_ID_OF_MEMBER_A))
+            .willReturn(search1WithMemberA);
+
+        Search newSearch = Search.ofBasic(SEARCH_ID_OF_MEMBER_A, null, "new title", "new region", "new description");
+
+        //when/then
+        assertThrows(UnauthorizedAccessException.class, () ->
+            sut.updateSearch(newSearch, MEMBER_B_ID));
+    }
+
+    @Test
+    void update_유효성_검사_실패시_예외_발생() {
+        //given
+        given(searchRepository.findBySearchId(SEARCH_ID_OF_MEMBER_A))
+            .willReturn(search1WithMemberA);
+
+        Search newSearch = Search.ofBasic(SEARCH_ID_OF_MEMBER_A, null, null, "new region", "new description");
+
+        //when/then
+        assertThrows(InvalidSearchException.class, () -> 
+            sut.updateSearch(newSearch, MEMBER_A_ID));
     }
 
     @Test
