@@ -34,6 +34,8 @@ jwt:
   expiration: 3600000
 
 auth:
+  front:
+    redirect-uri: ${FRONT_REDIRECT_URI}
   kakao:
     client_id: ${KAKAO_CLIENT_ID}
     redirect_uri: ${KAKAO_REDIRECT_URI}
