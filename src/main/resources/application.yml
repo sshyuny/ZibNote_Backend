@@ -1,6 +1,9 @@
 spring:
   application:
     name: zibnote
+  output:
+    ansi:
+      enabled: ALWAYS
   jpa:
     show-sql: false
     generate-ddl: true
@@ -9,10 +12,18 @@ spring:
         format_sql: true
         hbm2ddl.auto: none
   datasource:
-    url: jdbc:mysql://localhost:3306/zibnote_db
-    username: zibnote_admin
-    password: pw11
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
 
 logging:
   level:
@@ -21,3 +32,8 @@ logging:
 
 jwt:
   expiration: 3600000
+
+auth:
+  kakao:
+    client_id: ${KAKAO_CLIENT_ID}
+    redirect_uri: ${KAKAO_REDIRECT_URI}
