@@ -61,15 +61,18 @@ Hexagonal Architecture를 참고하여 외부 변경에 유연하게 대처할 �
 [CODE_CONVENTION 정리](CODE_CONVENTION.md)
 
 ## 실행 방법
-### LOCAL
-1. 환경변수 전달 `"SPRING_PROFILES_ACTIVE": "local"`
+### 메모리 H2로 실행하기
+1. 프로젝트 실행
+```bash
+./gradlew bootRun -Dspring.profiles.active=test
+```
+
+### MySQL 스키마 구축 후 실행하기
+1. MySQL 서버 설치 및 실행: MySQL 서버에서 [DDL](docs/database/mysql_ddl.sql) 실행 
 2. 프로젝트 실행
-### DEFAULT
-1. MySQL 서버 설치 및 실행
-    - 1.1. MySQL 서버에서 [DDL](docs/database/mysql_ddl.sql) 실행 
-    - 1.2. 또는 application.yml에서 `hbm2ddl.auto: create`로 변경
-2. 환경변수 전달 `"SPRING_PROFILES_ACTIVE": "default"`
-3. 프로젝트 실행
+```bash
+export $(cat .env-local | xargs) && ./gradlew bootRun
+```
 
 ## API
 - Swagger 사용 (로컬 구동시 확인 가능 http://localhost:8080/swagger-ui.html)

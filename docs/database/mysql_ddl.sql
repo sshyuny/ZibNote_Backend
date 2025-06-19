@@ -1,16 +1,16 @@
 /* ==== MySQL DDL ==== */
 
 /* DATABASE */
-DROP DATABASE IF EXISTS zibnote_db;
-CREATE DATABASE zibnote_db;
-USE zibnote_db;
+DROP DATABASE IF EXISTS zibnote_db_local;
+CREATE DATABASE zibnote_db_local;
+USE zibnote_db_local;
 
 /* USERS */
 DROP USER IF EXISTS 'zibnote_app'@'localhost', 'zibnote_admin'@'localhost';
 CREATE USER 'zibnote_app'@'localhost' IDENTIFIED BY 'pw11';
 CREATE USER 'zibnote_admin'@'localhost' IDENTIFIED BY 'pw11';
-GRANT ALL PRIVILEGES ON zibnote_db.* TO 'zibnote_admin'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON zibnote_db.* TO 'zibnote_app'@'localhost';
+GRANT ALL PRIVILEGES ON zibnote_db_local.* TO 'zibnote_admin'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON zibnote_db_local.* TO 'zibnote_app'@'localhost';
 
 exit
 mysql -u zibnote_admin -p

@@ -1,6 +1,9 @@
 spring:
   application:
     name: zibnote
+  output:
+    ansi:
+      enabled: ALWAYS
   jpa:
     show-sql: false
     generate-ddl: true
@@ -13,8 +16,26 @@ spring:
     username: sa
     password: 
     driver-class-name: org.h2.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 
+    password: 
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
 
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+jwt:
+  expiration: 3600000
+
+auth:
+  front:
+    redirect-uri: 
+  kakao:
+    client_id: 
+    redirect_uri: 

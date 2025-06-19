@@ -13,6 +13,10 @@ java {
 	}
 }
 
+bootRun {
+    systemProperty 'spring.profiles.active', System.getProperty('spring.profiles.active')
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
