@@ -2,13 +2,13 @@ package com.sshyu.zibnote.domain.member.exception;
 
 import com.sshyu.zibnote.domain.common.exception.ZibnoteRuntimeException;
 
-public class KakaoMemberException extends ZibnoteRuntimeException {
+public class SocialLoginException extends ZibnoteRuntimeException {
 
-    public KakaoMemberException() {
+    public SocialLoginException() {
         super();
     }
 
-    public KakaoMemberException(String message) {
+    public SocialLoginException(String message) {
         super(message);
     }
     

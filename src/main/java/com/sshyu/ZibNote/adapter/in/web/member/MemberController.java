@@ -19,9 +19,10 @@ import com.sshyu.zibnote.adapter.in.web.member.dto.KakaoTokenResDto;
 import com.sshyu.zibnote.adapter.in.web.member.dto.KakaoUserInfoResDto;
 import com.sshyu.zibnote.adapter.in.web.member.dto.LoginReqDto;
 import com.sshyu.zibnote.application.service.member.KakaoMemberService;
+import com.sshyu.zibnote.application.service.member.NaverMemberService;
 import com.sshyu.zibnote.domain.auth.model.Token;
 import com.sshyu.zibnote.domain.auth.port.in.AuthUseCase;
-import com.sshyu.zibnote.domain.member.exception.KakaoMemberException;
+import com.sshyu.zibnote.domain.member.exception.SocialLoginException;
 import com.sshyu.zibnote.domain.member.model.Member;
 import com.sshyu.zibnote.domain.member.port.in.MemberUseCase;
 
@@ -37,6 +38,7 @@ public class MemberController {
     private final MemberUseCase memberUseCase;
     private final AuthUseCase authUseCase;
     private final KakaoMemberService kakaoLoginService;
+    private final NaverMemberService naverLoginService;
 
     @Value("${auth.front.redirect-uri}")
     private String frontRedirectUri;
@@ -70,8 +72,23 @@ public class MemberController {
             String id = kakaoUserInfo.getId();
             log.info("카카오 로그인 사용자 아이디 kakao user id = {}", id);
         } else {
-            throw new KakaoMemberException("카카오 로그인 시도 실패 " + error);
+            throw new SocialLoginException("카카오 로그인 시도 실패 " + error);
         }
+
+        HttpHeaders resHeader = new HttpHeaders();
+        resHeader.setLocation(URI.create(frontRedirectUri));
+        return new ResponseEntity<>(resHeader, HttpStatus.FOUND);
+    }
+
+    @GetMapping("/pass/oauth/naver")
+    public ResponseEntity<?> naver(
+        @RequestParam(value = "code", required = false) String code,
+        @RequestParam(value = "error", required = false) String error,
+        @RequestParam(value = "error_description", required = false) String error_description,
+        @RequestParam(value = "state", required = false) String state
+    ) {
+
+        naverLoginService.doSocialLogin(code, error, error_description, state);
 
         HttpHeaders resHeader = new HttpHeaders();
         resHeader.setLocation(URI.create(frontRedirectUri));
