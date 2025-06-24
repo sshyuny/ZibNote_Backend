@@ -39,3 +39,8 @@ auth:
   kakao:
     client_id: 
     redirect_uri: 
+  naver:
+    client_id: 
+    client_secret: 
+    redirect_uri: 
+    state: 
